@@ -8,19 +8,21 @@ public interface LimesService extends Remote{
 	 * 
 	 * @param source HashMap <table>
 	 * 	<tr><td>endpoint</td><td>String</td></tr>
-	 *  <tr><td>graph</td><td>String</td></tr>
-	 *  <tr><td>prefix</td><td>HashMap "<"String, String">"</td></tr>
-	 *  <tr><td>properties</td><td>HashMap "<"String, String">"</td></tr>
+	 *  <tr><td>graph OPTIONAL</td><td>String graph URI</td></tr>
+	 *  <tr><td>prefix</td><td>HashMap "<"String, String">" prefix - URI</td></tr>
+	 *  <tr><td>properties</td><td>HashMap "<"String, String">" property name - preprocessing</td></tr>
 	 *  <tr><td>var</td><td>String</td></tr>
-	 *  <tr><td></td><td></td></tr>
+	 *  <tr><td>class OPTIONAL</td><td>String class URI</td></tr>
+	 *  <tr><td>id</td><td>String</td></tr>
 	 *  </table>
-	 * @param targete HashMap <table>
+	 * @param target HashMap <table>
 	 * 	<tr><td>endpoint</td><td>String</td></tr>
-	 *  <tr><td>graph</td><td>String</td></tr>
-	 *  <tr><td>prefix</td><td>HashMap "<"String, String">"</td></tr>
-	 *  <tr><td>properties</td><td>HashMap "<"String, String">"</td></tr>
+	 *  <tr><td>graph OPTIONAL</td><td>String graph URI</td></tr>
+	 *  <tr><td>prefix</td><td>HashMap "<"String, String">" prefix - URI</td></tr>
+	 *  <tr><td>properties</td><td>HashMap "<"String, String">" property name - preprocessing</td></tr>
 	 *  <tr><td>var</td><td>String</td></tr>
-	 *  <tr><td></td><td></td></tr>
+	 *  <tr><td>class OPTIONAL</td><td>String class URI</td></tr>
+	 *  <tr><td>id</td><td>String</td></tr>
 	 *  </table>
 	 * @param metrice HashMap <table>
 	 *  <tr>metric<td></td><td>String</td></tr>
