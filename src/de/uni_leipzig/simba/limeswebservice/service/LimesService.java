@@ -1,8 +1,9 @@
 package de.uni_leipzig.simba.limeswebservice.service;
 
+import java.rmi.Remote;
 import java.util.HashMap;
 
-public interface LimesService {
+public interface LimesService extends Remote{
 	/**
 	 * 
 	 * @param source HashMap <table>
