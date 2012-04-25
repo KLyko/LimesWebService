@@ -1,4 +1,4 @@
-package de.uni_leipzig.aksw;
+package de.uni_leipzig.simba.limes.webservice.core;
 
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
