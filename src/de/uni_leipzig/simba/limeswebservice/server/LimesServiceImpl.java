@@ -12,10 +12,15 @@ public class LimesServiceImpl implements LimesService{
 	@Override
 	public void getMapping(HashMap<String, Object> source,
 			HashMap<String, Object> target, HashMap<String, Object> metric) {
-			KBInfo sourceInfo = createKBInfo(source);
-			System.out.println(sourceInfo);
-			KBInfo targetInfo = createKBInfo(target);
-			System.out.println(targetInfo);
+		// get infos	
+		KBInfo sourceInfo = createKBInfo(source);
+		System.out.println(sourceInfo);
+		KBInfo targetInfo = createKBInfo(target);
+		System.out.println(targetInfo);
+		// get metric
+		String metricExpr = (String) metric.get("metric");
+		Double accthreshold = (Double) metric.get("accthreshold");
+		Double verthreshold = (Double) metric.get("verthreshold");
 		
 	}
 	

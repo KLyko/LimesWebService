@@ -26,7 +26,7 @@ public class LimesServiceImplTest {
 		dest.put("var", "?dest");
 		dest.put("graph", "http://dbpedia.org");
 		dest.put("id", "dbpedia");
-	//	dest.put("class", "http://dbpedia.org/ontology/Architect");
+//		dest.put("class", "http://dbpedia.org/ontology/Architect");
 		HashMap<String, String> prefix2 = new HashMap();
 		prefix2.put("rdfs", "http://www.w3.org/2000/01/rdf-schema#");
 		dest.put("prefix", prefix2);
@@ -40,9 +40,8 @@ public class LimesServiceImplTest {
 		metric.put("verthreshold", 0.8d);
 		
 		LimesServiceImpl impl = new LimesServiceImpl();
-		impl.getMapping(src, dest, metric);
+		impl.getMapping(src, dest, metric);	
+		
 		
 	}
 }
-//http://dbpedia.org/ontology/Person
-//rdfs:label with prefix rdfs - http://www.w3.org/2000/01/rdf-schema#
