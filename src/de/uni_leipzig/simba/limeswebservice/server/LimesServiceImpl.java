@@ -13,8 +13,9 @@ public class LimesServiceImpl implements LimesService{
 	public void getMapping(HashMap<String, Object> source,
 			HashMap<String, Object> target, HashMap<String, Object> metric) {
 			KBInfo sourceInfo = createKBInfo(source);
+			System.out.println(sourceInfo);
 			KBInfo targetInfo = createKBInfo(target);
-			
+			System.out.println(targetInfo);
 		
 	}
 	
@@ -27,9 +28,11 @@ public class LimesServiceImpl implements LimesService{
 		info.restrictions = new ArrayList<String>();
 		if(param.containsKey("class")) {
 			String classRestrString = info.var+" rdf:type "+SPARQLHelper.wrapIfNecessary((String)param.get("class"));
+			info.restrictions.add(classRestrString);
 		}
-		info.prefixes = (HashMap<String, String>) param.get("properties");
-		for(String prop : info.prefixes.keySet()) {
+		info.prefixes = (HashMap<String, String>) param.get("prefix");
+		info.functions = (HashMap<String, String>) param.get("properties");
+		for(String prop : info.functions.keySet()) {
 			info.properties.add(prop);
 		}
 		info.type = "SPARQL";
