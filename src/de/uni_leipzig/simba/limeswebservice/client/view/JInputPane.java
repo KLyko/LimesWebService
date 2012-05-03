@@ -67,6 +67,12 @@ public class JInputPane extends javax.swing.JPanel {
 		initGUI();
 	}
 	
+	public JInputPane(String name) {
+		super();
+		initGUI();
+		this.jLabel1.setText(name);
+	}
+
 	private void initGUI() {
 		try {
 			BoxLayout thisLayout = new BoxLayout(this, javax.swing.BoxLayout.Y_AXIS);

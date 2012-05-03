@@ -4,6 +4,7 @@ import java.rmi.RemoteException;
 import java.util.HashMap;
 
 import org.apache.axis2.AxisFault;
+import org.apache.axis2.client.Options;
 
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetMapping;
@@ -14,6 +15,8 @@ public class Client {
 	private HashMap<String,Object> source;
 	private HashMap<String,Object> target;
 	private HashMap<String,Object> metric;
+	private String emailAddress;
+	
 	public Client (){
 		source =new HashMap<String,Object>();
 		target =new HashMap<String,Object>();
@@ -60,12 +63,15 @@ public class Client {
 	
 	public void send(){
 		try {
+			
 			LimesServiceImplStub stub = new LimesServiceImplStub ();
 			GetMapping mapping = new GetMapping();
 			mapping.setSourceString(JsonParser.parseJavaToJSON(source));
 			mapping.setTargetString(JsonParser.parseJavaToJSON(target));
 			mapping.setMetricString(JsonParser.parseJavaToJSON(metric));
+			mapping.setMailAddress(emailAddress);
 			stub.getMapping(mapping);
+			
 		} catch (AxisFault e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -77,6 +83,20 @@ public class Client {
 	
 	public HashMap<String, Object> getSource() {
 		return source;
+	}
+
+	/**
+	 * @param emailAddress the emailAddress to set
+	 */
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
+	/**
+	 * @return the emailAddress
+	 */
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 
 	public void setSource(HashMap<String, Object> source) {

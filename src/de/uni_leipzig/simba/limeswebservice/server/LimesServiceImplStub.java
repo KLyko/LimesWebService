@@ -365,6 +365,48 @@
                                }
                             
 
+                        /**
+                        * field for MailAddress
+                        */
+
+                        
+                                    protected java.lang.String localMailAddress ;
+                                
+                           /*  This tracker boolean wil be used to detect whether the user called the set method
+                          *   for this attribute. It will be used to determine whether to include this field
+                           *   in the serialized XML
+                           */
+                           protected boolean localMailAddressTracker = false ;
+
+                           public boolean isMailAddressSpecified(){
+                               return localMailAddressTracker;
+                           }
+
+                           
+
+                           /**
+                           * Auto generated getter method
+                           * @return java.lang.String
+                           */
+                           public  java.lang.String getMailAddress(){
+                               return localMailAddress;
+                           }
+
+                           
+                        
+                            /**
+                               * Auto generated setter method
+                               * @param param MailAddress
+                               */
+                               public void setMailAddress(java.lang.String param){
+                            localMailAddressTracker = true;
+                                   
+                                            this.localMailAddress=param;
+                                    
+
+                               }
+                            
+
      
      
         /**
@@ -473,6 +515,24 @@
 
                                         
                                                    xmlWriter.writeCharacters(localMetricString);
+                                            
+                                          }
+                                    
+                                   xmlWriter.writeEndElement();
+                             } if (localMailAddressTracker){
+                                    namespace = "http://server.limeswebservice.simba.uni_leipzig.de";
+                                    writeStartElement(null, namespace, "mailAddress", xmlWriter);
+                             
+
+                                          if (localMailAddress==null){
+                                              // write the nil attribute
+                                              
+                                                     writeAttribute("xsi","http://www.w3.org/2001/XMLSchema-instance","nil","1",xmlWriter);
+                                                  
+                                          }else{
+
+                                        
+                                                   xmlWriter.writeCharacters(localMailAddress);
                                             
                                           }
                                     
@@ -680,6 +740,12 @@
                                  
                                          elementList.add(localMetricString==null?null:
                                          org.apache.axis2.databinding.utils.ConverterUtil.convertToString(localMetricString));
+                                    } if (localMailAddressTracker){
+                                      elementList.add(new javax.xml.namespace.QName("http://server.limeswebservice.simba.uni_leipzig.de",
+                                                                      "mailAddress"));
+                                 
+                                         elementList.add(localMailAddress==null?null:
+                                         org.apache.axis2.databinding.utils.ConverterUtil.convertToString(localMailAddress));
                                     }
 
                 return new org.apache.axis2.databinding.utils.reader.ADBXMLStreamReaderImpl(qName, elementList.toArray(), attribList.toArray());
@@ -824,6 +890,34 @@
                                     java.lang.String content = reader.getElementText();
                                     
                                               object.setMetricString(
+                                                    org.apache.axis2.databinding.utils.ConverterUtil.convertToString(content));
+                                            
+                                       } else {
+                                           
+                                           
+                                           reader.getElementText(); // throw away text nodes if any.
+                                       }
+                                      
+                                        reader.next();
+                                    
+                              }  // End of if for expected property start element
+                                
+                                    else {
+                                        
+                                    }
+                                
+                                    
+                                    while (!reader.isStartElement() && !reader.isEndElement()) reader.next();
+                                
+                                    if (reader.isStartElement() && new javax.xml.namespace.QName("http://server.limeswebservice.simba.uni_leipzig.de","mailAddress").equals(reader.getName())){
+                                
+                                       nillableValue = reader.getAttributeValue("http://www.w3.org/2001/XMLSchema-instance","nil");
+                                       if (!"true".equals(nillableValue) && !"1".equals(nillableValue)){
+                                    
+
+                                    java.lang.String content = reader.getElementText();
+                                    
+                                              object.setMailAddress(
                                                     org.apache.axis2.databinding.utils.ConverterUtil.convertToString(content));
                                             
                                        } else {

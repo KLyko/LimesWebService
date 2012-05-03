@@ -13,8 +13,13 @@ import de.uni_leipzig.simba.limeswebservice.util.JsonParser;
 public class LimesServiceImpl {
 
 	public void getMapping(String sourceString, String targetString,
-			String metricString){
-		System.out.println(sourceString);
+			String metricString,String mailAddress){
+		String hash = mailAddress+System.currentTimeMillis();
+		int  id = hash.hashCode();
+		LimesExecutor le =new LimesExecutor (id,mailAddress);
+		le.addPropertyChangeListener(UserManager.getInstance());
+		UserManager.getInstance().addUser(id, le);
+		
 		HashMap<String, Object> source;
 		try {
 			source = JsonParser.parseJSONToJava(sourceString);
@@ -29,13 +34,14 @@ public class LimesServiceImpl {
 		// get metric
 		
 		String metricExpr = (String) metric.get("metric");
-		Double accthreshold = (Double) metric.get("accthreshold");
-		Double verthreshold = (Double) metric.get("verthreshold");
-		
+		Double accThreshold = (Double) metric.get("accthreshold");
+		Double verThreshold = (Double) metric.get("verthreshold");
+		le.calculateMapping(sourceInfo, targetInfo, metricExpr, accThreshold, verThreshold);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 	
 	private KBInfo createKBInfo(HashMap<String, Object> param) {

@@ -5,7 +5,14 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Properties;
 
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,6 +28,7 @@ import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
 import de.uni_leipzig.simba.limeswebservice.client.Client;
+import de.uni_leipzig.simba.limeswebservice.server.MailAuthenticator;
 
 
 /**
@@ -49,6 +57,9 @@ public class LimesJFrame extends javax.swing.JFrame {
 	private JPanel mainPanel;
 	private JSplitPane jInputSplit;
 	private JPanel jMetricPane;
+	private JLabel jLabel5;
+	private JTextField emailField;
+	private JPanel jPanel1;
 	private JInputPane jSourcePane;
 	private JInputPane jTargetPane;
 	private JButton jButton1;
@@ -76,7 +87,7 @@ public class LimesJFrame extends javax.swing.JFrame {
 	}
 	
 	public LimesJFrame() {
-		super();
+		super("Limes Client");
 		client = new Client();
 		initGUI();
 	}
@@ -95,8 +106,8 @@ public class LimesJFrame extends javax.swing.JFrame {
 					jInputSplit.setResizeWeight(0.5);
 					jInputSplit.setPreferredSize(new java.awt.Dimension(338, 200));
 					{
-						jSourcePane = new JInputPane();
-						jTargetPane = new JInputPane();
+						jSourcePane = new JInputPane("source");
+						jTargetPane = new JInputPane("target");
 						jInputSplit.add(jSourcePane, JSplitPane.LEFT);
 						jInputSplit.add(jTargetPane,JSplitPane.RIGHT);
 					}
@@ -168,11 +179,31 @@ public class LimesJFrame extends javax.swing.JFrame {
 								jTargetPane.initInput(client, true);
 								client.setMetric(metricField.getText());
 								client.setThreshholds((Float)jAccSpinner.getValue(),(Float) jRevSpinner.getValue());
+								client.setEmailAddress(emailField.getText());
 								client.send();
-								System.out.println(client.getSource().get("endpoint"));
+								
 							}
 							
 						});
+					}
+				}
+				{
+					jPanel1 = new JPanel();
+					GridBagLayout jPanel1Layout = new GridBagLayout();
+					mainPanel.add(jPanel1, BorderLayout.NORTH);
+					jPanel1Layout.rowWeights = new double[] {0.1};
+					jPanel1Layout.rowHeights = new int[] {7};
+					jPanel1Layout.columnWeights = new double[] {0.1, 0.1};
+					jPanel1Layout.columnWidths = new int[] {7, 7};
+					jPanel1.setLayout(jPanel1Layout);
+					{
+						jLabel5 = new JLabel();
+						jPanel1.add(jLabel5, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+						jLabel5.setText("email Address:");
+					}
+					{
+						emailField = new JTextField();
+						jPanel1.add(emailField, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 					}
 				}
 			}
@@ -183,5 +214,27 @@ public class LimesJFrame extends javax.swing.JFrame {
 			e.printStackTrace();
 		}
 	}
+	
+	 private void postMail( String recipient,
+             String subject,
+             String message, String from )
+	 throws MessagingException
+	{
+		Properties props = new Properties();
+		props.put( "mail.smtp.host", "smtp.gmail.com" );
+		props.setProperty("mail.smtp.port", ""+465);
+		 props.setProperty("mail.smtp.auth", "true");
+		MailAuthenticator ma = new MailAuthenticator("vicolinho","dise#Che88");
+		Session session = Session.getDefaultInstance(props,ma);
+		MimeMessage msg = new MimeMessage( session );
+		InternetAddress addressFrom = new InternetAddress("vicolinho@googlemail.com");
+		msg.setFrom( addressFrom );
+		InternetAddress addressTo = new InternetAddress( recipient,false);
+		msg.setRecipient( Message.RecipientType.TO, addressTo );
+		msg.setSubject( subject );
+		msg.setContent( message, "text/plain" );
+		Transport.send( msg );
+	}
+	
 
 }
