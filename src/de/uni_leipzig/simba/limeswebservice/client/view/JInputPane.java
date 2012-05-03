@@ -19,6 +19,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import de.uni_leipzig.simba.io.KBInfo;
 import de.uni_leipzig.simba.limeswebservice.client.Client;
 
 /**
@@ -175,5 +176,26 @@ public class JInputPane extends javax.swing.JPanel {
 		client.setProperties(null, properties, isTarget);
 		
 	}
-
+	
+	/**
+	 * Method set default vaules of fields.
+	 * @param info KBInfo holding them.
+	 */
+	public void setDefaults(KBInfo info) {
+		endpointField.setText(info.endpoint);
+		graphField.setText(info.graph);
+		variableField.setText(info.var);
+		restrictionField.setText(info.restrictions.get(0));
+		for(int i=0;i<info.properties.size();i++) {
+			String prop = info.properties.get(i);
+			String[] split = {prop,""};
+			if(prop.contains("AS")) {
+				split = prop.split("AS");
+				split[0] = split[0].trim();
+				split[1] = split[1].trim();
+			}
+			propertyModel.addRow(split);
+		}
+	}
+	
 }

@@ -27,7 +27,9 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
+import de.uni_leipzig.simba.io.KBInfo;
 import de.uni_leipzig.simba.limeswebservice.client.Client;
+import de.uni_leipzig.simba.limeswebservice.client.util.DefaultEndpointLoader;
 import de.uni_leipzig.simba.limeswebservice.server.MailAuthenticator;
 
 
@@ -72,6 +74,7 @@ public class LimesJFrame extends javax.swing.JFrame {
 	private JLabel jLabel1;
 	
 	private Client client;
+	private String defaultMetricExpression;
 
 	/**
 	* Auto-generated main method to display this JFrame
@@ -108,6 +111,9 @@ public class LimesJFrame extends javax.swing.JFrame {
 					{
 						jSourcePane = new JInputPane("source");
 						jTargetPane = new JInputPane("target");
+						jSourcePane.setDefaults(DefaultEndpointLoader.getDefaultEndpoints().get(DefaultEndpointLoader.DBPAUSTRONAUTSSOURCE));
+						jTargetPane.setDefaults(DefaultEndpointLoader.getDefaultEndpoints().get(DefaultEndpointLoader.DBPAUSTRONAUTSTARGET));
+						defaultMetricExpression = DefaultEndpointLoader.generateIntialMetric(DefaultEndpointLoader.DBPAUSTRONAUTSSOURCE, DefaultEndpointLoader.DBPAUSTRONAUTSTARGET);
 						jInputSplit.add(jSourcePane, JSplitPane.LEFT);
 						jInputSplit.add(jTargetPane,JSplitPane.RIGHT);
 					}
@@ -133,6 +139,7 @@ public class LimesJFrame extends javax.swing.JFrame {
 					}
 					{
 						metricField = new JTextField();
+						metricField.setText(defaultMetricExpression);
 						jMetricPane.add(metricField, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 					}
 					{
@@ -235,6 +242,4 @@ public class LimesJFrame extends javax.swing.JFrame {
 		msg.setContent( message, "text/plain" );
 		Transport.send( msg );
 	}
-	
-
 }
