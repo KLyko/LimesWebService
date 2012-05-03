@@ -222,24 +222,24 @@ public class LimesJFrame extends javax.swing.JFrame {
 		}
 	}
 	
-	 private void postMail( String recipient,
-             String subject,
-             String message, String from )
-	 throws MessagingException
-	{
-		Properties props = new Properties();
-		props.put( "mail.smtp.host", "smtp.gmail.com" );
-		props.setProperty("mail.smtp.port", ""+465);
-		 props.setProperty("mail.smtp.auth", "true");
-		MailAuthenticator ma = new MailAuthenticator("vicolinho","dise#Che88");
-		Session session = Session.getDefaultInstance(props,ma);
-		MimeMessage msg = new MimeMessage( session );
-		InternetAddress addressFrom = new InternetAddress("vicolinho@googlemail.com");
-		msg.setFrom( addressFrom );
-		InternetAddress addressTo = new InternetAddress( recipient,false);
-		msg.setRecipient( Message.RecipientType.TO, addressTo );
-		msg.setSubject( subject );
-		msg.setContent( message, "text/plain" );
-		Transport.send( msg );
-	}
+//	 private void postMail( String recipient,
+//             String subject,
+//             String message, String from )
+//	 throws MessagingException
+//	{
+//		Properties props = new Properties();
+//		props.put( "mail.smtp.host", "smtp.gmail.com" );
+//		props.setProperty("mail.smtp.port", ""+465);
+//		 props.setProperty("mail.smtp.auth", "true");
+//		MailAuthenticator ma = new MailAuthenticator("vicolinho","dise#Che88");
+//		Session session = Session.getDefaultInstance(props,ma);
+//		MimeMessage msg = new MimeMessage( session );
+//		InternetAddress addressFrom = new InternetAddress("vicolinho@googlemail.com");
+//		msg.setFrom( addressFrom );
+//		InternetAddress addressTo = new InternetAddress( recipient,false);
+//		msg.setRecipient( Message.RecipientType.TO, addressTo );
+//		msg.setSubject( subject );
+//		msg.setContent( message, "text/plain" );
+//		Transport.send( msg );
+//	}
 }

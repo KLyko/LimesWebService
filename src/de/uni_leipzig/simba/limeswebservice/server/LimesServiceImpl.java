@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.json.simple.parser.ParseException;
 
+import de.konrad.commons.sparql.PrefixHelper;
 import de.konrad.commons.sparql.SPARQLHelper;
 import de.uni_leipzig.simba.io.KBInfo;
 import de.uni_leipzig.simba.limeswebservice.service.LimesService;
@@ -28,9 +29,7 @@ public class LimesServiceImpl {
 		HashMap<String,Object> metric= JsonParser.parseJSONToJava(metricString);
 		
 		KBInfo sourceInfo = createKBInfo(source);
-		
 		KBInfo targetInfo = createKBInfo(target);
-		
 		// get metric
 		
 		String metricExpr = (String) metric.get("metric");
