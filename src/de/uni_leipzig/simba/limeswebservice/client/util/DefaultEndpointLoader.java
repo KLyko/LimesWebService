@@ -33,7 +33,7 @@ public class DefaultEndpointLoader
 		kb.id=id;
 		kb.var = var;
 		if(className != null && className.length()>0)
-			kb.restrictions.add(var+" rdf:type "+className);
+			kb.restrictions.add(className);
 		for(String s : properties) {
 			if(s.startsWith("http:")) {
 				kb.prefixes.put(PrefixHelper.generatePrefix(s)[0], PrefixHelper.generatePrefix(s)[1]);

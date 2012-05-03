@@ -40,7 +40,7 @@ public class LimesServiceImplTest {
 		metric.put("verthreshold", 0.8d);
 		
 		LimesServiceImpl impl = new LimesServiceImpl();
-		impl.getMapping(src, dest, metric);	
+		//impl.getMapping(src, dest, metric);	
 		
 		
 	}
