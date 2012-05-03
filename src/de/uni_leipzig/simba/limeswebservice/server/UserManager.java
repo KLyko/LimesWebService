@@ -13,6 +13,12 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+
+import org.apache.axis2.transport.mail.MailTransportSender;
+
+
 
 public class UserManager implements PropertyChangeListener{
 
@@ -38,8 +44,21 @@ public class UserManager implements PropertyChangeListener{
 			System.out.println ("ready");
 			LimesExecutor le =this.userExecutorMap.get(evt.getNewValue());
 			String msg = "this is a generated mail";
+			Session session = null;
 			try {
-				postMail (le.getMailAddress(),"limes",msg,"");
+				Context initCtx = new InitialContext();
+				Context envCtx = (Context) initCtx.lookup("java:comp/env");
+				session = (Session) envCtx.lookup("mail/NomDeLaRessource");
+				
+				} catch (Exception ex) {
+				System.out.println("lookup error");
+				System.out.println( ex.getMessage());
+				}
+			try
+			{
+				
+				
+				postMail (session,le.getMailAddress(),"limes",msg,"");
 				System.out.println("send mail");
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
@@ -49,18 +68,19 @@ public class UserManager implements PropertyChangeListener{
 		
 	}
 	
-	 private void postMail( String recipient,
+	 private void postMail( Session s,String recipient,
              String subject,
              String message, String from )
 	 throws MessagingException
 	{
-		Properties props = new Properties();
-		props.put( "mail.smtp.host", "smtp.gmail.com" );
+		MailTransportSender sender= new MailTransportSender();
+		 /*Properties props = new Properties();
+		props.setProperty( "mail.smtp.host", "smtp.gmail.com" );
 		props.setProperty("mail.smtp.port", ""+465);
 		 props.setProperty("mail.smtp.auth", "true");
 		MailAuthenticator ma = new MailAuthenticator("vicolinho","dise#Che88");
-		Session session = Session.getDefaultInstance(props,ma);
-		MimeMessage msg = new MimeMessage( session );
+		Session session = Session.getDefaultInstance(props,ma);*/
+		MimeMessage msg = new MimeMessage( s );
 		InternetAddress addressFrom = new InternetAddress("vicolinho@googlemail.com");
 		msg.setFrom( addressFrom );
 		InternetAddress addressTo = new InternetAddress( recipient,false);
