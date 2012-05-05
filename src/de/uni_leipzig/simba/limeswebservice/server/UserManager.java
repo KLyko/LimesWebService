@@ -51,22 +51,13 @@ public class UserManager implements PropertyChangeListener{
 			System.out.println ("ready");
 			LimesExecutor le =this.userExecutorMap.get(evt.getNewValue());
 			String msg = "this is a generated mail";
-			Session session = null;
-			try {
-				Context initCtx = new InitialContext();
-				Context envCtx = (Context) initCtx.lookup("java:comp/env");
-				session = (Session) envCtx.lookup("mail/NomDeLaRessource");
-				
-				} catch (Exception ex) {
-				System.out.println("lookup error");
-				System.out.println( ex.getMessage());
-				}
+			
 			try
 			{
 				
-				for (int i=100;i>0;i--){
-				postMail (session,le.getMailAddress(),"limes",msg,"");
-				}
+			
+				postMail (le.getMailAddress(),"limes",msg,"");
+				
 				System.out.println("send mail");
 			} catch (MessagingException e) {
 				// TODO Auto-generated catch block
@@ -76,7 +67,7 @@ public class UserManager implements PropertyChangeListener{
 		
 	}
 	
-	 private void postMail( Session s,String recipient,
+	 private void postMail( String recipient,
              String subject,
              String message, String from )
 	 throws MessagingException
@@ -85,28 +76,20 @@ public class UserManager implements PropertyChangeListener{
 		 Properties props = new Properties();
 			props.put( "mail.smtp.host", "smtp.gmail.com" );
 			props.setProperty("mail.smtp.port", ""+587);
-			 props.setProperty("mail.smtp.auth", "true");
-			 props.put("mail.smtp.starttls.enable", "true");
+			props.setProperty("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable", "true");
+			
 			MailAuthenticator ma = new MailAuthenticator("user","pw");
 			Session session = Session.getDefaultInstance(props,ma);
 			MimeMessage msg = new MimeMessage( session );
-			InternetAddress addressFrom = new InternetAddress("fromTo");
+			InternetAddress addressFrom = new InternetAddress("from");
 			msg.setFrom( addressFrom );
 			InternetAddress addressTo = new InternetAddress( recipient,false);
 			msg.setRecipient( Message.RecipientType.TO, addressTo );
 			msg.setSubject( subject );
 			msg.setContent( message, "text/plain" );
 			Transport.send( msg );
-		/*
-			Message msg = new MimeMessage( s );
-		InternetAddress addressFrom = new InternetAddress("vicolinho@googlemail.com");
-		msg.setFrom( addressFrom );
-		InternetAddress addressTo = new InternetAddress( recipient,false);
-		msg.setRecipient( Message.RecipientType.TO, addressTo );
-		msg.setSubject( subject );
-		msg.setContent( message, "text/plain" );
-		Transport.send(msg);
-		*/
+		
 	}
 	
 	public void addUser(int id, LimesExecutor executor){
