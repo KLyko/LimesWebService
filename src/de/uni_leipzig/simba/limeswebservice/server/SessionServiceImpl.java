@@ -82,7 +82,7 @@ public class SessionServiceImpl {
 			props.setProperty("mail.smtp.auth", "true");
 			props.put("mail.smtp.starttls.enable", "true");
 			
-			MailAuthenticator ma = new MailAuthenticator("user","pw");
+			MailAuthenticator ma = new MailAuthenticator("user","pw ");
 			Session session = Session.getDefaultInstance(props,ma);
 			MimeMessage msg = new MimeMessage( session );
 			InternetAddress addressFrom = new InternetAddress("from");
