@@ -1,5 +1,9 @@
 package de.uni_leipzig.simba.limeswebservice.server;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -81,8 +85,10 @@ public class SessionServiceImpl {
 			props.setProperty("mail.smtp.port", ""+587);
 			props.setProperty("mail.smtp.auth", "true");
 			props.put("mail.smtp.starttls.enable", "true");
-			
-			MailAuthenticator ma = new MailAuthenticator("user","pw ");
+			Properties mailConf = readConf();
+			System.out.println(mailConf.getProperty("mail")+" "+mailConf.getProperty("pw"));
+			MailAuthenticator ma = new MailAuthenticator(
+					mailConf.getProperty("mail"),mailConf.getProperty("pw"));
 			Session session = Session.getDefaultInstance(props,ma);
 			MimeMessage msg = new MimeMessage( session );
 			InternetAddress addressFrom = new InternetAddress("from");
@@ -94,4 +100,20 @@ public class SessionServiceImpl {
 			Transport.send( msg );
 		
 	}
+	 
+	 private Properties readConf (){
+		 Properties prop = new Properties();
+		 try {
+			InputStream is = new FileInputStream("mail.conf.txt");
+			prop.load(is);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return prop;
+		 
+	 }
 }

@@ -2,6 +2,13 @@ package de.uni_leipzig.simba.limeswebservice.server;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -18,6 +25,7 @@ import javax.naming.InitialContext;
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.context.ConfigurationContext;
 import org.apache.axis2.context.MessageContext;
+import org.apache.axis2.description.AxisEndpoint;
 import org.apache.axis2.description.Parameter;
 import org.apache.axis2.description.TransportOutDescription;
 import org.apache.axis2.engine.AxisConfiguration;
@@ -31,11 +39,11 @@ public class UserManager implements PropertyChangeListener{
 
 	
 	private static UserManager instance;
-	private HashMap<Integer, LimesExecutor> userExecutorMap;
+	private HashMap<Integer, LimesUser> userExecutorMap;
 	
 	
 	private UserManager (){
-		userExecutorMap = new HashMap<Integer, LimesExecutor>();
+		userExecutorMap = new HashMap<Integer, LimesUser>();
 	}
 	
 	public static UserManager  getInstance(){
@@ -47,19 +55,27 @@ public class UserManager implements PropertyChangeListener{
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals(LimesExecutor.MAPPING_READY)){
-			System.out.println ("ready");
-			LimesExecutor le =this.userExecutorMap.get(evt.getNewValue());
+		if (evt.getPropertyName().equals(LimesUser.MAPPING_READY)){
+			System.out.println ("ready calculation");
+			LimesUser le =this.userExecutorMap.get(evt.getNewValue());
 			String msg = "this is a generated mail";
-			
+		
 			try
 			{
-				
-			
-				postMail (le.getMailAddress(),"limes",msg,"");
+				File f = new File ("webapps/axis2/"+evt.getNewValue().toString()+".txt");
+				System.out.println(f.getAbsolutePath());
+				FileWriter fw = new FileWriter(f);
+				fw.write(le.getResult().toString());
+				msg = " The result is available on http://139.18.249.11:8080/" +
+				"axis2/"+evt.getNewValue().toString()+".txt";
+				fw.close();
+				postMail (le.getMailAddress(),"limes",msg);
 				
 				System.out.println("send mail");
 			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -69,7 +85,7 @@ public class UserManager implements PropertyChangeListener{
 	
 	 private void postMail( String recipient,
              String subject,
-             String message, String from )
+             String message )
 	 throws MessagingException
 	{
 		
@@ -78,8 +94,10 @@ public class UserManager implements PropertyChangeListener{
 			props.setProperty("mail.smtp.port", ""+587);
 			props.setProperty("mail.smtp.auth", "true");
 			props.put("mail.smtp.starttls.enable", "true");
-			
-			MailAuthenticator ma = new MailAuthenticator("user","pw");
+			Properties mailConf = readConf();
+			System.out.println(mailConf.getProperty("mail")+" "+mailConf.getProperty("pw"));
+			MailAuthenticator ma = new MailAuthenticator(
+					mailConf.getProperty("mail"),mailConf.getProperty("pw"));
 			Session session = Session.getDefaultInstance(props,ma);
 			MimeMessage msg = new MimeMessage( session );
 			InternetAddress addressFrom = new InternetAddress("from");
@@ -92,7 +110,33 @@ public class UserManager implements PropertyChangeListener{
 		
 	}
 	
-	public void addUser(int id, LimesExecutor executor){
+	public void addUser(int id, LimesUser executor){
 		this.userExecutorMap.put(id, executor);
 	}
+
+	public LimesUser getUser (int sessionId){
+		return this.userExecutorMap.get(sessionId);
+	}
+	public int containUser(int sessionId){
+		if (this.userExecutorMap.containsKey(sessionId))
+			return sessionId;
+		else
+			return -1;
+	}
+	
+	private Properties readConf (){
+		 Properties prop = new Properties();
+		 try {
+			InputStream is = new FileInputStream("mail.conf.txt");
+			prop.load(is);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return prop;
+		 
+	 }
 }
