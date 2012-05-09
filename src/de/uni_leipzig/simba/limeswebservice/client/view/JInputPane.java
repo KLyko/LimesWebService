@@ -2,10 +2,12 @@ package de.uni_leipzig.simba.limeswebservice.client.view;
 import java.awt.BorderLayout;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.Vector;
 
 import javax.swing.BoxLayout;
@@ -21,6 +23,7 @@ import javax.swing.table.DefaultTableModel;
 
 import de.uni_leipzig.simba.io.KBInfo;
 import de.uni_leipzig.simba.limeswebservice.client.Client;
+import de.uni_leipzig.simba.limeswebservice.util.ConfigConstants;
 
 /**
 * This code was edited or generated using CloudGarden's Jigloo
@@ -84,7 +87,7 @@ public class JInputPane extends javax.swing.JPanel {
 			{
 				jLabel1 = new JLabel();
 				this.add(jLabel1);
-				jLabel1.setText("type");
+				
 			}
 			{
 				jPropertySplit = new JSplitPane();
@@ -217,5 +220,28 @@ public class JInputPane extends javax.swing.JPanel {
 			propertyModel.addRow(split);
 		}
 	}
+	
+	public void setSpecification(HashMap<String,Object> specMap){
+		if (specMap.containsKey(ConfigConstants.ENDPOINT)){
+			this.endpointField.setText(
+					specMap.get(ConfigConstants.ENDPOINT).toString());
+		}
+		if (specMap.containsKey(ConfigConstants.GRAPH)){
+			this.graphField.setText(
+					specMap.get(ConfigConstants.GRAPH).toString());
+		}
+		if (specMap.containsKey(ConfigConstants.VAR)){
+			this.variableField.setText(
+					specMap.get(ConfigConstants.VAR).toString());
+		}
+		if (specMap.containsKey(ConfigConstants.PROPERTIES)){
+			HashMap<String,String> propMap =(HashMap<String,String>)specMap.get(ConfigConstants.PROPERTIES);
+			for (Entry<String,String> e :propMap.entrySet()){
+				propertyModel.addRow(new String[]{e.getKey(),e.getValue()});
+			}
+		}	
+	}
+	
+	
 	
 }

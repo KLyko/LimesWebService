@@ -46,6 +46,22 @@
         
                // No methods generated for meps other than in-out
                 
+           /**
+            * auto generated Axis2 call back method for startSession method
+            * override this method for handling normal response from startSession operation
+            */
+           public void receiveResultstartSession(
+                    de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.StartSessionResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from startSession operation
+           */
+            public void receiveErrorstartSession(java.lang.Exception e) {
+            }
+                
 
 
     }

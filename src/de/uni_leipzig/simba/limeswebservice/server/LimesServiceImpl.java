@@ -17,7 +17,9 @@ public class LimesServiceImpl {
 			String metricString,String mailAddress){
 		String hash = mailAddress+System.currentTimeMillis();
 		int  id = hash.hashCode();
-		LimesExecutor le =new LimesExecutor (id,mailAddress);
+		
+		
+		LimesUser le =new LimesUser (id,mailAddress);
 		le.addPropertyChangeListener(UserManager.getInstance());
 		UserManager.getInstance().addUser(id, le);
 		

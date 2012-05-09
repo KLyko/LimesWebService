@@ -42,8 +42,14 @@ public class JsonParser {
 	
 	public static String parseJavaToJSON(Map<String,Object> map){
 		
+		
 		JSONObject jsonO = new JSONObject ();
-		jsonO.putAll(map);
-		return jsonO.toJSONString();
+		if (map ==null){
+			return jsonO.toJSONString();
+		}else{
+			jsonO.putAll(map);
+			return jsonO.toJSONString();
+		}
+		
 	}
 }

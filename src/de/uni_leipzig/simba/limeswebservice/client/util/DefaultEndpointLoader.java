@@ -53,7 +53,7 @@ public class DefaultEndpointLoader
 	 * @return
 	 */
 	public static HashMap<String, KBInfo> getDefaultEndpoints() {
-		HashMap<String, KBInfo> defaults = new HashMap<>();
+		HashMap<String, KBInfo> defaults = new HashMap<String,KBInfo>();
 		LinkedList<String> props = new LinkedList<String>();
 		props.add("rdfs:label");
 		props.add("dbp:name");
