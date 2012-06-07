@@ -80,7 +80,6 @@ public class LimesServiceImpl {
 			HashMap<String,Object> sourceMap = JsonParser.parseJSONToJava(source);
 			HashMap<String,Object> targetMap = JsonParser.parseJSONToJava(target);
 			LimesUser lu = UserManager.getInstance().getUser(sessionId);
-			System.out.println(lu);
 			lu.setSourceMap(sourceMap);
 			
 			lu.setTargetMap(targetMap);
@@ -140,12 +139,12 @@ public class LimesServiceImpl {
 			sourceInfo.prefixes = new HashMap<String, String>();
 		if(targetInfo.prefixes == null)
 			targetInfo.prefixes = new HashMap<String, String>();
-		sourceInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
-		sourceInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
-		sourceInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
-		targetInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
-		targetInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
-		targetInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
+//		sourceInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
+//		sourceInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
+//		sourceInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
+//		targetInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
+//		targetInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
+//		targetInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
 		
 		HybridCache sC = HybridCache.getData(sourceInfo);
 		HybridCache tC = HybridCache.getData(targetInfo);
@@ -205,8 +204,8 @@ public class LimesServiceImpl {
 			String classRestrString = info.var+" rdf:type "+SPARQLHelper.wrapIfNecessary((String)param.get("class"));
 			info.restrictions.add(classRestrString);
 		}
-		info.prefixes = (HashMap<String, String>) param.get("prefix");
-		
+		info.prefixes = (HashMap<String, String>) param.get("prefixes");
+		System.out.println("PREFIXES: "+info.prefixes);
 		info.functions = (HashMap<String, String>) param.get("properties");
 		for(String prop : info.functions.keySet()) {
 			info.properties.add(prop);

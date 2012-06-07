@@ -55,7 +55,7 @@ public class LimesUser {
 			info.restrictions.add(classRestrString);
 		}
 		info.prefixes = (HashMap<String, String>) param.get("prefix");
-		
+		System.out.println(param.get("prefix"));
 		info.functions = (HashMap<String, String>) param.get("properties");
 		for(String prop : info.functions.keySet()) {
 			info.properties.add(prop);
@@ -74,13 +74,13 @@ public class LimesUser {
 			sourceInfo.prefixes = new HashMap<String, String>();
 		if(targetInfo.prefixes == null)
 			targetInfo.prefixes = new HashMap<String, String>();
-		sourceInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
-		sourceInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
-		sourceInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
-		targetInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
-		targetInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
-		targetInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
-		
+//		sourceInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
+//		sourceInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
+//		sourceInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
+//		targetInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
+//		targetInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
+//		targetInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
+//		
 		HybridCache sC = HybridCache.getData(sourceInfo);
 		HybridCache tC = HybridCache.getData(targetInfo);
 		SetConstraintsMapper sCM= SetConstraintsMapperFactory.getMapper("simple", sourceInfo, sourceInfo, sC, tC, new LinearFilter(), 2);
