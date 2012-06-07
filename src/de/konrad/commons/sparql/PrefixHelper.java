@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-/** @author Konrad HÃ¶ffner */
+/** @author Konrad Höffner */
 public class PrefixHelper
 {
 	protected static class LazyLoaded
@@ -129,9 +129,9 @@ public class PrefixHelper
 	{
 		int baseURIEnd = Math.max(Math.max(uri.lastIndexOf('#'),uri.lastIndexOf('/')),uri.lastIndexOf(':'));
 		if(baseURIEnd==-1) {return uri;}
-		return uri.substring(0, baseURIEnd+1);
+		return uri.substring(0, baseURIEnd);
 	}
-	
+
 	public static String abbreviate(String uri)
 	{
 		if(!uri.startsWith("http://")) return uri;
