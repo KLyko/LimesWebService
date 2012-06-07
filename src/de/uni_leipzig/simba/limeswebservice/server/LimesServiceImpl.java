@@ -140,12 +140,12 @@ public class LimesServiceImpl {
 			sourceInfo.prefixes = new HashMap<String, String>();
 		if(targetInfo.prefixes == null)
 			targetInfo.prefixes = new HashMap<String, String>();
-		sourceInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
-		sourceInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
-		sourceInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
-		targetInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
-		targetInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
-		targetInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
+//		sourceInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
+//		sourceInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
+//		sourceInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
+//		targetInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
+//		targetInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
+//		targetInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
 		
 		HybridCache sC = HybridCache.getData(sourceInfo);
 		HybridCache tC = HybridCache.getData(targetInfo);
