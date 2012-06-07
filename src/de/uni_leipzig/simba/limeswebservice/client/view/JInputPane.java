@@ -21,6 +21,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
+import de.konrad.commons.sparql.PrefixHelper;
 import de.uni_leipzig.simba.io.KBInfo;
 import de.uni_leipzig.simba.limeswebservice.client.Client;
 import de.uni_leipzig.simba.limeswebservice.util.ConfigConstants;
@@ -187,16 +188,16 @@ public class JInputPane extends javax.swing.JPanel {
 		String clasz = this.restrictionField.getText();
 		client.setInput(endPoint, graph, var, clasz, isTarget);
 		HashMap<String,String> properties = new HashMap<String,String>();
+//		HashMap<String,String> prefixes = new HashMap<String,String>();
+//		for (int row=1;row<this.prefixModel.getRowCount();row++){
+//			prefixes.put((String)prefixModel.getValueAt(row, 0),
+//				(String)prefixModel.getValueAt(row, 1));
+//		}
 		for (int row=1;row<this.propertyModel.getRowCount();row++){
 			properties.put((String)propertyModel.getValueAt(row, 0),
-				(String)propertyModel.getValueAt(row, 1));
-		}
-		HashMap<String,String> prefixes = new HashMap<String,String>();
-		for (int row=1;row<this.prefixModel.getRowCount();row++){
-			prefixes.put((String)prefixModel.getValueAt(row, 0),
-				(String)prefixModel.getValueAt(row, 1));
-		}
-		client.setProperties(prefixes, properties, isTarget);
+				(String)propertyModel.getValueAt(row, 1));				
+		}		
+		client.setProperties(properties, isTarget);
 		
 	}
 	

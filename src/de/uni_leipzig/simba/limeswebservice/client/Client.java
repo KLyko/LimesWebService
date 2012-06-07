@@ -13,6 +13,7 @@ import org.apache.axis2.client.Options;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 
+import de.konrad.commons.sparql.PrefixHelper;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplCallbackHandler;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.ContinueSession;
@@ -82,18 +83,31 @@ public class Client {
 	}
 	
 	
-	public void setProperties (HashMap<String, String> prefixes, HashMap<String, String> properties,
+	public void setProperties (HashMap<String, String> properties,
 			boolean isTarget){
-		if (!isTarget){
-			if (prefixes != null)
-				source.put("prefixes", prefixes);
-			if (properties != null)
+		if (!isTarget){			
+			HashMap<String, String> prefixes = new HashMap<String,String>();
+			prefixes.put("rdf", PrefixHelper.getURI("rdf"));
+			if (properties != null) {
+				for(String prop : properties.keySet()) {
+					String pref  = PrefixHelper.getBase(prop);
+					prefixes.put(pref, PrefixHelper.getURI(pref));
+				}			
 				source.put("properties",properties);
+			}
+			source.put("prefixes", prefixes);
 		}else{
-			if (prefixes != null)
-				target.put("prefixes", prefixes);
-			if (properties != null)
+			HashMap<String, String> prefixes = new HashMap<String,String>();
+			prefixes.put("rdf", PrefixHelper.getURI("rdf"));
+			if (properties != null) {
+				for(String prop : properties.keySet()) {
+					String pref  = PrefixHelper.getBase(prop);
+					prefixes.put(pref, PrefixHelper.getURI(pref));
+					System.out.println("Adding prefix: "+pref+" - "+ PrefixHelper.getURI(pref));
+				}			
 				target.put("properties",properties);
+			}
+			target.put("prefixes", prefixes);
 		}
 	}
 	
