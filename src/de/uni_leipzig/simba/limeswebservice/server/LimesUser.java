@@ -84,9 +84,11 @@ public class LimesUser {
 		HybridCache sC = HybridCache.getData(sourceInfo);
 		HybridCache tC = HybridCache.getData(targetInfo);
 		SetConstraintsMapper sCM= SetConstraintsMapperFactory.getMapper("simple", sourceInfo, sourceInfo, sC, tC, new LinearFilter(), 2);
+		
 		result = sCM.getLinks(metric, accThreshold);
 		
 		change.firePropertyChange(MAPPING_READY, null, id);
+		this.removePropertyChangeListener(UserManager.getInstance());
 	}
 	
 	/**

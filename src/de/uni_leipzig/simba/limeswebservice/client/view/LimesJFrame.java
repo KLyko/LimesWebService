@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
@@ -156,20 +157,20 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 					}
 					{
 						SpinnerNumberModel jAccSliderModel = new SpinnerNumberModel();
-						jAccSliderModel.setMinimum(0f);
-						jAccSliderModel.setMaximum(1f);
-						jAccSliderModel.setStepSize(0.1f);
-						jAccSliderModel.setValue(0.9f);
+						jAccSliderModel.setMinimum(0d);
+						jAccSliderModel.setMaximum(1d);
+						jAccSliderModel.setStepSize(0.1d);
+						jAccSliderModel.setValue(0.9d);
 						jAccSpinner = new JSpinner(jAccSliderModel);
 						jMetricPane.add(jAccSpinner, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
 						
 					}
 					{
 						SpinnerNumberModel jRevSpinnerModel = new SpinnerNumberModel();
-						 jRevSpinnerModel.setMinimum(0f);
-						 jRevSpinnerModel.setMaximum(1f);
-						 jRevSpinnerModel.setStepSize(0.1f);
-						 jRevSpinnerModel.setValue(0.8f);
+						 jRevSpinnerModel.setMinimum(0d);
+						 jRevSpinnerModel.setMaximum(1d);
+						 jRevSpinnerModel.setStepSize(0.1d);
+						 jRevSpinnerModel.setValue(0.8d);
 						jRevSpinner = new JSpinner(jRevSpinnerModel);
 						
 						
@@ -187,7 +188,7 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 								jSourcePane.initInput(client, false);
 								jTargetPane.initInput(client, true);
 								client.setMetric(metricField.getText());
-								client.setThreshholds((Float)jAccSpinner.getValue(),(Float) jRevSpinner.getValue());
+								client.setThreshholds((Double)jAccSpinner.getValue(),(Double) jRevSpinner.getValue());
 								client.setEmailAddress(emailField.getText());
 								client.sendAll();
 								
@@ -199,9 +200,34 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 						subMetricBt = new JButton();
 						jMetricPane.add(subMetricBt, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 						subMetricBt.setText("submit metric");
+						subMetricBt.addActionListener(new ActionListener(){
+
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								client.setMetric(metricField.getText());
+								client.setThreshholds((Double)jAccSpinner.getValue(),(Double) jRevSpinner.getValue());
+								client.sendMetricSpec();
+							}
+							
+						});
 					}
 					{
 						getFitMetBt = new JButton();
+						getFitMetBt.addActionListener(new ActionListener(){
+
+							@Override
+							public void actionPerformed(ActionEvent e) {
+							try {
+								client.getMetricAdvice();
+								
+							} catch (RemoteException e1) {
+								// TODO Auto-generated catch block
+								e1.printStackTrace();
+							}
+								
+							}
+							
+						});
 						jMetricPane.add(getFitMetBt, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 						getFitMetBt.setText("suggest metric");
 					}
@@ -329,22 +355,27 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 			metricField.setText(metricMap.get(ConfigConstants.METRIC).toString());
 		}
 		if (metricMap.containsKey(ConfigConstants.ACC_THRES)){
-			this.jAccSpinner.setValue((Float)metricMap.get(ConfigConstants.ACC_THRES));
+			this.jAccSpinner.setValue((Double)metricMap.get(ConfigConstants.ACC_THRES));
 		}
 		if (metricMap.containsKey(ConfigConstants.VER_THRES)){
-			this.jRevSpinner.setValue((Float)metricMap.get(ConfigConstants.VER_THRES));
+			this.jRevSpinner.setValue((Double)metricMap.get(ConfigConstants.VER_THRES));
 		}
 	}
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		HashMap<String, Object> fetchedMap =(HashMap<String, Object>) evt.getNewValue();
+		
 		if (evt.getPropertyName().equals(Client.GET_SPEC_SOURCE)){
+			HashMap<String, Object> fetchedMap =(HashMap<String, Object>) evt.getNewValue();
 			this.jSourcePane.setSpecification(fetchedMap);
 		}else if (evt.getPropertyName().equals(Client.GET_SPEC_TARGET)){
+			HashMap<String, Object> fetchedMap =(HashMap<String, Object>) evt.getNewValue();
 			this.jTargetPane.setSpecification(fetchedMap);
 		}else if (evt.getPropertyName().equals(Client.GET_METRIC)){
+			HashMap<String, Object> fetchedMap =(HashMap<String, Object>) evt.getNewValue();
 			this.setMetricFunction(fetchedMap);
+		}else if (evt.getPropertyName().equals(Client.GET_METRIC_ADVICE)){
+			metricField.setText(evt.getNewValue().toString());
 		}
 		
 	}

@@ -5,32 +5,41 @@ import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Observable;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.axis2.AxisFault;
 import org.apache.axis2.client.Options;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplCallbackHandler;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.ContinueSession;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.ContinueSessionResponse;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchMetricMap;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchMetricMapResponse;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchSourceData;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchSourceDataResponse;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchTargetData;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchTargetDataResponse;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetMapping;
-import de.uni_leipzig.simba.limeswebservice.server.SessionServiceImplStub;
-import de.uni_leipzig.simba.limeswebservice.server.SessionServiceImplStub.ContinueSession;
-import de.uni_leipzig.simba.limeswebservice.server.SessionServiceImplStub.ContinueSessionResponse;
-import de.uni_leipzig.simba.limeswebservice.server.SessionServiceImplStub.FetchMetricMap;
-import de.uni_leipzig.simba.limeswebservice.server.SessionServiceImplStub.FetchMetricMapResponse;
-import de.uni_leipzig.simba.limeswebservice.server.SessionServiceImplStub.FetchSourceData;
-import de.uni_leipzig.simba.limeswebservice.server.SessionServiceImplStub.FetchSourceDataResponse;
-import de.uni_leipzig.simba.limeswebservice.server.SessionServiceImplStub.FetchTargetData;
-import de.uni_leipzig.simba.limeswebservice.server.SessionServiceImplStub.FetchTargetDataResponse;
-import de.uni_leipzig.simba.limeswebservice.server.SessionServiceImplStub.SetSpecification;
-import de.uni_leipzig.simba.limeswebservice.server.SessionServiceImplStub.StartSession;
-import de.uni_leipzig.simba.limeswebservice.server.SessionServiceImplStub.StartSessionResponse;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetMetricAdvice;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetMetricAdviceResponse;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.Polling;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.SetMetricSpec;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.SetSpecification;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.StartSession;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.StartSessionResponse;
+
+
 import de.uni_leipzig.simba.limeswebservice.util.JsonParser;
 
 public class Client {
 
 	public static final String GET_SPEC_SOURCE ="getSpecSource";
 	public static final String GET_SPEC_TARGET ="getSpecTarget";
+	public static final String GET_METRIC_ADVICE ="getMetricAdvice";
 	public static final String GET_METRIC ="getMetric";
 	private static final Logger log = Logger.getLogger(Client.class);
 	private PropertyChangeSupport change;
@@ -93,9 +102,9 @@ public class Client {
 		metric.put("metric", metricString);
 	}
 	
-	public void setThreshholds(float accT,float revT){
-		metric.put("accthreshold", accT);
-		metric.put("verthreshold", revT);
+	public void setThreshholds(Double double1,Double double2){
+		metric.put("accthreshold", double1);
+		metric.put("verthreshold", double2);
 	}
 	
 	
@@ -105,10 +114,8 @@ public class Client {
 			
 			LimesServiceImplStub stub = new LimesServiceImplStub ();
 			GetMapping mapping = new GetMapping();
-			mapping.setSourceString(JsonParser.parseJavaToJSON(source));
-			mapping.setTargetString(JsonParser.parseJavaToJSON(target));
-			mapping.setMetricString(JsonParser.parseJavaToJSON(metric));
-			mapping.setMailAddress(emailAddress);
+			
+			mapping.setMailAddress(sessionId);
 			stub.getMapping(mapping);
 			
 		} catch (AxisFault e) {
@@ -120,9 +127,25 @@ public class Client {
 		}
 	}
 	
+	public void sendMetricSpec(){
+		try {
+			LimesServiceImplStub session= new LimesServiceImplStub();
+			SetMetricSpec spec = new SetMetricSpec();
+			spec.setMetricMap(JsonParser.parseJavaToJSON(metric));
+			spec.setSessionId(sessionId);
+			session.setMetricSpec(spec);
+		} catch (AxisFault e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void sendSpecification(){
 		try {
-			SessionServiceImplStub session= new SessionServiceImplStub();
+			LimesServiceImplStub session= new LimesServiceImplStub();
 			SetSpecification spec = new SetSpecification();
 			spec.setSessionId(sessionId);
 			spec.setSource(JsonParser.parseJavaToJSON(source));
@@ -143,14 +166,77 @@ public class Client {
 		return null;
 	}
 	
-	public String getMetricAdvice (){
-		return null;
+	
+	
+	public void getMetricAdvice () throws RemoteException{
+		final LimesServiceImplStub limesService= new LimesServiceImplStub();
+		final Polling pol = new Polling();
+		final LimesServiceImplCallbackHandler callback2 =new LimesServiceImplCallbackHandler(){
+			public void receiveResultpolling(
+                    de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.PollingResponse result
+                        ){
+				
+           }
+           public void receiveErrorpolling(java.lang.Exception e) {
+        	   log.error(e.getMessage());
+           }
+		};
+		final TimerTask task= new TimerTask(){
+			
+			@Override
+			public void run() {
+				
+				try {
+					limesService.startpolling(pol, callback2);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			
+		};
+		final Timer t = new Timer ();
+			
+		
+		LimesServiceImplCallbackHandler callback = new LimesServiceImplCallbackHandler(){
+			public void receiveResultgetMetricAdvice(
+                    de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetMetricAdviceResponse result
+                        ){
+				t.cancel();
+				task.cancel();
+				try{
+					limesService._getServiceClient().getOptions().setUseSeparateListener(false);
+					limesService._getServiceClient().getServiceContext().flush();
+					limesService._getServiceClient().cleanup();
+					
+				}catch (AxisFault af){
+					af.printStackTrace();
+				}
+				change.firePropertyChange(GET_METRIC_ADVICE, null, result.get_return());
+				
+           }
+           public void receiveErrorgetMetricAdvice(java.lang.Exception e) {
+        	   log.error(e.getMessage());
+           }
+		};
+		GetMetricAdvice req= new GetMetricAdvice(); 
+		req.setSessionId(sessionId);
+		
+		
+		
+		limesService.startgetMetricAdvice(req,callback);
+		t.schedule(task, 10, 5000);
+	
+		
 	}
 	
 	public void startSession (String mail){
 		try {
-			SessionServiceImplStub session= new SessionServiceImplStub();
+			LimesServiceImplStub session= new LimesServiceImplStub();
+			
 			StartSession startSes = new StartSession();
+			
 			startSes.setEmailAddress(mail);
 			StartSessionResponse res = session.startSession(startSes);
 			this.sessionId = res.get_return();
@@ -165,7 +251,7 @@ public class Client {
 	
 	public void continueSession (int sessionId){
 		try {
-			SessionServiceImplStub session= new SessionServiceImplStub();
+			LimesServiceImplStub session= new LimesServiceImplStub();
 			ContinueSession cs = new ContinueSession();
 			cs.setSessionId(sessionId);
 			ContinueSessionResponse res = session.continueSession(cs);

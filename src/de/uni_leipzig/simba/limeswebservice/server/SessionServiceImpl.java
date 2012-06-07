@@ -22,13 +22,13 @@ import de.uni_leipzig.simba.limeswebservice.util.JsonParser;
 public class SessionServiceImpl {
 
 	private static final Logger log = Logger.getLogger(SessionServiceImpl.class);
-	private UserManager uMan = UserManager.getInstance(); 
+	 
 	
 	public int startSession (String emailAddress){
 		String con = emailAddress+System.currentTimeMillis();
 		int id = con.hashCode();
 		LimesUser lu = new LimesUser(id,emailAddress);
-		uMan.addUser(id, lu);
+		 UserManager.getInstance().addUser(id, lu);
 		log.info("new Client with id"+id);
 		String msg = "Your session id is "+ id +".\n"+
 		"The session will delete after 2 days";
@@ -42,21 +42,21 @@ public class SessionServiceImpl {
 	}
 	
 	public int continueSession (int sessionId){
-		return uMan.containUser(sessionId);
+		return  UserManager.getInstance().containUser(sessionId);
 	}
 	
 	public String fetchSourceData (int sessionId){
-		LimesUser lu = uMan.getUser(sessionId);
+		LimesUser lu = UserManager.getInstance().getUser(sessionId);
 		return JsonParser.parseJavaToJSON(lu.getSourceMap());
 	}
 	
 	public String fetchTargetData (int sessionId){
-		LimesUser lu = uMan.getUser(sessionId);
+		LimesUser lu = UserManager.getInstance().getUser(sessionId);
 		return JsonParser.parseJavaToJSON(lu.getTargetMap());
 	}
 	
 	public String fetchMetricMap (int sessionId){
-		LimesUser lu = uMan.getUser(sessionId);
+		LimesUser lu = UserManager.getInstance().getUser(sessionId);
 		String result = ""; 
 		return JsonParser.parseJavaToJSON(lu.getMetricMap());
 	}
@@ -65,9 +65,22 @@ public class SessionServiceImpl {
 		try {
 			HashMap<String,Object> sourceMap = JsonParser.parseJSONToJava(source);
 			HashMap<String,Object> targetMap = JsonParser.parseJSONToJava(target);
-			LimesUser lu = uMan.getUser(sessionId);
+			LimesUser lu = UserManager.getInstance().getUser(sessionId);
+			System.out.println(lu);
 			lu.setSourceMap(sourceMap);
+			
 			lu.setTargetMap(targetMap);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void setMetricSpec (int sessionId, String metricMap){
+		try {
+			HashMap<String,Object> metricJMap = JsonParser.parseJSONToJava(metricMap);
+			LimesUser lu = UserManager.getInstance().getUser(sessionId);
+			lu.setMetricMap(metricJMap);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -86,7 +99,7 @@ public class SessionServiceImpl {
 			props.setProperty("mail.smtp.auth", "true");
 			props.put("mail.smtp.starttls.enable", "true");
 			Properties mailConf = readConf();
-			System.out.println(mailConf.getProperty("mail")+" "+mailConf.getProperty("pw"));
+		
 			MailAuthenticator ma = new MailAuthenticator(
 					mailConf.getProperty("mail"),mailConf.getProperty("pw"));
 			Session session = Session.getDefaultInstance(props,ma);

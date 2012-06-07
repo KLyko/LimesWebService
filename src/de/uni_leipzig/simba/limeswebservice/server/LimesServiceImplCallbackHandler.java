@@ -44,6 +44,54 @@
      }
 
         
+           /**
+            * auto generated Axis2 call back method for fetchMetricMap method
+            * override this method for handling normal response from fetchMetricMap operation
+            */
+           public void receiveResultfetchMetricMap(
+                    de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchMetricMapResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from fetchMetricMap operation
+           */
+            public void receiveErrorfetchMetricMap(java.lang.Exception e) {
+            }
+                
+           /**
+            * auto generated Axis2 call back method for fetchSourceData method
+            * override this method for handling normal response from fetchSourceData operation
+            */
+           public void receiveResultfetchSourceData(
+                    de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchSourceDataResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from fetchSourceData operation
+           */
+            public void receiveErrorfetchSourceData(java.lang.Exception e) {
+            }
+                
+           /**
+            * auto generated Axis2 call back method for fetchTargetData method
+            * override this method for handling normal response from fetchTargetData operation
+            */
+           public void receiveResultfetchTargetData(
+                    de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchTargetDataResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from fetchTargetData operation
+           */
+            public void receiveErrorfetchTargetData(java.lang.Exception e) {
+            }
+                
                // No methods generated for meps other than in-out
                 
            /**
@@ -61,6 +109,58 @@
            */
             public void receiveErrorstartSession(java.lang.Exception e) {
             }
+                
+           /**
+            * auto generated Axis2 call back method for getMetricAdvice method
+            * override this method for handling normal response from getMetricAdvice operation
+            */
+           public void receiveResultgetMetricAdvice(
+                    de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetMetricAdviceResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from getMetricAdvice operation
+           */
+            public void receiveErrorgetMetricAdvice(java.lang.Exception e) {
+            }
+                
+           /**
+            * auto generated Axis2 call back method for polling method
+            * override this method for handling normal response from polling operation
+            */
+           public void receiveResultpolling(
+                    de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.PollingResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from polling operation
+           */
+            public void receiveErrorpolling(java.lang.Exception e) {
+            }
+                
+           /**
+            * auto generated Axis2 call back method for continueSession method
+            * override this method for handling normal response from continueSession operation
+            */
+           public void receiveResultcontinueSession(
+                    de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.ContinueSessionResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from continueSession operation
+           */
+            public void receiveErrorcontinueSession(java.lang.Exception e) {
+            }
+                
+               // No methods generated for meps other than in-out
+                
+               // No methods generated for meps other than in-out
                 
 
 
