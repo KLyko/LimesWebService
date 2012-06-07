@@ -11,13 +11,19 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.ejb.EJB;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 
 
 public class UserManager implements PropertyChangeListener{
@@ -54,7 +60,7 @@ public class UserManager implements PropertyChangeListener{
 				msg = " The result is available on http://139.18.249.11:8080/" +
 				""+evt.getNewValue().toString()+".txt";
 				fw.close();
-				postMail (le.getMailAddress(),"limes",msg);
+				postMail (le.getMailAddress(),"limes",msg, f);
 				
 				System.out.println("send mail");
 			} catch (MessagingException e) {
@@ -70,7 +76,7 @@ public class UserManager implements PropertyChangeListener{
 	
 	 private void postMail( String recipient,
              String subject,
-             String message )
+             String message, File file )
 	 throws MessagingException
 	{
 		
@@ -91,7 +97,31 @@ public class UserManager implements PropertyChangeListener{
 			msg.setRecipient( Message.RecipientType.TO, addressTo );
 			msg.setSubject( subject );
 			
-			msg.setContent( message, "text/plain" );
+			// multipart = body + attachment
+			MimeBodyPart messageBodyPart = 
+				      new MimeBodyPart();
+		    messageBodyPart.setText("Hi");
+
+		    Multipart multipart = new MimeMultipart();
+		    multipart.addBodyPart(messageBodyPart);
+
+		    // Part two is attachment
+		    
+		    String fileAttachment = file.getAbsolutePath();
+		    messageBodyPart = new MimeBodyPart();
+		    DataSource source = 
+		      new FileDataSource(fileAttachment);
+		    messageBodyPart.setDataHandler(
+		      new DataHandler(source));
+		    messageBodyPart.setFileName(fileAttachment);
+		    multipart.addBodyPart(messageBodyPart);
+
+		    // Put parts in message
+		   
+			msg.setContent( multipart);
+			
+			//attachement
+			
 			Transport.send( msg );
 		
 	}
