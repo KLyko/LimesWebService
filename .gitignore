@@ -3,3 +3,15 @@
 /.classpath
 /build
 /.settings
+/WebContent/WEB-INF/services
+/WebContent/WEB-INF/web.xml
+/WebContent/WEB-INF/classes
+/WebContent/WEB-INF/conf
+/WebContent/WEB-INF/modules
+/WebContent/WEB-INF/modules/scripting-1.6.2.mar
+/WebContent/WEB-INF/modules/soapmonitor-1.6.2.mar
+/WebContent/WEB-INF/modules/addressing-1.6.2.mar
+/WebContent/WEB-INF/modules/mex-1.6.2.mar
+/WebContent/WEB-INF/modules/modules.list
+/WebContent/WEB-INF/modules/mtompolicy-1.6.2.mar
+/WebContent/WEB-INF/modules/ping-1.6.2.mar
