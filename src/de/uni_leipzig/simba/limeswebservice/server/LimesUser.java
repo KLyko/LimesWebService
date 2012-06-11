@@ -16,7 +16,7 @@ import de.uni_leipzig.simba.mapper.SetConstraintsMapper;
 import de.uni_leipzig.simba.mapper.SetConstraintsMapperFactory;
 import de.uni_leipzig.simba.mapper.SimpleSetConstraintsMapper;
 
-public class LimesUser {
+public class LimesUser implements Comparable {
 
 	public static final String MAPPING_READY ="mappingReady";
 	private int id ;
@@ -27,45 +27,19 @@ public class LimesUser {
 	private HashMap<String,Object> sourceMap;
 	private HashMap<String,Object> targetMap;
 	private HashMap<String,Object> metricMap;
-
+	private long noUsageTime;
 	
 	
 	
 
 
 	public  LimesUser (int id,String mailAddress){
+		
 		change = new PropertyChangeSupport(this);
+		noUsageTime =0;
 		this.id = id;
 		this.setMailAddress(mailAddress);
 	}
-	
-	private KBInfo createKBInfo(HashMap<String, Object> param) {
-		KBInfo info = new KBInfo();
-		info.endpoint = (String) param.get("endpoint");
-		for (String key: param.keySet()){
-			System.out.println(key+"\t"+param.get(key));
-			
-		}
-		info.graph = (String) param.get("graph");
-		info.var = (String) param.get("var");
-		System.out.println(info.endpoint);
-		info.restrictions = new ArrayList<String>();
-		if(param.containsKey("class")) {
-			String classRestrString = info.var+" rdf:type "+SPARQLHelper.wrapIfNecessary((String)param.get("class"));
-			info.restrictions.add(classRestrString);
-		}
-		info.prefixes = (HashMap<String, String>) param.get("prefix");
-		System.out.println(param.get("prefix"));
-		info.functions = (HashMap<String, String>) param.get("properties");
-		for(String prop : info.functions.keySet()) {
-			info.properties.add(prop);
-			
-		}
-		info.type = "SPARQL";
-		info.id = (String) param.get("id");
-		return info;
-	}
-	
 	
 	public void calculateMapping (KBInfo sourceInfo, KBInfo targetInfo,
 			String metric,Double accThreshold,Double revThreshold){
@@ -162,5 +136,29 @@ public class LimesUser {
 
 	public void setMetricMap(HashMap<String, Object> metricMap) {
 		this.metricMap = metricMap;
+	}
+
+	public long getNoUsageTime() {
+		return noUsageTime;
+	}
+
+	public void setNoUsageTime(long noUsageTime) {
+		this.noUsageTime = noUsageTime;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	@Override
+	public int compareTo(Object o) {
+		LimesUser lu1 = this;
+		LimesUser lu2 = (LimesUser) o ;
+		return ((Long)lu1.noUsageTime).compareTo((Long)lu2.noUsageTime);
+		
 	}
 }

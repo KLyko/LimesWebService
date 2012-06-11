@@ -81,8 +81,8 @@ public class LimesServiceImpl {
 			HashMap<String,Object> targetMap = JsonParser.parseJSONToJava(target);
 			LimesUser lu = UserManager.getInstance().getUser(sessionId);
 			lu.setSourceMap(sourceMap);
-			
 			lu.setTargetMap(targetMap);
+			lu.setNoUsageTime(0);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -95,6 +95,7 @@ public class LimesServiceImpl {
 			LimesUser lu = UserManager.getInstance().getUser(sessionId);
 			log.info(metricMap);
 			lu.setMetricMap(metricJMap);
+			lu.setNoUsageTime(0);
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -123,7 +124,7 @@ public class LimesServiceImpl {
 		Double accThreshold = (Double) metric.get("accthreshold");
 		Double verThreshold = (Double) metric.get("verthreshold");
 		le.calculateMapping(sourceInfo, targetInfo, metricExpr, accThreshold, verThreshold);
-		
+		le.setNoUsageTime(0);
 		
 	}
 	
@@ -155,7 +156,7 @@ public class LimesServiceImpl {
 		}
 		ComplexClassifier compC = mbsc.getZoomedHillTop(5,5, classifierList);
 		metric = this.generateMetric(compC.classifiers, "", sourceInfo, targetInfo);
-		System.out.println(metric);
+		lu.setNoUsageTime(0);
 		return metric;
 	}
 	

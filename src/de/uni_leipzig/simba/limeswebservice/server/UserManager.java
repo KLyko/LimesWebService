@@ -8,7 +8,11 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 
 import javax.activation.DataHandler;
@@ -35,6 +39,7 @@ public class UserManager implements PropertyChangeListener{
 	
 	private UserManager (){
 		userExecutorMap = new HashMap<Integer, LimesUser>();
+		UserGarbageCollector.getInstance();
 	}
 	
 	public static UserManager  getInstance(){
@@ -44,6 +49,11 @@ public class UserManager implements PropertyChangeListener{
 		return instance;
 	}
 
+	/**
+	 * will called, if a {@linkplain LimesUser} calculated the mapping.
+	 * The server will send a mail with the result to the specified mail address of
+	 * the LimesUser instance
+	 */
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(LimesUser.MAPPING_READY)){
@@ -74,6 +84,14 @@ public class UserManager implements PropertyChangeListener{
 		
 	}
 	
+	/**
+	 * send  a mail 
+	 * @param recipient 
+	 * @param subject
+	 * @param message text message
+	 * @param file path of the mapping result on server
+	 * @throws MessagingException
+	 */
 	 private void postMail( String recipient,
              String subject,
              String message, File file )
@@ -126,10 +144,26 @@ public class UserManager implements PropertyChangeListener{
 		
 	}
 	
+	public void increaseTime (long interval){
+		for (LimesUser lu : userExecutorMap.values()){
+			lu.setNoUsageTime(lu.getNoUsageTime()+interval);
+		}
+	}
+	 
+	public LimesUser getMostInactiveUser(){
+			return Collections.max(this.userExecutorMap.values());
+	}
+	 
+	public boolean existUser(){
+		return !userExecutorMap.isEmpty();
+	}
 	public void addUser(int id, LimesUser executor){
 		userExecutorMap.put(id, executor);
 	}
 
+	public void deleteUser (int id){
+		userExecutorMap.remove(id);
+	}
 	public LimesUser getUser (int sessionId){
 		return userExecutorMap.get(sessionId);
 	}
@@ -153,6 +187,6 @@ public class UserManager implements PropertyChangeListener{
 			e.printStackTrace();
 		}
 		return prop;
-		 
 	 }
+	
 }
