@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
@@ -29,13 +30,17 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import de.konrad.commons.sparql.PrefixHelper;
+import de.uni_leipzig.simba.io.Serializer;
+import de.uni_leipzig.simba.io.SerializerFactory;
+
 
 public class UserManager implements PropertyChangeListener{
 
 	
 	private static  UserManager instance;
 	private static HashMap<Integer, LimesUser> userExecutorMap;
-	
+	private final static String sameAsRelation = "owl:sameAs";
 	
 	private UserManager (){
 		userExecutorMap = new HashMap<Integer, LimesUser>();
@@ -57,27 +62,39 @@ public class UserManager implements PropertyChangeListener{
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		if (evt.getPropertyName().equals(LimesUser.MAPPING_READY)){
-			System.out.println ("ready calculation");
+//			System.out.println ("ready calculation");
 			LimesUser le =userExecutorMap.get(evt.getNewValue());
 			String msg = "this is a generated mail";
 		
 			try
 			{
-				File f = new File (evt.getNewValue().toString()+".txt");
-				System.out.println(f.getAbsolutePath());
-				FileWriter fw = new FileWriter(f);
-				fw.write(le.getResult().toString());
-				msg = " The result is available on http://139.18.249.11:8080/" +
-				""+evt.getNewValue().toString()+".txt";
-				fw.close();
-				postMail (le.getMailAddress(),"limes",msg, f);
+				Serializer serializers[] = SerializerFactory.getAllSerializers();
+				List<File> serializedFiles = new LinkedList<File>();
+				for(Serializer serializer : serializers) {
+					String fileName = generateValidFileName((String) le.getSourceMap().get("endpoint")) + "-" +
+										generateValidFileName((String) le.getTargetMap().get("endpoint")) + 
+										"."+serializer.getFileExtension();
+					//serializer.open(fileName);
+					HashMap<String, String> prefixes = (HashMap<String, String>)le.getSourceMap().get("prefixes");
+											prefixes.putAll((HashMap<String, String>)le.getTargetMap().get("prefixes"));
+											prefixes.put(PrefixHelper.getBase(sameAsRelation),
+													PrefixHelper.getURI(PrefixHelper.getBase(sameAsRelation)));
+					serializer.setPrefixes(prefixes);
+					serializer.writeToFile(le.getResult(), sameAsRelation, fileName);
+					serializedFiles.add(serializer.getFile(fileName));
+				}
+//				File f = new File (evt.getNewValue().toString()+".txt");
+////				System.out.println(f.getAbsolutePath());
+//				FileWriter fw = new FileWriter(f);
+//				fw.write(le.getResult().toString());
+//				
+//				msg = "See email attachement for your mapping results: " +
+//				""+evt.getNewValue().toString()+".txt";
+//				fw.close();
+				postMail (le.getMailAddress(),"limes",msg, serializedFiles);
 				
 				System.out.println("send mail");
 			} catch (MessagingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -94,7 +111,7 @@ public class UserManager implements PropertyChangeListener{
 	 */
 	 private void postMail( String recipient,
              String subject,
-             String message, File file )
+             String message, List<File> serializedFiles )
 	 throws MessagingException
 	{
 		
@@ -118,29 +135,28 @@ public class UserManager implements PropertyChangeListener{
 			// multipart = body + attachment
 			MimeBodyPart messageBodyPart = 
 				      new MimeBodyPart();
-		    messageBodyPart.setText("Hi");
+		    messageBodyPart.setText("Hi, with this email we send you the mapping results " +
+		    		"of your Link Specification carried out with LIMES");
 
 		    Multipart multipart = new MimeMultipart();
 		    multipart.addBodyPart(messageBodyPart);
 
-		    // Part two is attachment
-		    
-		    String fileAttachment = file.getAbsolutePath();
-		    messageBodyPart = new MimeBodyPart();
-		    DataSource source = 
-		      new FileDataSource(fileAttachment);
-		    messageBodyPart.setDataHandler(
-		      new DataHandler(source));
-		    messageBodyPart.setFileName(fileAttachment);
-		    multipart.addBodyPart(messageBodyPart);
-
-		    // Put parts in message
-		   
-			msg.setContent( multipart);
-			
-			//attachement
-			
+		    // the other parts are the file attachments
+		    for(File file : serializedFiles) {
+		    	String fileAttachment = file.getAbsolutePath();
+			    messageBodyPart = new MimeBodyPart();
+			    DataSource source =  new FileDataSource(fileAttachment);
+			    messageBodyPart.setDataHandler(new DataHandler(source));
+			    messageBodyPart.setFileName(fileAttachment);
+			    multipart.addBodyPart(messageBodyPart);
+		    }
+		    // Put parts in message	and send it	   
+			msg.setContent(multipart);
 			Transport.send( msg );
+			// delete this files after they were send.
+			for(File file : serializedFiles) {
+				file.delete();
+			}
 		
 	}
 	
@@ -188,5 +204,20 @@ public class UserManager implements PropertyChangeListener{
 		}
 		return prop;
 	 }
-	
+
+	/**
+	 * Little helper method to remove any non allowed symbols.
+	 * @param s
+	 * @return
+	 */
+	public static String generateValidFileName(String s) {
+		s = s.replaceAll("http://", "");
+		String regex = "/.{0,8}[sparql]";
+		s=s.replaceAll(regex, "");
+		s = s.replaceAll("/", "_");
+		if(s.endsWith("_"))
+			return s.substring(0, Math.max(0, s.length()-1));
+		return s;
+	}
+
 }
