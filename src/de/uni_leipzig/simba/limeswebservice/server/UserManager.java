@@ -186,4 +186,6 @@ public class UserManager implements PropertyChangeListener{
 			return s.substring(0, Math.max(0, s.length()-1));
 		return s;
 	}
+
 }
+
