@@ -20,7 +20,10 @@ import org.apache.axis2.Constants;
         public class LimesServiceImplStub extends org.apache.axis2.client.Stub
         {
         protected org.apache.axis2.description.AxisOperation[] _operations;
-
+        // URLS
+        public static final String localhost = 	"http://localhost:8080/";
+        public static final String host = "http://139.18.2.158:8080/";
+        
         //hashmaps to keep the fault mapping
         private java.util.HashMap faultExceptionNameMap = new java.util.HashMap();
         private java.util.HashMap faultExceptionClassNameMap = new java.util.HashMap();
@@ -217,8 +220,8 @@ import org.apache.axis2.Constants;
      * Default Constructor
      */
     public LimesServiceImplStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
-        
-                    this(configurationContext,"http://localhost:8080/LimesWebService/services/LimesServiceImpl.LimesServiceImplHttpSoap12Endpoint/" );
+
+                    this(configurationContext, host+"LimesWebService/services/LimesServiceImpl.LimesServiceImplHttpSoap12Endpoint/" );
                 
     }
 
@@ -227,7 +230,7 @@ import org.apache.axis2.Constants;
      */
     public LimesServiceImplStub() throws org.apache.axis2.AxisFault {
         
-                    this("http://localhost:8080/LimesWebService/services/LimesServiceImpl.LimesServiceImplHttpSoap12Endpoint/" );
+                    this(host+"LimesWebService/services/LimesServiceImpl.LimesServiceImplHttpSoap12Endpoint/" );
                 
     }
 
