@@ -1,15 +1,10 @@
 package de.uni_leipzig.simba.limeswebservice.client.view;
-import java.awt.BorderLayout;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.HashMap;
 import java.util.Map.Entry;
-import java.util.Vector;
-
 import javax.swing.BoxLayout;
 
 import javax.swing.WindowConstants;
@@ -21,7 +16,6 @@ import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-import de.konrad.commons.sparql.PrefixHelper;
 import de.uni_leipzig.simba.io.KBInfo;
 import de.uni_leipzig.simba.limeswebservice.client.Client;
 import de.uni_leipzig.simba.limeswebservice.util.ConfigConstants;
@@ -39,6 +33,10 @@ import de.uni_leipzig.simba.limeswebservice.util.ConfigConstants;
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
 public class JInputPane extends javax.swing.JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6328977871137506858L;
 	private JSplitPane jPropertySplit;
 	private JTextField endpointField;
 	private JLabel jLabel2;

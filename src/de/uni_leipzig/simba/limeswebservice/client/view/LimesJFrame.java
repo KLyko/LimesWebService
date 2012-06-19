@@ -9,34 +9,19 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
-import java.util.Properties;
-
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
-import javax.swing.SpinnerListModel;
 import javax.swing.SpinnerNumberModel;
 
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
-import de.uni_leipzig.simba.io.KBInfo;
 import de.uni_leipzig.simba.limeswebservice.client.Client;
 import de.uni_leipzig.simba.limeswebservice.client.util.DefaultEndpointLoader;
-import de.uni_leipzig.simba.limeswebservice.server.MailAuthenticator;
 import de.uni_leipzig.simba.limeswebservice.util.ConfigConstants;
 
 
@@ -53,6 +38,11 @@ import de.uni_leipzig.simba.limeswebservice.util.ConfigConstants;
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
 public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeListener {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7987910625131144728L;
 
 	{
 		//Set Look & Feel

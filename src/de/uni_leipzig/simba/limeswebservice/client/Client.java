@@ -4,12 +4,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
 import java.util.HashMap;
-import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import org.apache.axis2.AxisFault;
-import org.apache.axis2.client.Options;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 
@@ -26,7 +24,6 @@ import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchTar
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchTargetDataResponse;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetMapping;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetMetricAdvice;
-import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetMetricAdviceResponse;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.Polling;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.SetMetricSpec;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.SetSpecification;

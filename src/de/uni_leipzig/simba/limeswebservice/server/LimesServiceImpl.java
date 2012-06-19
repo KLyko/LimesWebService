@@ -20,11 +20,9 @@ import javax.mail.internet.MimeMessage;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 
-import de.konrad.commons.sparql.PrefixHelper;
 import de.konrad.commons.sparql.SPARQLHelper;
 import de.uni_leipzig.simba.cache.HybridCache;
 import de.uni_leipzig.simba.io.KBInfo;
-import de.uni_leipzig.simba.limeswebservice.service.LimesService;
 import de.uni_leipzig.simba.limeswebservice.util.JsonParser;
 import de.uni_leipzig.simba.selfconfig.ComplexClassifier;
 import de.uni_leipzig.simba.selfconfig.MeshBasedSelfConfigurator;
