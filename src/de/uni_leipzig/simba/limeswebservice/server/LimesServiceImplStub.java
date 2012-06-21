@@ -22,8 +22,8 @@ import org.apache.axis2.Constants;
         protected org.apache.axis2.description.AxisOperation[] _operations;
         // URLS
         public static final String localhost = 	"http://localhost:8080/LimesWebService/services/";//axis2/services/";
-        public static final String theHost = "http://localhost:8080/axis2/services/";//"http://139.18.2.158:8080/";//axis2/services/";
-        
+        public static final String theHost = "http://139.18.2.158:8080/axis2/services/";
+//        public static String theHost = localhost;
         //hashmaps to keep the fault mapping
         private java.util.HashMap faultExceptionNameMap = new java.util.HashMap();
         private java.util.HashMap faultExceptionClassNameMap = new java.util.HashMap();

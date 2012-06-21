@@ -185,19 +185,24 @@ public class UserManager implements PropertyChangeListener{
 		else
 			return -1;
 	}
-	
+	/**
+	 * @FIXME addressing config file and removing unsave code!
+	 * @return
+	 */
 	private Properties readConf (){
 		 Properties prop = new Properties();
 		 try {
 			InputStream is = new FileInputStream("mail.conf.txt");
 			prop.load(is);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			prop.put("mail", "limesservice@gmail.com");
+			prop.put("pw", "akswngonga");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+			prop.put("mail", "limesservice@gmail.com");
+			prop.put("pw", "akswngonga");
+		} 
 		return prop;
 	 }
 
