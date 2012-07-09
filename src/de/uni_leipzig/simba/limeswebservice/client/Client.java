@@ -145,6 +145,7 @@ public class Client {
 			spec.setMetricMap(JsonParser.parseJavaToJSON(metric));
 			spec.setSessionId(sessionId);
 			session.setMetricSpec(spec);
+			System.out.println("start session SessionID="+sessionId);
 		} catch (AxisFault e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -162,6 +163,7 @@ public class Client {
 			spec.setSource(JsonParser.parseJavaToJSON(source));
 			spec.setTarget(JsonParser.parseJavaToJSON(target));
 			session.setSpecification(spec);
+			System.out.println("send specification SessionID="+sessionId);
 		} catch (AxisFault e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -235,7 +237,7 @@ public class Client {
 		req.setSessionId(sessionId);
 		
 		
-		
+		System.out.println("start get metric advice using SessionID="+sessionId);
 		limesService.startgetMetricAdvice(req,callback);
 		t.schedule(task, 10, 5000);
 	
@@ -251,6 +253,7 @@ public class Client {
 			startSes.setEmailAddress(mail);
 			StartSessionResponse res = session.startSession(startSes);
 			this.sessionId = res.get_return();
+			System.out.println("start session SessionID="+sessionId);
 		} catch (AxisFault e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
