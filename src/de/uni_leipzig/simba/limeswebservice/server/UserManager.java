@@ -5,11 +5,8 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -19,7 +16,6 @@ import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.ejb.EJB;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -189,19 +185,24 @@ public class UserManager implements PropertyChangeListener{
 		else
 			return -1;
 	}
-	
+	/**
+	 * @FIXME addressing config file and removing unsave code!
+	 * @return
+	 */
 	private Properties readConf (){
 		 Properties prop = new Properties();
 		 try {
 			InputStream is = new FileInputStream("mail.conf.txt");
 			prop.load(is);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			prop.put("mail", "limesservice@gmail.com");
+			prop.put("pw", "akswngonga");
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+			prop.put("mail", "limesservice@gmail.com");
+			prop.put("pw", "akswngonga");
+		} 
 		return prop;
 	 }
 

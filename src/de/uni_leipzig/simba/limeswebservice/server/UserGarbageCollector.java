@@ -20,8 +20,8 @@ public class UserGarbageCollector  {
 		
 		
 	}
-	public static final long WAIT_TIME = 120*1000;
-	public static final long INTERVAL = 30*1000;
+	public static final long WAIT_TIME = 3600*24*1000; // two days
+	public static final long INTERVAL = 600*1000; // every 10 minutes
 	
 	
 	public static UserGarbageCollector getInstance (){

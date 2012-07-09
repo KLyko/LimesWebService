@@ -2,19 +2,14 @@ package de.uni_leipzig.simba.limeswebservice.server;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-import de.konrad.commons.sparql.PrefixHelper;
-import de.konrad.commons.sparql.SPARQLHelper;
 import de.uni_leipzig.simba.cache.HybridCache;
 import de.uni_leipzig.simba.data.Mapping;
-import de.uni_leipzig.simba.filter.Filter;
 import de.uni_leipzig.simba.filter.LinearFilter;
 import de.uni_leipzig.simba.io.KBInfo;
 import de.uni_leipzig.simba.mapper.SetConstraintsMapper;
 import de.uni_leipzig.simba.mapper.SetConstraintsMapperFactory;
-import de.uni_leipzig.simba.mapper.SimpleSetConstraintsMapper;
 
 public class LimesUser implements Comparable {
 

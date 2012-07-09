@@ -19,6 +19,10 @@ import javax.swing.table.TableModel;
 
 public class JPropertyTable extends JTable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1353749977978370118L;
 	public static final String REMOVE_COL = "removeCol";
 	private DefaultTableModel model;
 	private int removeInd;
@@ -89,6 +93,10 @@ public class JPropertyTable extends JTable{
 	private class AddRowRenderer extends JButton implements TableCellRenderer{
 
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -744401025055919400L;
 		AddRowRenderer (){
 			super("add property");
 			this.setForeground(new Color(37, 65, 23));
@@ -108,6 +116,10 @@ public class JPropertyTable extends JTable{
 	
 	
 	private class RemoveCellRenderer extends JButton implements TableCellRenderer{
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -8544221197410207621L;
 		RemoveCellRenderer(){
 			super ("X");
 			this.setForeground(Color.red);
@@ -128,6 +140,10 @@ public class JPropertyTable extends JTable{
 	
 	private class RemoveCellEditor extends AbstractCellEditor implements TableCellEditor, ActionListener{
 
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 2041824441207460923L;
 		JButton removeBt; 
 		int selectedRow;
 		RemoveCellEditor(){
@@ -162,6 +178,10 @@ public class JPropertyTable extends JTable{
 	private class AddRowEditor extends AbstractCellEditor implements TableCellEditor,ActionListener{
 
 		
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 2852591734017928771L;
 		JButton addBt;
 		
 		AddRowEditor (){
