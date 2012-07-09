@@ -43,7 +43,6 @@ public class JInputPane extends javax.swing.JPanel {
 	private JLabel jLabel3;
 	private JLabel jLabel4;
 	private JLabel jLabel5;
-	private JScrollPane jScrollPane2;
 	private JScrollPane jScrollPane1;
 	private JTextField restrictionField;
 	private JTextField variableField;
@@ -54,7 +53,6 @@ public class JInputPane extends javax.swing.JPanel {
 	private DefaultTableModel propertyModel;
 	private DefaultTableModel prefixModel;
 	private JPropertyTable jTable;
-	private JPropertyTable prefixTable ;
 
 	/**
 	* Auto-generated main method to display this 
@@ -146,16 +144,6 @@ public class JInputPane extends javax.swing.JPanel {
 					BoxLayout jPanel1Layout = new BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS);
 					jPanel1.setLayout(jPanel1Layout);
 					jPropertySplit.add(jPanel1, JSplitPane.BOTTOM);
-					{
-						jScrollPane2 = new JScrollPane();
-						this.prefixModel = new DefaultTableModel();
-						this.prefixModel.addColumn("prefix");
-						this.prefixModel.addColumn("namespace");
-						this.prefixModel.addColumn(JPropertyTable.REMOVE_COL);
-						this.prefixTable =new JPropertyTable(prefixModel);
-						jScrollPane2.setViewportView(prefixTable);
-						jPanel1.add(jScrollPane2);
-					}
 					
 					{
 						jScrollPane1 = new JScrollPane();
