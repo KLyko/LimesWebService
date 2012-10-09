@@ -19,6 +19,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
+import org.slf4j.LoggerFactory;
 
 import de.konrad.commons.sparql.SPARQLHelper;
 import de.uni_leipzig.simba.cache.HybridCache;
@@ -30,6 +31,8 @@ import de.uni_leipzig.simba.selfconfig.SimpleClassifier;
 
 public class LimesServiceImpl {
 
+	org.slf4j.Logger logger = LoggerFactory.getLogger(LimesServiceImpl.class);
+	
 	private static final Logger log = Logger.getLogger(LimesServiceImpl.class);
 	 
 	public int polling (){
@@ -129,7 +132,7 @@ public class LimesServiceImpl {
 	
 	public String getMetricAdvice (int sessionId){
 		String metric ="";
-		System.out.println( ""+sessionId);
+		logger.info( ""+sessionId);
 		LimesUser lu = UserManager.getInstance().getUser(sessionId);
 		System.out.println(lu);
 		KBInfo sourceInfo = createKBInfo (lu.getSourceMap());
@@ -144,9 +147,10 @@ public class LimesServiceImpl {
 //		targetInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
 //		targetInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
 //		targetInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
-		
+		logger.info("getMetricAdvice(): Getting caches...");
 		HybridCache sC = HybridCache.getData(sourceInfo);
 		HybridCache tC = HybridCache.getData(targetInfo);
+		logger.info("getMetricAdvice(): Start SelfConfig...");
 		MeshBasedSelfConfigurator mbsc = new MeshBasedSelfConfigurator (sC,tC,0.6,0.5);
 		List <SimpleClassifier> classifierList = mbsc.getBestInitialClassifiers();
 		if (classifierList.size()>0){
@@ -155,6 +159,7 @@ public class LimesServiceImpl {
 		ComplexClassifier compC = mbsc.getZoomedHillTop(5,5, classifierList);
 		metric = this.generateMetric(compC.classifiers, "", sourceInfo, targetInfo);
 		lu.setNoUsageTime(0);
+		logger.info("getMetricAdvice(): metric=\n"+metric);
 		return metric;
 	}
 	

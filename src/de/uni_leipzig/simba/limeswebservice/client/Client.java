@@ -10,6 +10,7 @@ import java.util.TimerTask;
 import org.apache.axis2.AxisFault;
 import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
+import org.slf4j.LoggerFactory;
 
 import de.konrad.commons.sparql.PrefixHelper;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplCallbackHandler;
@@ -47,6 +48,7 @@ public class Client {
 	private String emailAddress;
 	private int sessionId;
 	
+	org.slf4j.Logger logger = LoggerFactory.getLogger(Client.class);
 	
 	public Client (){
 		change = new PropertyChangeSupport(this);
@@ -188,7 +190,8 @@ public class Client {
 			public void receiveResultpolling(
                     de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.PollingResponse result
                         ){
-				
+				logger.info("receiveResultpolling");
+//				System.out.println("receiveResultpolling");
            }
            public void receiveErrorpolling(java.lang.Exception e) {
         	   log.error(e.getMessage());
@@ -218,6 +221,7 @@ public class Client {
                         ){
 				t.cancel();
 				task.cancel();
+				logger.info("receiveResultgetMetricAdvice");
 				try{
 					limesService._getServiceClient().getOptions().setUseSeparateListener(false);
 					limesService._getServiceClient().getServiceContext().flush();

@@ -20,10 +20,12 @@ import org.apache.axis2.Constants;
         public class LimesServiceImplStub extends org.apache.axis2.client.Stub
         {
         protected org.apache.axis2.description.AxisOperation[] _operations;
-        // URLS
+        // TODO URLS
+        // FIXME change for local test
         public static final String localhost = 	"http://localhost:8080/LimesWebService/services/";//axis2/services/";
         public static final String theHost = "http://139.18.2.158:8080/axis2/services/";
-//        public static String theHost = localhost;
+        public static final String scmsHost = "http://139.18.2.164:8080/axis2/services/";
+        public static String host = scmsHost;
         //hashmaps to keep the fault mapping
         private java.util.HashMap faultExceptionNameMap = new java.util.HashMap();
         private java.util.HashMap faultExceptionClassNameMap = new java.util.HashMap();
