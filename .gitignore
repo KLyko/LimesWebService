@@ -15,3 +15,14 @@
 /WebContent/WEB-INF/modules/modules.list
 /WebContent/WEB-INF/modules/mtompolicy-1.6.2.mar
 /WebContent/WEB-INF/modules/ping-1.6.2.mar
+*.tps
+*.toc
+*.synctex
+*.tcp
+*.log
+*.blg
+*.out
+*.bbl
+*.blg
+*.aux
+/doc/Limes Webservice Documentation/Limes Webservice Documentation.pdf
