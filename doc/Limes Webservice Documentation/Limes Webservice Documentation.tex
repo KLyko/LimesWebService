@@ -10,10 +10,10 @@
 	linkcolor=blue,
 	citecolor = black,
 	naturalnames=true,
-	pdftitle={LIMES Webservice},
+	pdftitle={LIMES Web service},
 	pdfsubject={Manual},
 	pdfauthor={Klaus Lyko},
-	pdfkeywords={LIMES, Link Discovery, Linked Data, Webservice}
+	pdfkeywords={LIMES, Link Discovery, Linked Data, Web service}
 ]{hyperref}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}
@@ -25,7 +25,7 @@
 		% Upper part of the page
 		\includegraphics[width=\textwidth]{images/limes_logo.pdf}
 		\centering
-		\huge Limes Webservice User Manual
+		\huge Limes Web service User Manual
 		\huge Version 0.1	
 		\vfill
 		% Bottom of the page
@@ -36,16 +36,16 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Introduction}
-This document describes the LIMES Webservice (LWS).\\
-LWS was developed as a student project at the University of Leipzig in 2012 and is currently maintained by Klaus Lyko at the 
-Note that LWS is still under development. Hence, all describes features are in a beta status.
+This document describes the LIMES Web service (LWS).\\
+LWS was developed as a student project at the University of Leipzig in 2012 and is currently maintained by Klaus Lyko (University of Leipzig). 
+Note, that LWS is still under development. Hence, all features remain in a beta status.
 
 \subsection{Deployed version}
 We deployed the current stable LWS version at: \url{http://139.18.2.164:8080/axis2/services/LimesServiceImpl} \\
-The prebuild sample client could be downloaded at \url{139.18.2.164:8080/LimesWebService_Client.jar}.\\
-If you notice some bugs feel free to post them at our GitHub reporsitory: \url{https://github.com/KLyko/LimesWebService/}
+The pre-built sample client could be downloaded at \url{139.18.2.164:8080/LimesWebService_Client.jar}.\\
+If you notice some bugs feel free to post them at our GitHub repository: \url{https://github.com/KLyko/LimesWebService/}
 
-\section{The Webservice}
+\section{The Web service}
 This section describes the features and basic architecture of the LWS.
 \subsection{Features}
 \begin{figure}[htbp]
@@ -54,8 +54,8 @@ This section describes the features and basic architecture of the LWS.
 	\caption{Basic workflow}
 	\label{fig:limes_webservice_workflow_skizze_for_dummies}
 \end{figure}
-The main purpose of LWS is to profide a Webservice to use the LIMES mapping mechanisms. Given a so-called Link Specification LWS profides the getMapping() method, which basically runs the LIMES framework with the given specifications. As the mapping process can last some time (above all querying large and/or slow endpoints) the method is designed asnychronous: Once, LIMES has finished calculation the Webservice  will send an email with the results as attachement. Therefore, above all LWS expects that the user submitted an email address results will be send to.
-Figure~\ref{fig:limes_webservice_workflow_skizze_for_dummies} depicts the basic workflow of LWS. First a client has to start a session, submitting parameters such as an email address and the neccessary LIMES Link Specification parameters. Finally, the client calls the getMapping() method to start the linking process. Once the server finishes calculation it sends the results as an email attachement. Figure~\ref{fig:workflow2} illustrates all these major methods and usecases of LWS.
+The main purpose of LWS is to provide a Web service to use the LIMES mapping mechanisms. Given a so-called Link Specification LWS provides the getMapping() method, which basically runs the LIMES framework with the given specifications. As the mapping process can last some time (above all querying large and/or slow endpoints) the method is designed asynchronous: Once, LIMES has finished calculation the Web service  will send an email with the results as attachment. Therefore, above all LWS expects that the user submitted an email address results will be send to.
+Figure~\ref{fig:limes_webservice_workflow_skizze_for_dummies} depicts the basic work flow of LWS. First, a client has to start a session, submitting parameters such as an email address and the necessary LIMES Link Specification parameters. Finally, the client calls the getMapping() method to start the linking process. Once the server finishes calculation it sends the results as an email attachment. Figure~\ref{fig:workflow2} illustrates all these major methods and use cases of LWS.
 \begin{figure}[h]
 	\centering
 		\includegraphics[width=7in]{images/workflow2.png}
@@ -64,21 +64,21 @@ Figure~\ref{fig:limes_webservice_workflow_skizze_for_dummies} depicts the basic 
 \end{figure}
 
 \subsection{Architecture}
-We developed a basic Webservice using the Apache Axis2\footnote{\url{http://axis.apache.org/axis2/java/core/}} framework. 
+We developed a basic Web service using the Apache Axis2\footnote{\url{http://axis.apache.org/axis2/java/core/}} framework. 
 
 %%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{The Client}
-A client working for LWS was build with JAVA and can be downloaded as a pre-buildt jar at \url{https://github.com/KLyko/LimesWebService/}. As the Webservice is designed to work asnychronous all actions reuire to start a new session.\\
+A client working for LWS was built with JAVA and can be downloaded as a pre-built jar at \url{https://github.com/KLyko/LimesWebService/}. As the Web service is designed to work asynchronous all actions require to start a new session.\\
 \begin{figure}[h]
 	\centering
 		\includegraphics[width=7in]{images/Client_tasks.png}
-	\caption{GUI of the client application. The basic steps are represented as horizontal layers. The basic workflow follows a top-down usage of the client.}
+	\caption{GUI of the client application. The basic steps are represented as horizontal layers. The basic work flow follows a top-down usage of the client.}
 	\label{fig:client_tasks}
 \end{figure}
 As illustrated in figure \ref{fig:client_tasks} the basic steps are:
 \begin{enumerate}
-	\item Enter your email address and press \textit{create new session}. You will receive an email from the webservice with the session id. This id is valid for 2 days. With it you can resume an older session.
+	\item Enter your email address and press \textit{create new session}. You will receive an email from the web service with the session id. This id is valid for 2 days. With it you can resume an older session.
 	\item Specify both SPARQL endpoints.
 	\item Specify the properties of both knowledge bases. 
 	\item Specify a link specification using the LIMES specific link specification language. Either enter inter manually or use the unsupervised advise method.
@@ -90,7 +90,7 @@ The following subsections will describe these discrete steps in more detail.
 \subsection{Session start}
 You can either start a new session or try to continue an older session. To start a new session enter your email address and click \textit{new Session}. The generated session id will be send to you by email.\\ You can continue old session withing 2 days by entering the session id and clicking \textit{continue session}. If old specification have been submitted, the client will load them.
 \subsection{Endpoint specification}
-On start-up the client is pre-configured with a example specification. As the endpoint layer suggests you have to enter the following parameters for each SPARQL enpoint:
+On start-up the client is pre-configured with a example specification. As the endpoint layer suggests you have to enter the following parameters for each SPARQL endpoint:
 
 \begin{enumerate}
 	\item The URL of the SPARQL endpoint.
@@ -100,11 +100,11 @@ On start-up the client is pre-configured with a example specification. As the en
 \end{enumerate}
 
 \subsection{Specification of the properties}
-The next step is to specify which properties of the instances of each endpoint you want to use for the matching task. You can either use fully qualified URIs or abbreviated URIs utilizing well-known prefixes. Please refer to the appendix for a complete list of the availlable prefixes\footnote{A more convient way to specify the properties is subject to future develeopments.}.\\Each property can be assigned to a specific preprocessing step. Please refer to the LIMES manual on details on availlable preprocessing functions., The most common are \texttt{lowercase} and \texttt{nolang}. Multiple preprocessing function can be concatenated using \texttt{->}, e.g. \texttt{lowercase->nolang}. With the \textit{add property} and the \textit{x} button ayou can create additional rows for properties, or remove them respectively.\\ \\
-Once you specified both endpoints and the properties to use, you can submit the sepcification with the \textit{submit specification}  button.
+The next step is to specify which properties of the instances of each endpoint you want to use for the matching task. You can either use fully qualified URIs or abbreviated URIs utilizing well-known prefixes. Please refer to the appendix for a complete list of the available prefixes\footnote{A more convenient way to specify the properties is subject to future developments.}.\\Each property can be assigned to a specific preprocessing step. Please refer to the LIMES manual on details on available preprocessing functions., The most common are \texttt{lowercase} and \texttt{nolang}. Multiple preprocessing function can be concatenated using \texttt{->}, e.g. \texttt{lowercase->nolang}. With the \textit{add property} and the \textit{x} button you can create additional rows for properties, or remove them respectively.\\ \\
+Once you specified both endpoints and the properties to use, you can submit the specification with the \textit{submit specification}  button.
 %Note, the \textit{suggest properties} button has no function yet. Just ignore it for the time being.
 \subsection{Link specification}
-Once both endpoints are configured and you submitted the configuration using the \textit{submit specification}  button, the next step is to design the comparison pattern using the flxible LIMES link specification language. Both the metric expression and the global thresholds have to be set. There are to two ways to do that: 1. Manual enter the metric expression (field \textit{metric function} and set both thresholds. 2. Use the LIMES suggestion function.\\
+Once both endpoints are configured and you submitted the configuration using the \textit{submit specification}  button, the next step is to design the comparison pattern using the flexible LIMES link specification language. Both the metric expression and the global thresholds have to be set. There are to two ways to do that: 1. Manual enter the metric expression (field \textit{metric function} and set both thresholds. 2. Use the LIMES suggestion function.\\
 \subsubsection{Manual configuration}
 Enter the link specification (metric expression) using the defined variables and properties (either refer to them by there full URI or use the prefixes to enter abbreviated URIs). Either way for details on how to use the LIMES link specification language you may refer to the LIMES manual\footnote{\url{http://wiki.aksw.org/Projects/LIMES?show_comments=1}}.
 \subsubsection{Use automatic link specification advise}
