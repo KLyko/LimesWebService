@@ -54,7 +54,7 @@ This section describes the features and basic architecture of the LWS.
 	\caption{Basic workflow}
 	\label{fig:limes_webservice_workflow_skizze_for_dummies}
 \end{figure}
-The main purpose of LWS is to profide a Webservice to use the LIMES mapping mechanisms. Given a so-called Link Specification LWS profides the getMapping() method, which basically runs the LIMES framework with the given specifications. As the mapping process can last some time (above all querying large and/or slow endpoints) the method is designed asnychronous: Once, LIMES has finished calculation the Webservice  will send an email with the results as attachement. Therefore, above all LWS expects that the user submitted ancemail address results will be send to.
+The main purpose of LWS is to profide a Webservice to use the LIMES mapping mechanisms. Given a so-called Link Specification LWS profides the getMapping() method, which basically runs the LIMES framework with the given specifications. As the mapping process can last some time (above all querying large and/or slow endpoints) the method is designed asnychronous: Once, LIMES has finished calculation the Webservice  will send an email with the results as attachement. Therefore, above all LWS expects that the user submitted an email address results will be send to.
 Figure~\ref{fig:limes_webservice_workflow_skizze_for_dummies} depicts the basic workflow of LWS. First a client has to start a session, submitting parameters such as an email address and the neccessary LIMES Link Specification parameters. Finally, the client calls the getMapping() method to start the linking process. Once the server finishes calculation it sends the results as an email attachement. Figure~\ref{fig:workflow2} illustrates all these major methods and usecases of LWS.
 \begin{figure}[h]
 	\centering
@@ -67,7 +67,42 @@ Figure~\ref{fig:limes_webservice_workflow_skizze_for_dummies} depicts the basic 
 We developed a basic Webservice using the Apache Axis2\footnote{\url{http://axis.apache.org/axis2/java/core/}} framework. 
 
 %%%%%%%%%%%%%%%%%%%%%
+\newpage
 \section{The Client}
-A client working for LWS was build with JAVA and can be downloaded as a pre-buildt jar at \url{https://github.com/KLyko/LimesWebService/}.
+A client working for LWS was build with JAVA and can be downloaded as a pre-buildt jar at \url{https://github.com/KLyko/LimesWebService/}. As the Webservice is designed to work asnychronous all actions reuire to start a new session.\\
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=7in]{images/Client_tasks.png}
+	\caption{GUI of the client application. The basic steps are represented as horizontal layers. The basic workflow follows a top-down usage of the client.}
+	\label{fig:client_tasks}
+\end{figure}
+As illustrated in figure \ref{fig:client_tasks} the basic steps are:
+\begin{enumerate}
+	\item Enter your email address and press \textit{create new session}. You will receive an email from the webservice with the session id. This id is valid for 2 days. With it you can resume an older session.
+	\item Specify both SPARQL endpoints.
+	\item Specify the properties of both knowledge bases. 
+	\item Specify a link specification using the LIMES specific link specification language. Either enter inter manually or use the unsupervised advise method.
+	%\item Perform the mapping process using above settings by pressing \textit{calculate mapping}. Results will be send to your email address.
+\end{enumerate}
+Once you completed steps 1-2 you can submit the endpoint specification by clicking \textit{submit specification}. To submit a link specification click \textit{submit metric}. The server is now ready to perform the linking task. Start the (asynchronous) linking process by clicking \textit{start mapping}. The results will be send to your email address. This may take some time.
+The following subsections will describe these discrete steps in more detail.
+
+\subsection{Session start}
+You can either start a new session or try to continue an older session. To start a new session enter your email address and click \textit{new Session}. The generated session id will be send to you by email.\\ You can continue old session withing 2 days by entering the session id and clicking \textit{continue session}. If old specification have been submitted, the client will load them.
+\subsection{Endpoint specification}
+On start-up the client is pre-configured with a example specification. As the endpoint layer suggests you have to enter the following parameters for each SPARQL enpoint:
+
+\begin{enumerate}
+	\item The URL of the SPARQL endpoint.
+	\item The graph pattern (optional)
+	\item The variable to reference the endpoint in the link specification. A variable name begins with a question mark. You may leave the default \texttt{?x} for the source and \texttt{?y} for the target endpoint untouched.
+	\item Enter a class restriction. This is the URI of the \texttt{rdf:type} property.
+\end{enumerate}
+
+\subsection{Specification of the properties}
+The next step is to specify which properties of the instances of each endpoint you want to use for the matching task. You can either use fully qualified URIs or abbreviated URIs utilizing well-known prefixes. Please refer to the appendix for a complete list of the availlable prefixes\footnote{A more convient way to specify the properties is subject for future develeopments.}.\\Each property can be assigned to a specific preprocessing step. Please refer to the LIMES manual on details on availlable preprocessing functions., The most common are \texttt{lowercase} and \texttt{nolang}. Multiple preprocessing function can be concatenated using \texttt{->}, e.g. \texttt{lowercase->nolang}. With the \textit{add property} and the \textit{x} button ayou can create additional rows for properties, or remove them respectively.\\ \\
+Once you specified both endpoints and the properties to use, you can submit the sepcification with the \textit{submit specification}  button.
+%Note, the \textit{suggest properties} button has no function yet. Just ignore it for the time being.
+\subsection{Link specification}
 
 \end{document}
