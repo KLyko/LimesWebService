@@ -326,7 +326,8 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 						}
 						{
 							getFitPropBt = new JButton();
-							controlPane.add(getFitPropBt, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+						
+//							controlPane.add(getFitPropBt, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 							getFitPropBt.setText("suggest properties");
 						}
 					}
