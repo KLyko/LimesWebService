@@ -82,16 +82,16 @@ As illustrated in figure \ref{fig:client_tasks} the basic steps are:
 	\item Enter your email address and press \textit{create new session}. You will receive an email from the web service with the session id. This id is valid for 2 days. With it you can resume an older session.
 	\item Specify both SPARQL endpoints.
 	\item Specify the properties of both knowledge bases. 
-	\item Specify a link specification using the LIMES specific link specification language. Either enter inter manually or use the unsupervised advise method.
+	\item Specify a link specification using the LIMES specific link specification language. Either enter it manually or use the unsupervised advise method.
 	%\item Perform the mapping process using above settings by pressing \textit{calculate mapping}. Results will be send to your email address.
 \end{enumerate}
-Once you completed steps 1-2 you can submit the endpoint specification by clicking \textit{submit specification}. To submit a link specification click \textit{submit metric}. The server is now ready to perform the linking task. Start the (asynchronous) linking process by clicking \textit{start mapping}. The results will be send to your email address. This may take some time.
+Once you completed steps 1-2 you can submit the endpoint specification by clicking \textit{submit specification}. To submit a link specification click \textit{submit metric}. The server is now ready to perform the linking task. Start the asynchronous linking process by clicking \textit{start mapping}. The results will be send to your email address. This may take some time.
 The following subsections will describe these discrete steps in more detail.
 
 \subsection{Session start}
 You can either start a new session or try to continue an older session. To start a new session enter your email address and click \textit{new Session}. The generated session id will be send to you by email.\\ You can continue old session withing 2 days by entering the session id and clicking \textit{continue session}. If old specification have been submitted, the client will load them.
 \subsection{Endpoint specification}
-On start-up the client is pre-configured with a example specification. As the endpoint layer suggests you have to enter the following parameters for each SPARQL endpoint:
+On start-up the client is pre-configured with an example specification. As the endpoint layer suggests you have to enter the following parameters for each SPARQL endpoint:
 
 \begin{enumerate}
 	\item The URL of the SPARQL endpoint.
@@ -101,13 +101,13 @@ On start-up the client is pre-configured with a example specification. As the en
 \end{enumerate}
 
 \subsection{Specification of the properties}
-The next step is to specify which properties of the instances of each endpoint you want to use for the matching task. You can either use fully qualified URIs or abbreviated URIs utilizing well-known prefixes. Please refer to the appendix for a complete list of the available prefixes\footnote{A more convenient way to specify the properties is subject to future developments.}.\\Each property can be assigned to a specific preprocessing step. Please refer to the LIMES manual on details on available preprocessing functions., The most common are \texttt{lowercase} and \texttt{nolang}. Multiple preprocessing function can be concatenated using \texttt{->}, e.g. \texttt{lowercase->nolang}. With the \textit{add property} and the \textit{x} button you can create additional rows for properties, or remove them respectively.\\ \\
+The next step is to specify which properties of the instances of each endpoint you want to use for the matching task. You can either use fully qualified URIs or abbreviated URIs utilizing well-known prefixes. Please refer to the appendix for a complete list of the available prefixes\footnote{A more convenient way to specify the properties is subject to future developments.}.\\Each property can be assigned to a specific preprocessing step. Please refer to the LIMES manual for details on available preprocessing functions., The most common are \texttt{lowercase} and \texttt{nolang}. Multiple preprocessing function can be concatenated using \texttt{->}, e.g. \texttt{lowercase->nolang}. With the \textit{add property} and the \textit{x} button you can create additional rows for properties, or remove them respectively.\\ \\
 Once you specified both endpoints and the properties to use, you can submit the specification with the \textit{submit specification}  button.
 %Note, the \textit{suggest properties} button has no function yet. Just ignore it for the time being.
 \subsection{Link specification}
 Once both endpoints are configured and you submitted the configuration using the \textit{submit specification}  button, the next step is to design the comparison pattern using the flexible LIMES link specification language. Both the metric expression and the global thresholds have to be set. There are to two ways to do that: 1. Manual enter the metric expression (field \textit{metric function} and set both thresholds. 2. Use the LIMES suggestion function.\\
 \subsubsection{Manual configuration}
-Enter the link specification (metric expression) using the defined variables and properties (either refer to them by there full URI or use the prefixes to enter abbreviated URIs). Either way for details on how to use the LIMES link specification language you may refer to the LIMES manual\footnote{\url{http://wiki.aksw.org/Projects/LIMES?show_comments=1}}.
+Enter the link specification (metric expression) using the defined variables and properties (either refer to them by there full URI or use the prefixes to enter abbreviated URIs). Either way, for details on how to use the LIMES link specification language you may refer to the LIMES manual\footnote{\url{http://wiki.aksw.org/Projects/LIMES?show_comments=1}}.
 \subsubsection{Use automatic link specification advise}
 LIMES comes with a unsupervised learning mechanism to compute link specifications, called self-configuration. This feature of the LWS is implemented in a synchronous manner. To start the self-configuration for the specified knowledge bases, click the \textit{get metric advice} button. The computation of a link specification suggestion could take some time. So, you may have to wait several minutes for a response from the server. Once the suggestion is computed the proposed link specification will be written to the \textit{metric function} field.
 
@@ -115,7 +115,7 @@ LIMES comes with a unsupervised learning mechanism to compute link specification
 LWS was developed as a student project at the University of Leipzig in 2012.
 
 \subsection{Credits}
-LWs was developed by Victor Christen and Klaus Lyko.
+LWS was developed by Victor Christen and Klaus Lyko.
 
 \subsection{Support}
 For support information  contact:
