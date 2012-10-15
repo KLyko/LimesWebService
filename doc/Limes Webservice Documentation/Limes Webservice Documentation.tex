@@ -38,8 +38,8 @@
 \newpage
 \section{Introduction}
 This document describes the LIMES Web service (LWS).\\
-LWS was developed as a student project at the University of Leipzig in 2012 and is currently maintained by Klaus Lyko (University of Leipzig). 
-Note, that LWS is still under development. Hence, all features remain in a beta status.
+LWS was developed as a student project at the University of Leipzig in 2012. Note, that LWS is still under development. Hence, all features remain in a beta status. \\
+Aim of the LWS is to make the mapping functions of LIMES\footnote{\url{http://wiki.aksw.org/Projects/LIMES?show_comments=1}} available as a web service.
 
 \subsection{Deployed version}
 We deployed the current stable LWS version at: \url{http://139.18.2.164:8080/axis2/services/LimesServiceImpl} \\
@@ -110,6 +110,28 @@ Once both endpoints are configured and you submitted the configuration using the
 Enter the link specification (metric expression) using the defined variables and properties (either refer to them by there full URI or use the prefixes to enter abbreviated URIs). Either way for details on how to use the LIMES link specification language you may refer to the LIMES manual\footnote{\url{http://wiki.aksw.org/Projects/LIMES?show_comments=1}}.
 \subsubsection{Use automatic link specification advise}
 LIMES comes with a unsupervised learning mechanism to compute link specifications, called self-configuration. This feature of the LWS is implemented in a synchronous manner. To start the self-configuration for the specified knowledge bases, click the \textit{get metric advice} button. The computation of a link specification suggestion could take some time. So, you may have to wait several minutes for a response from the server. Once the suggestion is computed the proposed link specification will be written to the \textit{metric function} field.
+
+\section{Contact and Support information}
+LWS was developed as a student project at the University of Leipzig in 2012.
+
+\subsection{Credits}
+LWs was developed by Victor Christen and Klaus Lyko.
+
+\subsection{Support}
+For support information  contact:
+
+Klaus Lyko
+
+Departement of Business Information Systems
+
+Institute of Computer Science
+
+University of Leipzig
+
+\verb#lyko.klaus@gmail.de#
+
+\section{Known Issues}
+None
 
 \appendix
 \section{List of known prefixes}
