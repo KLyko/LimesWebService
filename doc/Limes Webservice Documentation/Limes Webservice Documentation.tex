@@ -27,7 +27,7 @@
 		\includegraphics[width=\textwidth]{images/limes_logo.pdf}
 		\centering
 		\huge Limes Web service User Manual
-		\huge Version 0.1	
+		\huge Version 0.1$\alpha$	
 		\vfill
 		% Bottom of the page
 	%	\large \today
@@ -37,15 +37,19 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Introduction}
-This document describes the LIMES Web service (LWS).\\
-LWS was developed as a student project at the University of Leipzig in 2012. Note, that LWS is still under development. Hence, all features remain in a beta status. \\
-Aim of the LWS is to make the mapping functions of LIMES\footnote{\url{http://wiki.aksw.org/Projects/LIMES?show_comments=1}} available as a web service.
+So far, the discovery of links for the Web of Data requires the local installation of Link Discovery frameworks (LDFs) or the use of GUIs for accessing remote installations. 
+Yet, the remote programmatic access to LDFs remained rather tedious. 
+The aim of the LIMES Web service (LWS) is to provide an easy remote programmatic access to the LIMES kernel.
+We deployed the current stable LWS version at [1].
+The pre-built sample client can be downloaded at [2]. 
+If you notice some bugs feel free to post them at our GitHub repository [3]. 
+\\
 
-\subsection{Deployed version}
-We deployed the current stable LWS version at: \url{http://139.18.2.164:8080/axis2/services/LimesServiceImpl} \\
-The pre-built sample client could be downloaded at \url{139.18.2.164:8080/LimesWebService_Client.jar}.\\
-If you notice some bugs feel free to post them at our GitHub repository: \url{https://github.com/KLyko/LimesWebService/}
+[1] \url{http://139.18.2.164:8080/axis2/services/LimesServiceImpl} 
 
+[2] \url{http://139.18.2.164:8080/LimesWebService_Client.jar}.
+
+[3] \url{https://github.com/KLyko/LimesWebService/}\\
 \section{The Web service}
 This section describes the features and basic architecture of the LWS.
 \subsection{Features}
@@ -55,8 +59,13 @@ This section describes the features and basic architecture of the LWS.
 	\caption{Basic workflow}
 	\label{fig:limes_webservice_workflow_skizze_for_dummies}
 \end{figure}
-The main purpose of LWS is to provide a Web service to use the LIMES mapping mechanisms. Given a so-called Link Specification LWS provides the getMapping() method, which basically runs the LIMES framework with the given specifications. As the mapping process can last some time (above all querying large and/or slow endpoints) the method is designed asynchronous: Once, LIMES has finished calculation the Web service  will send an email with the results as attachment. Therefore, above all LWS expects that the user submitted an email address results will be send to.
-Figure~\ref{fig:limes_webservice_workflow_skizze_for_dummies} depicts the basic work flow of LWS. First, a client has to start a session, submitting parameters such as an email address and the necessary LIMES Link Specification parameters. Finally, the client calls the getMapping() method to start the linking process. Once the server finishes calculation it sends the results as an email attachment. Figure~\ref{fig:workflow2} illustrates all these major methods and use cases of LWS.
+The main purpose of LWS is to provide a Web service to use the LIMES link discovery algorithms. Given a so-called Link Specification LWS provides the getMapping() method, which basically runs the LIMES framework with the given specifications. As the mapping process can last some time (above all due to querying large and/or slow endpoints) the method is designed to be asynchronous: Once, LIMES has completed its computations, the Web service sends an email with the results as attachment to the owner of the link specification. 
+Thus, LWS expects each user to submit a valid email address to which the results can be forwarded.
+Figure~\ref{fig:limes_webservice_workflow_skizze_for_dummies} depicts the basic workflow behind LWS. 
+First, a client has to start a session, submitting parameters such as an email address and the necessary LIMES Link Specification parameters. 
+Finally, the client calls the getMapping() method to start the linking process. 
+Once the server finishes calculation it sends the results as an email attachment. 
+Figure~\ref{fig:workflow2} illustrates all these major methods and use cases of LWS.
 \begin{figure}[h]
 	\centering
 		\includegraphics[width=7in]{images/workflow2.png}
@@ -115,9 +124,12 @@ LIMES comes with a unsupervised learning mechanism to compute link specification
 LWS was developed as a student project at the University of Leipzig in 2012.
 
 \subsection{Credits}
-LWS was developed by Victor Christen and Klaus Lyko.
+LWS was developed by Victor Christen and Klaus Lyko under the supervision of Axel Ngonga.
 
 \subsection{Support}
+%LWS was developed as a student project at the University of Leipzig in 2012. Note, that LWS is still under development. Hence, all features remain in a beta status. \\
+%Aim of the LWS is to make the mapping functions of LIMES\footnote{\url{http://wiki.aksw.org/Projects/LIMES?show_comments=1}} available as a web service.
+
 For support information  contact:
 
 Klaus Lyko
