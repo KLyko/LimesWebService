@@ -775,4 +775,42 @@ public class PrefixHelper
 		{"sider", "http://www4.wiwiss.fu-berlin.de/sider/resource/sider/"},
 		{"diseasome", "http://www4.wiwiss.fu-berlin.de/diseasome/resource/diseasome/"},
 		{"bibbaseontology", "http://data.bibbase.org/ontology/#"}};
+	
+	public static void outputLatexFormattedPrefixes() {
+		//sort
+		String sorted[][] = prefixArray.clone();
+		sorted = sort( sorted );
+		
+		
+		for(int i = 0; i<sorted.length; i++) {
+			System.out.println(sorted[i][0] + " & \\url{" + sorted[i][1] + "} \\\\");
+		}
+	}
+	
+	public static String[][] sort(String[][] arr) {
+		for(int i = arr.length-1; i>=0; i--) {
+			for(int j = 0; j < i; j++) {
+				if(arr[j][0].compareTo(arr[j+1][0]) > 0 ) {
+//					System.out.println(arr[i][0]+" - "+arr[j+1][0]);
+					String[] tmp = arr[j];
+					arr[j] = arr[j+1];
+					arr[j+1] = tmp;
+				}
+			}
+		}
+		return arr;
+	}
+	
+	public static void main(String args[]) {
+		PrefixHelper.outputLatexFormattedPrefixes();
+//		String[][] arr = {{"v"},{"a"},{"c"}};
+//		String[][] arrarr = PrefixHelper.sort(arr);
+//		
+//		for(int i = 0; i<arrarr.length; i++)
+//			System.out.println(arrarr[i][0]);
+		
+		
+	}
+	
 }
+

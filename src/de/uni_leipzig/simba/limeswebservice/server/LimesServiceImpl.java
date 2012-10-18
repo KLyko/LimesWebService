@@ -248,17 +248,18 @@ public class LimesServiceImpl {
 	}
 	 
 	 private Properties readConf (){
-		 Properties prop = new Properties();
-		 try {
-			InputStream is = new FileInputStream("mail.conf.txt");
-			prop.load(is);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		 Properties prop = UserManager.readConf();//new Properties();
+//		 try {
+//			 UserManager.readConf();
+//			InputStream is = new FileInputStream("mail.conf.txt");
+//			prop.load(is);
+//		} catch (FileNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		return prop;
 		 
 	 }

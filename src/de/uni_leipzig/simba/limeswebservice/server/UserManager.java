@@ -2,16 +2,22 @@ package de.uni_leipzig.simba.limeswebservice.server;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.security.spec.ECField;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -34,7 +40,7 @@ import de.uni_leipzig.simba.io.SerializerFactory;
 public class UserManager implements PropertyChangeListener{
 
 	
-	private static  UserManager instance;
+	private static UserManager instance;
 	private static HashMap<Integer, LimesUser> userExecutorMap;
 	private final static String sameAsRelation = "owl:sameAs";
 	
@@ -64,29 +70,7 @@ public class UserManager implements PropertyChangeListener{
 		
 			try
 			{
-				Serializer serializers[] = SerializerFactory.getAllSerializers();
-				List<File> serializedFiles = new LinkedList<File>();
-				for(Serializer serializer : serializers) {
-					String fileName = generateValidFileName((String) le.getSourceMap().get("endpoint")) + "-" +
-										generateValidFileName((String) le.getTargetMap().get("endpoint")) + 
-										"."+serializer.getFileExtension();
-					//serializer.open(fileName);
-					HashMap<String, String> prefixes = (HashMap<String, String>)le.getSourceMap().get("prefixes");
-											prefixes.putAll((HashMap<String, String>)le.getTargetMap().get("prefixes"));
-											prefixes.put(PrefixHelper.getBase(sameAsRelation),
-													PrefixHelper.getURI(PrefixHelper.getBase(sameAsRelation)));
-					serializer.setPrefixes(prefixes);
-					serializer.writeToFile(le.getResult(), sameAsRelation, fileName);
-					serializedFiles.add(serializer.getFile(fileName));
-				}
-//				File f = new File (evt.getNewValue().toString()+".txt");
-////				System.out.println(f.getAbsolutePath());
-//				FileWriter fw = new FileWriter(f);
-//				fw.write(le.getResult().toString());
-//				
-//				msg = "See email attachement for your mapping results: " +
-//				""+evt.getNewValue().toString()+".txt";
-//				fw.close();
+				List<File> serializedFiles = createFilesToSend(le);
 				postMail (le.getMailAddress(),"limes",msg, serializedFiles);
 				
 				System.out.println("send mail");
@@ -96,6 +80,83 @@ public class UserManager implements PropertyChangeListener{
 		}
 		
 	}
+	
+	/**
+	 * Creates all 
+	 * @param le
+	 * @return
+	 */
+	private List<File> createFilesToSend(LimesUser le) {
+		List<File> serializedFiles = new LinkedList<File>();
+		Serializer serializers[] = SerializerFactory.getAllSerializers();
+		String baseName = System.getProperty("user.home")+"/"+generateValidFileName((String) le.getSourceMap().get("endpoint")) + "-" +
+								generateValidFileName((String) le.getTargetMap().get("endpoint"));
+		for(Serializer serializer : serializers) {
+			String fileName = baseName + "." + serializer.getFileExtension();
+			//serializer.open(fileName);
+			HashMap<String, String> prefixes = (HashMap<String, String>)le.getSourceMap().get("prefixes");
+									prefixes.putAll((HashMap<String, String>)le.getTargetMap().get("prefixes"));
+									prefixes.put(PrefixHelper.getBase(sameAsRelation),
+											PrefixHelper.getURI(PrefixHelper.getBase(sameAsRelation)));
+			serializer.setPrefixes(prefixes);
+			serializer.writeToFile(le.getResult(), sameAsRelation, fileName);
+			
+			serializedFiles.add(serializer.getFile(fileName));
+		}
+		ZipOutputStream zipOut = null;
+		File zipFile = new File(baseName + "." + "zip");
+		try{
+			// create zip file 
+			
+			zipOut = new ZipOutputStream (new FileOutputStream (zipFile) );
+			// for each file read it and create new zipFileEntry.
+			for(File f : serializedFiles) {
+				BufferedInputStream in = new BufferedInputStream(new FileInputStream(f));
+				int avail = in.available();
+				byte[] buffer = new byte[avail] ;
+				if ( avail>0 ) {
+					in.read(buffer, 0, avail) ;
+				}
+				if(in != null)
+					in.close();
+				ZipEntry entry = new ZipEntry(f.getName());
+				zipOut.putNextEntry(entry);
+				zipOut.write(buffer, 0, buffer.length);
+				zipOut.closeEntry();				
+			}
+			
+		}catch( Exception e ){
+			// do something
+			System.out.println("Error creating zip file... returning unchanged serializations");
+			e.printStackTrace();
+		}
+		finally
+		{
+		   try
+		   {
+		      if(zipOut!=null) zipOut.close();
+		   }
+		   catch(Exception ex)
+		   {
+			   //TODO something weird happend
+			   ex.printStackTrace();
+		   }
+		}
+		// get rid of serialized files
+					for(File file : serializedFiles)
+						file.delete();
+					serializedFiles.clear();
+					// add zipFile to output
+					try {
+						zipOut.flush();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					serializedFiles.add(zipFile);
+		return serializedFiles;
+	}
+	
 	
 	/**
 	 * send  a mail 
@@ -137,6 +198,7 @@ public class UserManager implements PropertyChangeListener{
 		    Multipart multipart = new MimeMultipart();
 		    multipart.addBodyPart(messageBodyPart);
 
+
 		    // the other parts are the file attachments
 		    for(File file : serializedFiles) {
 		    	String fileAttachment = file.getAbsolutePath();
@@ -146,6 +208,7 @@ public class UserManager implements PropertyChangeListener{
 			    messageBodyPart.setFileName(fileAttachment);
 			    multipart.addBodyPart(messageBodyPart);
 		    }
+		  
 		    // Put parts in message	and send it	   
 			msg.setContent(multipart);
 			Transport.send( msg );
@@ -155,7 +218,8 @@ public class UserManager implements PropertyChangeListener{
 			}
 		
 	}
-	
+
+
 	public void increaseTime (long interval){
 		for (LimesUser lu : userExecutorMap.values()){
 			lu.setNoUsageTime(lu.getNoUsageTime()+interval);
@@ -189,20 +253,27 @@ public class UserManager implements PropertyChangeListener{
 	 * @FIXME addressing config file and removing unsave code!
 	 * @return
 	 */
-	private Properties readConf (){
+	public static Properties readConf (){
 		 Properties prop = new Properties();
 		 try {
-			InputStream is = new FileInputStream("mail.conf.txt");
-			prop.load(is);
+			 File f  = new File("mail.conf.txt"); 
+			 System.out.println("Trying to open File "+f.getAbsolutePath());
+			 InputStream is = new FileInputStream(f);
+			 prop.load(is);
 		} catch (FileNotFoundException e) {
 			prop.put("mail", "limesservice@gmail.com");
 			prop.put("pw", "akswngonga");
 			e.printStackTrace();
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			prop.put("mail", "limesservice@gmail.com");
 			prop.put("pw", "akswngonga");
 		} 
+		 finally{
+			 prop.put("mail", "limesservice@gmail.com");
+			 prop.put("pw", "akswngonga");
+		 }
 		return prop;
 	 }
 

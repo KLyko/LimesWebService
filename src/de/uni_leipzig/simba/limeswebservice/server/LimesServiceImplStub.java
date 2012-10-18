@@ -22,10 +22,11 @@ import org.apache.axis2.Constants;
         protected org.apache.axis2.description.AxisOperation[] _operations;
         // TODO URLS
         // FIXME change for local test
-        public static final String localhost = 	"http://localhost:8080/LimesWebService/services/";//axis2/services/";
+        public static final String localhost = "http://localhost:8080/LimesWebService/services/";
+        public static final String localhost2 = "http://localhost:8080/axis2/services/";///LimesWebService/services/";//axis2/services/";
         public static final String theHost = "http://139.18.2.158:8080/axis2/services/";
         public static final String scmsHost = "http://139.18.2.164:8080/axis2/services/";
-        public static String host = scmsHost;
+        public static String host = localhost;
         //hashmaps to keep the fault mapping
         private java.util.HashMap faultExceptionNameMap = new java.util.HashMap();
         private java.util.HashMap faultExceptionClassNameMap = new java.util.HashMap();
@@ -223,7 +224,7 @@ import org.apache.axis2.Constants;
      */
     public LimesServiceImplStub(org.apache.axis2.context.ConfigurationContext configurationContext) throws org.apache.axis2.AxisFault {
 
-                    this(configurationContext, theHost+"LimesServiceImpl.LimesServiceImplHttpSoap12Endpoint/" );
+                    this(configurationContext, host+"LimesServiceImpl.LimesServiceImplHttpSoap12Endpoint/" );
                 
     }
 
@@ -232,7 +233,7 @@ import org.apache.axis2.Constants;
      */
     public LimesServiceImplStub() throws org.apache.axis2.AxisFault {
         
-                    this(theHost+"LimesServiceImpl.LimesServiceImplHttpSoap12Endpoint/" );
+                    this(host+"LimesServiceImpl.LimesServiceImplHttpSoap12Endpoint/" );
                 
     }
 
