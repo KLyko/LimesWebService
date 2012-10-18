@@ -255,24 +255,23 @@ public class UserManager implements PropertyChangeListener{
 	 */
 	public static Properties readConf (){
 		 Properties prop = new Properties();
-		 try {
-			 File f  = new File("mail.conf.txt"); 
-			 System.out.println("Trying to open File "+f.getAbsolutePath());
+		 File f  = new File("mail.conf.txt"); 
+		 try {			 
 			 InputStream is = new FileInputStream(f);
 			 prop.load(is);
 		} catch (FileNotFoundException e) {
-			prop.put("mail", "limesservice@gmail.com");
-			prop.put("pw", "akswngonga");
 			e.printStackTrace();
 			
 		} catch (IOException e) {
 			e.printStackTrace();
-			prop.put("mail", "limesservice@gmail.com");
-			prop.put("pw", "akswngonga");
 		} 
 		 finally{
-			 prop.put("mail", "limesservice@gmail.com");
-			 prop.put("pw", "akswngonga");
+//			 TODO you want to set values in the code - but only for testing:
+//			 this would be a major security concern!
+			 
+//			 prop.put("mail", "");
+//			 prop.put("pw", "");
+			 System.err.println("Could not open file "+f.getAbsolutePath());
 		 }
 		return prop;
 	 }
