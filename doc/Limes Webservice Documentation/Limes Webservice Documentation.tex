@@ -75,6 +75,63 @@ Figure~\ref{fig:workflow2} illustrates all these major methods and use cases of 
 
 \subsection{Architecture}
 We developed a basic Web service using the Apache Axis2\footnote{\url{http://axis.apache.org/axis2/java/core/}} framework. 
+The service is decomposed in three subservices, which are callable. The communication based on JSON formatted strings, which include the essential
+parameters and underlie a custom specification. The following describes the specifications for each subservice.
+
+\begin{enumerate}
+\item \textit{startSession}
+\\ This service need a mail address as string and you receive a session id as integer.\\
+\\
+call: $startSession(mailAddress)$
+\item \textit{continueSession}
+\\
+You can continue an old session with the received session id.\\
+\\
+call: $continueSession(sessionId)$
+\item \textit{fetchSource} and \textit{fetchTarget} 
+\\
+If you have continued an old session, you can fetch the specifications for 
+the source knowledge base resp. the target knowledge base.
+The specification underlie the following structure:\\
+$<spec>::=\{"graph":address,\\
+"var":var,\\
+"class":class,\\
+"properties":\{property+\},\\
+"prefixes":\{prefix+\},\\
+"endpoint":endPointaddress\}\\
+<var>::= '?'string\\
+<property>::= popertyName : ("lowercase"|"withoutbrackets"|"none")\\
+<prefix>::= \textit{prefix:url}$\\
+Please note, that strings are marked in JSON with apostrophes.\\
+\\
+call: $fetchSource(sessionId)$ or $fetchTarget(sessionId)$
+
+\item \textit{fetchMetricMap}
+\\
+This service retrieve the metric function,the acceptance and review threshold. The parameters will send as a JSON string, which underlie the following structure:\\
+$<metricSpec>::= \{"metric":function,\\
+"accthreshold":[0-1],\\
+"verthreshold":[0-1]\}$\\
+call: $fetchMetricMap(sessionId)$
+
+ 
+\item \textit{setSpecification} and \textit{setMetricSpec}
+\\
+These service store your specification of the source, target KB and metric function on server side, which are necessary for the mapping calculation.\\
+
+ call: $setSpecification(sessionId, specSource, specTarget)$\\
+ $specSource$ and $specTarget$ underlie the same structure like the specification in $fetchSource$ and $fetchTarget$.
+ 
+ call:$setMetricSpec(sessionId,metricSpec)$\\
+ $metricSpec$ underlie the same structure like the specification in 
+ $fetchMetricMap$.
+ 
+ \item \textit{getMapping}
+ \\
+ After you have specified the source, target KB specification and the metricfunction, you can generate the mapping between the KB's.\\
+ \\
+ call: $getMapping(sessionId)$
+\end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%
 \newpage
