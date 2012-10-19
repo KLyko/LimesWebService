@@ -75,12 +75,11 @@ Figure~\ref{fig:workflow2} illustrates all these major methods and use cases of 
 
 \subsection{Architecture}
 We developed a basic Web service using the Apache Axis2\footnote{\url{http://axis.apache.org/axis2/java/core/}} framework. 
-The service is decomposed in three subservices, which are callable. The communication based on JSON formatted strings, which include the essential
-parameters and underlie a custom specification. The following describes the specifications for each subservice.
+The service is decomposed in three callable subservices. The communication is based on JSON formatted strings, which include the essential parameters and underlie a custom specification. The following describes the specifications for each of the subservices.
 
 \begin{enumerate}
 \item \textit{startSession}
-\\ This service need a mail address as string and you receive a session id as integer.\\
+\\ This service needs a mail address as a string and will return a session id as integer.\\
 \\
 call: $startSession(mailAddress)$
 \item \textit{continueSession}
@@ -108,7 +107,7 @@ call: $fetchSource(sessionId)$ or $fetchTarget(sessionId)$
 
 \item \textit{fetchMetricMap}
 \\
-This service retrieve the metric function,the acceptance and review threshold. The parameters will send as a JSON string, which underlie the following structure:\\
+This service retrieves the metric function, the acceptance and review threshold. The parameters are send as a JSON string, which underlies the following structure:\\
 $<metricSpec>::= \{"metric":function,\\
 "accthreshold":[0-1],\\
 "verthreshold":[0-1]\}$\\
@@ -117,18 +116,18 @@ call: $fetchMetricMap(sessionId)$
  
 \item \textit{setSpecification} and \textit{setMetricSpec}
 \\
-These service store your specification of the source, target KB and metric function on server side, which are necessary for the mapping calculation.\\
+These service stores your specification of both the source and target knowledge base (KB) and the corresponding metric function on server side. Those informations are essential for any mapping calculation.\\
 
  call: $setSpecification(sessionId, specSource, specTarget)$\\
- $specSource$ and $specTarget$ underlie the same structure like the specification in $fetchSource$ and $fetchTarget$.
+ $specSource$ and $specTarget$ underlie the same structure as the specification in $fetchSource$ and $fetchTarget$.
  
  call:$setMetricSpec(sessionId,metricSpec)$\\
- $metricSpec$ underlie the same structure like the specification in 
+ $metricSpec$ underlies the same structure as the specification in 
  $fetchMetricMap$.
  
  \item \textit{getMapping}
  \\
- After you have specified the source, target KB specification and the metricfunction, you can generate the mapping between the KB's.\\
+ After you have specified the source, target KB specification and the metric function, you can generate the mapping between the KBs.\\
  \\
  call: $getMapping(sessionId)$
 \end{enumerate}
