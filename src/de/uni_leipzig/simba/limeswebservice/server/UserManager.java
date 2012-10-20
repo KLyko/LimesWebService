@@ -89,22 +89,31 @@ public class UserManager implements PropertyChangeListener{
 	private List<File> createFilesToSend(LimesUser le) {
 		List<File> serializedFiles = new LinkedList<File>();
 		Serializer serializers[] = SerializerFactory.getAllSerializers();
-		String baseName = System.getProperty("user.home")+"/"+generateValidFileName((String) le.getSourceMap().get("endpoint")) + "-" +
+		String folder = System.getProperty("user.home");
+		String baseName = generateValidFileName((String) le.getSourceMap().get("endpoint")) + "-" +
 								generateValidFileName((String) le.getTargetMap().get("endpoint"));
+//		System.out.println("baseName="+baseName);
 		for(Serializer serializer : serializers) {
-			String fileName = baseName + "." + serializer.getFileExtension();
-			//serializer.open(fileName);
-			HashMap<String, String> prefixes = (HashMap<String, String>)le.getSourceMap().get("prefixes");
-									prefixes.putAll((HashMap<String, String>)le.getTargetMap().get("prefixes"));
-									prefixes.put(PrefixHelper.getBase(sameAsRelation),
-											PrefixHelper.getURI(PrefixHelper.getBase(sameAsRelation)));
-			serializer.setPrefixes(prefixes);
-			serializer.writeToFile(le.getResult(), sameAsRelation, fileName);
-			
-			serializedFiles.add(serializer.getFile(fileName));
+			try {
+				String fileName = baseName + "." + serializer.getFileExtension();
+				//serializer.open(fileName);
+				System.out.println("Filename="+fileName);
+				HashMap<String, String> prefixes = (HashMap<String, String>)le.getSourceMap().get("prefixes");
+										prefixes.putAll((HashMap<String, String>)le.getTargetMap().get("prefixes"));
+										prefixes.put(PrefixHelper.getBase(sameAsRelation),
+												PrefixHelper.getURI(PrefixHelper.getBase(sameAsRelation)));
+				serializer.setPrefixes(prefixes);
+				serializer.setFolderPath(new File(folder));
+				serializer.writeToFile(le.getResult(), sameAsRelation, fileName);
+				
+				serializedFiles.add(serializer.getFile(fileName));
+			}catch(Exception e) {
+				System.err.println("Error getting a serialization...");
+				e.printStackTrace();
+			}
 		}
 		ZipOutputStream zipOut = null;
-		File zipFile = new File(baseName + "." + "zip");
+		File zipFile = new File(folder+"/"+baseName + "." + "zip");
 		try{
 			// create zip file 
 			
@@ -271,7 +280,7 @@ public class UserManager implements PropertyChangeListener{
 			 
 //			 prop.put("mail", "");
 //			 prop.put("pw", "");
-			 System.err.println("Could not open file "+f.getAbsolutePath());
+//			 System.err.println("Could not open file "+f.getAbsolutePath());
 		 }
 		return prop;
 	 }

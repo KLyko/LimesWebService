@@ -2,6 +2,7 @@ package de.uni_leipzig.simba.limeswebservice.server;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
+import java.io.File;
 import java.util.HashMap;
 
 import de.uni_leipzig.simba.cache.HybridCache;
@@ -50,8 +51,9 @@ public class LimesUser implements Comparable {
 //		targetInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
 //		targetInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
 //		
-		HybridCache sC = HybridCache.getData(sourceInfo);
-		HybridCache tC = HybridCache.getData(targetInfo);
+		
+		HybridCache sC = HybridCache.getData(new File(System.getProperty("user.home")), sourceInfo);
+		HybridCache tC = HybridCache.getData(new File(System.getProperty("user.home")), targetInfo);
 		SetConstraintsMapper sCM= SetConstraintsMapperFactory.getMapper("simple", sourceInfo, sourceInfo, sC, tC, new LinearFilter(), 2);
 		
 		result = sCM.getLinks(metric, accThreshold);

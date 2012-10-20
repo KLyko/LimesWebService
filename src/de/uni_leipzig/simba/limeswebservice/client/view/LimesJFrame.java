@@ -80,6 +80,8 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 	private JLabel jLabel2;
 	private JLabel jLabel1;
 	
+	private JButton getHelp;
+	
 	private Client client;
 	private String defaultMetricExpression;
 

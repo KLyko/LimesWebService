@@ -210,7 +210,11 @@ public class LimesServiceImpl {
 		}
 		info.prefixes = (HashMap<String, String>) param.get("prefixes");
 		System.out.println("PREFIXES: "+info.prefixes);
-		info.functions = (HashMap<String, String>) param.get("properties");
+		HashMap<String, String> old = (HashMap<String, String>) param.get("properties");
+		for(String key : old.keySet()) {
+			info.functions.put(key,  new HashMap<String,String>());
+			info.functions.get(key).put(key, old.get(key));
+		}
 		for(String prop : info.functions.keySet()) {
 			info.properties.add(prop);
 			
