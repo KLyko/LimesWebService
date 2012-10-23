@@ -223,6 +223,9 @@ public class JInputPane extends javax.swing.JPanel {
 		}
 		if (specMap.containsKey(ConfigConstants.PROPERTIES)){
 			HashMap<String,String> propMap =(HashMap<String,String>)specMap.get(ConfigConstants.PROPERTIES);
+			
+			while(propertyModel.getRowCount()!=1)
+				propertyModel.removeRow(1);
 			for (Entry<String,String> e :propMap.entrySet()){
 				propertyModel.addRow(new String[]{e.getKey(),e.getValue()});
 			}
