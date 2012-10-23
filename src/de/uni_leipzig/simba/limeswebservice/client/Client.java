@@ -186,7 +186,7 @@ public class Client {
 	public void getMetricAdvice () throws RemoteException{
 		final LimesServiceImplStub limesService= new LimesServiceImplStub();
 		final Polling pol = new Polling();
-		final LimesServiceImplCallbackHandler callback2 =new LimesServiceImplCallbackHandler(){
+		final LimesServiceImplCallbackHandler callback2 = new LimesServiceImplCallbackHandler(){
 			public void receiveResultpolling(
                     de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.PollingResponse result
                         ){

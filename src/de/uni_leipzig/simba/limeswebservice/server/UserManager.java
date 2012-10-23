@@ -9,8 +9,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.security.spec.ECField;
+//import java.io.OutputStream;
+//import java.security.spec.ECField;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -89,10 +89,10 @@ public class UserManager implements PropertyChangeListener{
 	private List<File> createFilesToSend(LimesUser le) {
 		List<File> serializedFiles = new LinkedList<File>();
 		Serializer serializers[] = SerializerFactory.getAllSerializers();
-		String folder = System.getProperty("user.home");
+		String folder = System.getProperty("java.io.tmpdir");
 		String baseName = generateValidFileName((String) le.getSourceMap().get("endpoint")) + "-" +
 								generateValidFileName((String) le.getTargetMap().get("endpoint"));
-//		System.out.println("baseName="+baseName);
+		System.out.println("baseName="+baseName);
 		for(Serializer serializer : serializers) {
 			try {
 				String fileName = baseName + "." + serializer.getFileExtension();

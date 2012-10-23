@@ -1,9 +1,6 @@
 package de.uni_leipzig.simba.limeswebservice.server;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -72,7 +69,7 @@ public class LimesServiceImpl {
 	
 	public String fetchMetricMap (int sessionId){
 		LimesUser lu = UserManager.getInstance().getUser(sessionId);
-		String result = ""; 
+//		String result = ""; 
 		return JsonParser.parseJavaToJSON(lu.getMetricMap());
 	}
 	
@@ -148,8 +145,9 @@ public class LimesServiceImpl {
 //		targetInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
 //		targetInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
 		logger.info("getMetricAdvice(): Getting caches...");
-		HybridCache sC = HybridCache.getData(sourceInfo);
-		HybridCache tC = HybridCache.getData(targetInfo);
+		String folder = System.getProperty("java.io.tmpdir");
+		HybridCache sC = HybridCache.getData(new File(folder), sourceInfo);
+		HybridCache tC = HybridCache.getData(new File(folder), targetInfo);
 		logger.info("getMetricAdvice(): Start SelfConfig...");
 		MeshBasedSelfConfigurator mbsc = new MeshBasedSelfConfigurator (sC,tC,0.6,0.5);
 		List <SimpleClassifier> classifierList = mbsc.getBestInitialClassifiers();
@@ -157,7 +155,8 @@ public class LimesServiceImpl {
 			classifierList  = mbsc.learnClassifer(classifierList);
 		}
 		ComplexClassifier compC = mbsc.getZoomedHillTop(5,5, classifierList);
-		metric = this.generateMetric(compC.classifiers, "", sourceInfo, targetInfo);
+		//TODO: wait for Limes update to get do this more convenient
+		metric = this.generateMetric( compC.classifiers, "", sourceInfo, targetInfo);
 		lu.setNoUsageTime(0);
 		logger.info("getMetricAdvice(): metric=\n"+metric);
 		return metric;
