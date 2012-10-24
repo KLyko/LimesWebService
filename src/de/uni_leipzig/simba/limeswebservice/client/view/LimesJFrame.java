@@ -100,7 +100,7 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 	
 	public LimesJFrame() {
 		super("Limes Client");
-		client = new Client();
+		client = new Client(this);
 		client.addPropertyChangeListener(this);
 		initGUI();
 	}
@@ -371,6 +371,10 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 			metricField.setText(evt.getNewValue().toString());
 		}
 		
+	}
+
+	public void setSessionId(int sessionId) {
+		sessionField.setText(""+sessionId);
 	}
 
 	
