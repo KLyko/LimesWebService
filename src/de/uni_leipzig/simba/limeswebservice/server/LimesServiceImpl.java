@@ -155,7 +155,7 @@ public class LimesServiceImpl {
 			classifierList  = mbsc.learnClassifer(classifierList);
 		}
 		ComplexClassifier compC = mbsc.getZoomedHillTop(5,5, classifierList);
-		//TODO: wait for Limes update to get do this more convenient
+		//TODO: wait for Limes update to do this more convenient
 		metric = this.generateMetric( compC.classifiers, "", sourceInfo, targetInfo);
 		lu.setNoUsageTime(0);
 		logger.info("getMetricAdvice(): metric=\n"+metric);
