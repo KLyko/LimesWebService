@@ -372,7 +372,11 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 		}
 		
 	}
-
+	
+	/**
+	 * Set the the text of the session id field. 
+	 * @param sessionId ID the LWS returned.
+	 */
 	public void setSessionId(int sessionId) {
 		sessionField.setText(""+sessionId);
 	}

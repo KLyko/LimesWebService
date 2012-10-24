@@ -58,6 +58,10 @@ public class Client {
 		metric =new HashMap<String,Object>();
 	}
 	
+	/**
+	 * Constructor to interact with client frame.
+	 * @param frame
+	 */
 	public Client (LimesJFrame frame) {
 		this();
 		this.frame = frame;
