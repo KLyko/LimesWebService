@@ -13,6 +13,7 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.LoggerFactory;
 
 import de.konrad.commons.sparql.PrefixHelper;
+import de.uni_leipzig.simba.limeswebservice.client.view.LimesJFrame;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplCallbackHandler;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.ContinueSession;
@@ -47,7 +48,7 @@ public class Client {
 	private HashMap<String,Object> metric;
 	private String emailAddress;
 	private int sessionId;
-	
+	private LimesJFrame frame = null;
 	org.slf4j.Logger logger = LoggerFactory.getLogger(Client.class);
 	
 	public Client (){
@@ -55,6 +56,15 @@ public class Client {
 		source =new HashMap<String,Object>();
 		target =new HashMap<String,Object>();
 		metric =new HashMap<String,Object>();
+	}
+	
+	/**
+	 * Constructor to interact with client frame.
+	 * @param frame
+	 */
+	public Client (LimesJFrame frame) {
+		this();
+		this.frame = frame;
 	}
 	
 	public void setInput(String endpoint, String graph, String var ,String clasz,boolean isTarget){
@@ -257,6 +267,10 @@ public class Client {
 			startSes.setEmailAddress(mail);
 			StartSessionResponse res = session.startSession(startSes);
 			this.sessionId = res.get_return();
+			if(frame != null) {
+				// write session id to field
+				frame.setSessionId(sessionId);
+			}
 			System.out.println("start session SessionID="+sessionId);
 		} catch (AxisFault e) {
 			// TODO Auto-generated catch block
