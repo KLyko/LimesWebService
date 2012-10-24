@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Tue Oct 23 18:26:57 CEST 2012
+onejar.license.required=true
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=LimesWebServiceClient.jar
+manifest.mergeall=true
+manifest.mainclass=de.uni_leipzig.simba.limeswebservice.client.view.LimesJFrame
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=<po|LimesWebService>~de/~uni_leipzig/~simba/~limeswebservice/~server/~LimesServiceImpl.class;<po|LimesWebService>~de/~uni_leipzig/~simba/~limeswebservice/~server/~LimesUser.class;<po|LimesWebService>~de/~uni_leipzig/~simba/~limeswebservice/~server/~MailAuthenticator.class;<po|LimesWebService>~de/~uni_leipzig/~simba/~limeswebservice/~server/~SessionServiceImpl.class;<po|LimesWebService>~de/~uni_leipzig/~simba/~limeswebservice/~server/~UserGarbageCollector$1.class;<po|LimesWebService>~de/~uni_leipzig/~simba/~limeswebservice/~server/~UserGarbageCollector.class;<po|LimesWebService>~de/~uni_leipzig/~simba/~limeswebservice/~server/~UserManager.class;<po|LimesWebService>~de/~uni_leipzig/~simba/~limeswebservice/~service/;<cl|C\:\\Users\\loco\\git\\LimesWebService\\WebContent\\WEB-INF\\classes>;<jar|catalina-ant.jar>;<jar|catalina-ha.jar>;<jar|catalina-tribes.jar>;<jar|catalina.jar>;<jar|ecj-3.6.2.jar>;<jar|ecj-3.6.jar>;<jar|ecj-3.7.jar>;<jar|el-api.jar>;<jar|jasper-el.jar>;<jar|jasper.jar>;<jar|jsp-api.jar>;<jar|mail-1.4.jar>;<jar|servlet-api.jar>;<jar|tomcat-api.jar>;<jar|tomcat-coyote.jar>;<jar|tomcat-dbcp.jar>;<jar|tomcat-i18n-es.jar>;<jar|tomcat-i18n-fr.jar>;<jar|tomcat-i18n-ja.jar>;<jar|tomcat-jdbc.jar>;<jar|tomcat-util.jar>;<jar|SSJoinJava.jar>;<jar|arq-2.8.1.jar>;<jar|axis.jar>;<jar|icu4j-3.4.4.jar>;<jar|iri-0.7.jar>;<jar|jaxen.jar>;<jar|jaxrpc.jar>;<jar|jdom-1.1.3.jar>;<jar|jena-2.6.2.jar>;<jar|jgap.jar>;<jar|log4j-1.2.16.jar>;<jar|mail.jar>;<jar|wsdl4j.jar>;<jar|xercesImpl-2.7.1.jar>
+includes=
