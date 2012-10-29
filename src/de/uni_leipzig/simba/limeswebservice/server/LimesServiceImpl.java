@@ -173,18 +173,18 @@ public class LimesServiceImpl {
 			sCList.add(sC);
 		
 		if(sCList.size()==0)
-			return expr;
+			return expr.substring(0, expr.lastIndexOf("|"));
 		if(expr.length() == 0) {// nothing generated before
 			if(sCList.size()==1) {
 				String metric = generateMetric(sCList.get(0), source, target);
 				return metric.substring(0, metric.lastIndexOf("|"));
 			}
 			else {// recursive
-				String nestedExpr = "AND("+generateMetric(sCList.remove(0), source, target)+","+generateMetric(sCList.remove(0), source, target)+")";
+				String nestedExpr = "AND("+generateMetric(sCList.remove(0), source, target)+","+generateMetric(sCList.remove(0), source, target)+")|0.0";
 				return generateMetric(sCList, nestedExpr, source, target);
 			}
 		} else { // have to combine, recursive
-			String nestedExpr = "AND("+expr+","+generateMetric(sCList.remove(0),source, target)+")";
+			String nestedExpr = "AND("+expr+","+generateMetric(sCList.remove(0),source, target)+")|0.0";
 			return generateMetric(sCList, nestedExpr, source, target);			
 		}
 	}
