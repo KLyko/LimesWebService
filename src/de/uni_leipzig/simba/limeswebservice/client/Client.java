@@ -195,42 +195,42 @@ public class Client {
 	
 	public void getMetricAdvice () throws RemoteException{
 		final LimesServiceImplStub limesService= new LimesServiceImplStub();
-		final Polling pol = new Polling();
-		final LimesServiceImplCallbackHandler callback2 = new LimesServiceImplCallbackHandler(){
-			public void receiveResultpolling(
-                    de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.PollingResponse result
-                        ){
-				logger.info("receiveResultpolling");
-//				System.out.println("receiveResultpolling");
-           }
-           public void receiveErrorpolling(java.lang.Exception e) {
-        	   log.error(e.getMessage());
-           }
-		};
-		final TimerTask task= new TimerTask(){
-			
-			@Override
-			public void run() {
-				
-				try {
-					limesService.startpolling(pol, callback2);
-				} catch (RemoteException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-			}
-			
-		};
-		final Timer t = new Timer ();
-			
+//		final Polling pol = new Polling();
+//		final LimesServiceImplCallbackHandler callback2 = new LimesServiceImplCallbackHandler(){
+//			public void receiveResultpolling(
+//                    de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.PollingResponse result
+//                        ){
+////				logger.info("receiveResultpolling");
+////				System.out.println("receiveResultpolling");
+//           }
+//           public void receiveErrorpolling(java.lang.Exception e) {
+//        	   log.error(e.getMessage());
+//           }
+//		};
+//		final TimerTask task= new TimerTask(){
+//			
+//			@Override
+//			public void run() {
+//				
+//				try {
+//					limesService.startpolling(pol, callback2);
+//				} catch (RemoteException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
+//				
+//			}
+//			
+//		};
+//		final Timer t = new Timer ();
+//			
 		
 		LimesServiceImplCallbackHandler callback = new LimesServiceImplCallbackHandler(){
 			public void receiveResultgetMetricAdvice(
                     de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetMetricAdviceResponse result
                         ){
-				t.cancel();
-				task.cancel();
+//				t.cancel();
+//				task.cancel();
 				logger.info("receiveResultgetMetricAdvice");
 				try{
 					limesService._getServiceClient().getOptions().setUseSeparateListener(false);
@@ -253,7 +253,7 @@ public class Client {
 		
 		System.out.println("start get metric advice using SessionID="+sessionId);
 		limesService.startgetMetricAdvice(req,callback);
-		t.schedule(task, 10, 5000);
+//		t.schedule(task, 10, 5000);
 	
 		
 	}

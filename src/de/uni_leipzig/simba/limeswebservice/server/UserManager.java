@@ -66,7 +66,7 @@ public class UserManager implements PropertyChangeListener{
 		if (evt.getPropertyName().equals(LimesUser.MAPPING_READY)){
 //			System.out.println ("ready calculation");
 			LimesUser le =userExecutorMap.get(evt.getNewValue());
-			String msg = "this is a generated mail";
+			String msg = "This is a generated mail";
 		
 			try
 			{
@@ -78,7 +78,6 @@ public class UserManager implements PropertyChangeListener{
 				e.printStackTrace();
 			}
 		}
-		
 	}
 	
 	/**

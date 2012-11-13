@@ -153,6 +153,16 @@ public class LimesServiceImpl {
 		metric = this.generateMetric( compC.classifiers, "", sourceInfo, targetInfo);
 		lu.setNoUsageTime(0);
 		logger.info("getMetricAdvice(): metric=\n"+metric);
+
+		String msg = "Metric advice for your session "+sessionId+" on  "+sourceInfo.id+" - "+targetInfo.id+" is:\n";
+		msg += metric;
+		try {
+			postMail(lu.getMailAddress(), "Metric Advice", msg);
+		} catch (MessagingException e) {
+			System.err.println("Error sending metric advice via email...");
+			e.printStackTrace();
+		}
+		
 		return metric;
 	}
 	
@@ -213,10 +223,20 @@ public class LimesServiceImpl {
 			
 		}
 		info.type = "SPARQL";
-		info.id = (String) param.get("id");
+		if(param.get("id") != null)
+			info.id = (String) param.get("id");
+		else
+			info.id = (String) param.get("endpoint");
 		return info;
 	}
 	
+	/**
+	 * method sends mail.
+	 * @param recipient
+	 * @param subject
+	 * @param message
+	 * @throws MessagingException
+	 */
 	 private void postMail( String recipient,
              String subject,
              String message )
