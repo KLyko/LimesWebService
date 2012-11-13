@@ -26,7 +26,7 @@ import org.apache.axis2.Constants;
         public static final String theHost = "http://139.18.2.158:8080/axis2/services/";
         public static final String scmsHost = "http://139.18.2.164:8080/axis2/services/";
         // set url of the web service location
-        public static String host = localhost;
+        public static String host = scmsHost;
         //hashmaps to keep the fault mapping
         private java.util.HashMap faultExceptionNameMap = new java.util.HashMap();
         private java.util.HashMap faultExceptionClassNameMap = new java.util.HashMap();
