@@ -263,16 +263,18 @@ public class UserManager implements PropertyChangeListener{
 	 * @return
 	 */
 	public static Properties readConf (){
-		 Properties prop = new Properties();
-		 File f  = new File("mail.conf.txt"); 
+		String basePath = System.getProperty("user.dir");
+		Properties prop = new Properties();
+		 File f  = new File(basePath+"/"+"mail.conf.txt"); 
 		 try {			 
 			 InputStream is = new FileInputStream(f);
 			 prop.load(is);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			
+			System.err.println("Was looking for file: "+f.getAbsolutePath()+" at basePath="+basePath);
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.err.println("Was looking for file: "+f.getAbsolutePath());
 		} 
 		 finally{
 //			 TODO you want to set values in the code - but only for testing:
