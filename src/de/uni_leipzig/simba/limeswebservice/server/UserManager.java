@@ -262,7 +262,7 @@ public class UserManager implements PropertyChangeListener{
 	 * @return
 	 */
 	public static Properties readConf (){
-		String basePath = System.getProperty("user.dir");
+		String basePath = System.getProperty("user.home");
 		Properties prop = new Properties();
 		 File f  = new File(basePath+"/"+"mail.conf.txt"); 
 		 try {			 
