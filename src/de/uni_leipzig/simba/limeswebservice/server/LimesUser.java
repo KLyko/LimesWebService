@@ -15,6 +15,7 @@ import de.uni_leipzig.simba.mapper.SetConstraintsMapperFactory;
 public class LimesUser implements Comparable {
 
 	public static final String MAPPING_READY ="mappingReady";
+	public static final String ERROR_COMPUTING_MAPPING = "errorComputingMapping";
 	private int id ;
 	private String filePath;
 	private String mailAddress;
@@ -55,11 +56,16 @@ public class LimesUser implements Comparable {
 		HybridCache sC = HybridCache.getData(new File(System.getProperty("user.home")), sourceInfo);
 		HybridCache tC = HybridCache.getData(new File(System.getProperty("user.home")), targetInfo);
 		SetConstraintsMapper sCM= SetConstraintsMapperFactory.getMapper("simple", sourceInfo, sourceInfo, sC, tC, new LinearFilter(), 2);
+		try {
+			result = sCM.getLinks(metric, accThreshold);
+			change.firePropertyChange(MAPPING_READY, null, id);
+		} catch(Exception e) {
+			change.firePropertyChange(ERROR_COMPUTING_MAPPING, null, id);
+		}
+		finally {
+			this.removePropertyChangeListener(UserManager.getInstance());
+		}
 		
-		result = sCM.getLinks(metric, accThreshold);
-		
-		change.firePropertyChange(MAPPING_READY, null, id);
-		this.removePropertyChangeListener(UserManager.getInstance());
 	}
 	
 	/**

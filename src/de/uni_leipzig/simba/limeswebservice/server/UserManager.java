@@ -66,15 +66,27 @@ public class UserManager implements PropertyChangeListener{
 		if (evt.getPropertyName().equals(LimesUser.MAPPING_READY)){
 //			System.out.println ("ready calculation");
 			LimesUser le =userExecutorMap.get(evt.getNewValue());
-			String msg = "This is a generated mail";
-		
+			
 			try
 			{
+				String msg = "Hi, with this email we send you the mapping results " +
+		    		"of your Link Specification carried out with LIMES";
 				List<File> serializedFiles = createFilesToSend(le);
-				postMail (le.getMailAddress(),"limes",msg, serializedFiles);
-				
-				System.out.println("send mail");
+				postMail (le.getMailAddress(), "limes", msg, serializedFiles);				
+				System.out.println("sending mail with results");
 			} catch (MessagingException e) {
+				e.printStackTrace();
+			}
+		}
+		else if (evt.getPropertyName().equals(LimesUser.ERROR_COMPUTING_MAPPING)) {
+			LimesUser le = userExecutorMap.get(evt.getNewValue());
+			String msg = "Sorry there was an error computing your mapping. " +
+					"Please check your settings.";
+			try {
+				postMail(le.getMailAddress(), "limes", msg, null);
+				System.out.println("Sending mail informing user about the error while computing");
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -200,31 +212,30 @@ public class UserManager implements PropertyChangeListener{
 			// multipart = body + attachment
 			MimeBodyPart messageBodyPart = 
 				      new MimeBodyPart();
-		    messageBodyPart.setText("Hi, with this email we send you the mapping results " +
-		    		"of your Link Specification carried out with LIMES");
+		    messageBodyPart.setText(message);
 
 		    Multipart multipart = new MimeMultipart();
 		    multipart.addBodyPart(messageBodyPart);
 
 
 		    // the other parts are the file attachments
-		    for(File file : serializedFiles) {
-		    	String fileAttachment = file.getAbsolutePath();
-			    messageBodyPart = new MimeBodyPart();
-			    DataSource source =  new FileDataSource(fileAttachment);
-			    messageBodyPart.setDataHandler(new DataHandler(source));
-			    messageBodyPart.setFileName(fileAttachment);
-			    multipart.addBodyPart(messageBodyPart);
-		    }
-		  
+		    if(serializedFiles != null) {
+			    for(File file : serializedFiles) {
+			    	String fileAttachment = file.getAbsolutePath();
+				    messageBodyPart = new MimeBodyPart();
+				    DataSource source =  new FileDataSource(fileAttachment);
+				    messageBodyPart.setDataHandler(new DataHandler(source));
+				    messageBodyPart.setFileName(fileAttachment);
+				    multipart.addBodyPart(messageBodyPart);
+			    }
+			 // delete this files after they were send.
+				for(File file : serializedFiles) {
+					file.delete();
+				}
+		    }		  
 		    // Put parts in message	and send it	   
 			msg.setContent(multipart);
 			Transport.send( msg );
-			// delete this files after they were send.
-			for(File file : serializedFiles) {
-				file.delete();
-			}
-		
 	}
 
 
