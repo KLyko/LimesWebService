@@ -3,11 +3,19 @@ package de.uni_leipzig.simba.limeswebservice.server;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.jgap.InvalidConfigurationException;
+
+import de.konrad.commons.sparql.SPARQLHelper;
 import de.uni_leipzig.simba.cache.HybridCache;
 import de.uni_leipzig.simba.data.Mapping;
 import de.uni_leipzig.simba.filter.LinearFilter;
+import de.uni_leipzig.simba.genetics.core.Metric;
+import de.uni_leipzig.simba.genetics.learner.GeneticActiveLearner;
+import de.uni_leipzig.simba.genetics.util.PropertyMapping;
+import de.uni_leipzig.simba.io.ConfigReader;
 import de.uni_leipzig.simba.io.KBInfo;
 import de.uni_leipzig.simba.mapper.SetConstraintsMapper;
 import de.uni_leipzig.simba.mapper.SetConstraintsMapperFactory;
@@ -28,8 +36,10 @@ public class LimesUser implements Comparable {
 	private long noUsageTime;
 	
 	
-	
-
+	private GeneticActiveLearner learner = null;
+	private Mapping toEvaluate = null;
+	private Metric learnedMetric = null;
+//	private KBInfo source, target;
 
 	public  LimesUser (int id,String mailAddress){
 		
@@ -39,26 +49,22 @@ public class LimesUser implements Comparable {
 		this.setMailAddress(mailAddress);
 	}
 	
-	public void calculateMapping (KBInfo sourceInfo, KBInfo targetInfo,
-			String metric,Double accThreshold,Double revThreshold){
+		public void calculateMapping (KBInfo sourceInfo, KBInfo targetInfo,
+				String metric,Double accThreshold,Double revThreshold){
 		System.out.println("begin calculation");
 		if(sourceInfo.prefixes == null)
 			sourceInfo.prefixes = new HashMap<String, String>();
 		if(targetInfo.prefixes == null)
 			targetInfo.prefixes = new HashMap<String, String>();
-//		sourceInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
-//		sourceInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
-//		sourceInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
-//		targetInfo.prefixes.put("rdf", PrefixHelper.getURI("rdf"));
-//		targetInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
-//		targetInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
-//		
+	
 		try {
 			HybridCache sC = HybridCache.getData(new File(System.getProperty("user.home")), sourceInfo);
 			HybridCache tC = HybridCache.getData(new File(System.getProperty("user.home")), targetInfo);
 			SetConstraintsMapper sCM= SetConstraintsMapperFactory.getMapper("simple", sourceInfo, sourceInfo, sC, tC, new LinearFilter(), 2);
-		
+			
+			// remember settings to init learner
 			result = sCM.getLinks(metric, accThreshold);
+			
 			if(result != null && result.size() > 0) {
 				change.firePropertyChange(MAPPING_READY, null, id);
 			}
@@ -175,5 +181,108 @@ public class LimesUser implements Comparable {
 		LimesUser lu2 = (LimesUser) o ;
 		return ((Long)lu1.noUsageTime).compareTo((Long)lu2.noUsageTime);
 		
+	}
+
+	public Metric getLearnedMetric() {
+		return learnedMetric;
+	}
+
+	public void setLearnedMetric(Metric learnedMetric) {
+		this.learnedMetric = learnedMetric;
+	}
+
+	public Mapping getToEvaluate() {
+		return toEvaluate;
+	}
+
+	public void setToEvaluate(Mapping toEvaluate) {
+		this.toEvaluate = toEvaluate;
+	}
+	
+	public boolean learn(Mapping trainingData) {
+		boolean setMetric = true;
+		if(learner == null) {
+			setMetric = false;
+			System.out.println("Initializing learner...");
+			learner = new GeneticActiveLearner();
+			try {
+				KBInfo sourceInfo = createKBInfo(sourceMap);
+				KBInfo targetInfo = createKBInfo(targetMap);
+				// get metric
+				learnedMetric = new Metric((String) metricMap.get("metric"), (Double) metricMap.get("accthreshold"));
+				learner.init(sourceInfo, targetInfo, getParams());
+				System.out.println("Learner was successfully initialized");
+			} catch (InvalidConfigurationException e) {
+				e.printStackTrace();
+				return false;
+			}
+		}
+		System.out.println("Learning begins...");
+		toEvaluate = learner.learn(trainingData);
+		System.out.println("Learning has finished...");
+		if(setMetric) {
+			System.out.println("Determining learned metric...");
+			this.learnedMetric = learner.terminate();
+		}
+		return true;
+	}
+	
+	
+	private HashMap<String, Object> getParams() {
+		KBInfo source = createKBInfo(sourceMap);
+		KBInfo target = createKBInfo(targetMap);
+		HashMap<String, Object> parameters = new HashMap<String, Object>();
+		parameters.put("populationSize", 20);
+		parameters.put("generations", 20);
+		parameters.put("mutationRate", 0.6f);
+		parameters.put("crossoverRate", 0.6f);
+		parameters.put("preserveFittest", true);
+		parameters.put("granularity", 2);
+		parameters.put("trainingDataSize", 10);
+		PropertyMapping propMap = new PropertyMapping();
+		for(String sProp : source.properties)
+			for(String tProp : target.properties)
+				propMap.addStringPropertyMatch(sProp, tProp);
+		parameters.put("propertyMapping", propMap);
+		ConfigReader cR = new ConfigReader();
+		cR.sourceInfo = source;
+		cR.targetInfo = target;
+		cR.metricExpression = learnedMetric.getExpression();
+		cR.acceptanceThreshold = learnedMetric.getThreshold();
+		cR.verificationThreshold = (learnedMetric.getThreshold()*0.98d);
+		parameters.put("config", cR);
+		return parameters;
+	}
+	
+	
+	public KBInfo createKBInfo(HashMap<String, Object> param) {
+		KBInfo info = new KBInfo();
+		info.endpoint = (String) param.get("endpoint");
+		
+		info.graph = (String) param.get("graph");
+		info.var = (String) param.get("var");
+		System.out.println(info.endpoint);
+		info.restrictions = new ArrayList<String>();
+		if(param.containsKey("class")) {
+			String classRestrString = info.var+" rdf:type "+SPARQLHelper.wrapIfNecessary((String)param.get("class"));
+			info.restrictions.add(classRestrString);
+		}
+		info.prefixes = (HashMap<String, String>) param.get("prefixes");
+		System.out.println("PREFIXES: "+info.prefixes);
+		HashMap<String, String> old = (HashMap<String, String>) param.get("properties");
+		for(String key : old.keySet()) {
+			info.functions.put(key,  new HashMap<String,String>());
+			info.functions.get(key).put(key, old.get(key));
+		}
+		for(String prop : info.functions.keySet()) {
+			info.properties.add(prop);
+			
+		}
+		info.type = "SPARQL";
+		if(param.get("id") != null)
+			info.id = (String) param.get("id");
+		else
+			info.id = (String) param.get("endpoint");
+		return info;
 	}
 }

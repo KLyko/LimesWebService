@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import de.konrad.commons.sparql.SPARQLHelper;
 import de.uni_leipzig.simba.cache.HybridCache;
+import de.uni_leipzig.simba.data.Mapping;
 import de.uni_leipzig.simba.io.KBInfo;
 import de.uni_leipzig.simba.limeswebservice.util.JsonParser;
 import de.uni_leipzig.simba.selfconfig.ComplexClassifier;
@@ -100,10 +101,8 @@ public class LimesServiceImpl {
 		}
 	}
 	
-	public void getMapping(int mailAddress){
-		
-		
-		LimesUser le =UserManager.getInstance().getUser(mailAddress);
+	public void getMapping(int sessionID){
+		LimesUser le =UserManager.getInstance().getUser(sessionID);
 		le.addPropertyChangeListener(UserManager.getInstance());
 		
 		
@@ -114,16 +113,20 @@ public class LimesServiceImpl {
 		HashMap<String,Object> target= le.getTargetMap();
 		HashMap<String,Object> metric= le.getMetricMap();
 		
-		KBInfo sourceInfo = createKBInfo(source);
-		KBInfo targetInfo = createKBInfo(target);
+		KBInfo sourceInfo = le.createKBInfo(source);
+		KBInfo targetInfo = le.createKBInfo(target);
 		// get metric
 		
 		String metricExpr = (String) metric.get("metric");
 		Double accThreshold = (Double) metric.get("accthreshold");
 		Double verThreshold = (Double) metric.get("verthreshold");
 		le.calculateMapping(sourceInfo, targetInfo, metricExpr, accThreshold, verThreshold);
-		le.setNoUsageTime(0);
-		
+		le.setNoUsageTime(0);		
+	}
+	
+	public boolean learnMetric(int sessionID, Mapping trainingData) {
+		LimesUser le =UserManager.getInstance().getUser(sessionID);
+		return le.learn(trainingData);		
 	}
 	
 	
@@ -132,8 +135,8 @@ public class LimesServiceImpl {
 		logger.info( ""+sessionId);
 		LimesUser lu = UserManager.getInstance().getUser(sessionId);
 		System.out.println(lu);
-		KBInfo sourceInfo = createKBInfo (lu.getSourceMap());
-		KBInfo targetInfo = createKBInfo (lu.getTargetMap());
+		KBInfo sourceInfo = lu.createKBInfo (lu.getSourceMap());
+		KBInfo targetInfo = lu.createKBInfo (lu.getTargetMap());
 		if(sourceInfo.prefixes == null)
 			sourceInfo.prefixes = new HashMap<String, String>();
 		if(targetInfo.prefixes == null)
@@ -197,37 +200,6 @@ public class LimesServiceImpl {
 			String nestedExpr = "AND("+expr+","+generateMetric(sCList.remove(0),source, target)+")|0.0";
 			return generateMetric(sCList, nestedExpr, source, target);			
 		}
-	}
-	
-	private KBInfo createKBInfo(HashMap<String, Object> param) {
-		KBInfo info = new KBInfo();
-		info.endpoint = (String) param.get("endpoint");
-		
-		info.graph = (String) param.get("graph");
-		info.var = (String) param.get("var");
-		System.out.println(info.endpoint);
-		info.restrictions = new ArrayList<String>();
-		if(param.containsKey("class")) {
-			String classRestrString = info.var+" rdf:type "+SPARQLHelper.wrapIfNecessary((String)param.get("class"));
-			info.restrictions.add(classRestrString);
-		}
-		info.prefixes = (HashMap<String, String>) param.get("prefixes");
-		System.out.println("PREFIXES: "+info.prefixes);
-		HashMap<String, String> old = (HashMap<String, String>) param.get("properties");
-		for(String key : old.keySet()) {
-			info.functions.put(key,  new HashMap<String,String>());
-			info.functions.get(key).put(key, old.get(key));
-		}
-		for(String prop : info.functions.keySet()) {
-			info.properties.add(prop);
-			
-		}
-		info.type = "SPARQL";
-		if(param.get("id") != null)
-			info.id = (String) param.get("id");
-		else
-			info.id = (String) param.get("endpoint");
-		return info;
 	}
 	
 	/**
