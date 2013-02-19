@@ -90,6 +90,18 @@ public class UserManager implements PropertyChangeListener{
 				e.printStackTrace();
 			}
 		}
+		else if (evt.getPropertyName().equals(LimesUser.MAPPING_EMPTY)) {
+			LimesUser le = userExecutorMap.get(evt.getNewValue());
+			String msg = "Sorry the your matching task returned an empty mapping " +
+					"Please check your settings.";
+			try {
+				postMail(le.getMailAddress(), "limes", msg, null);
+				System.out.println("Sending mail informing user about the error while computing");
+			} catch (MessagingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	/**

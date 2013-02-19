@@ -16,6 +16,7 @@ public class LimesUser implements Comparable {
 
 	public static final String MAPPING_READY ="mappingReady";
 	public static final String ERROR_COMPUTING_MAPPING = "errorComputingMapping";
+	public static final String MAPPING_EMPTY = "mappingEmpty";
 	private int id ;
 	private String filePath;
 	private String mailAddress;
@@ -52,13 +53,24 @@ public class LimesUser implements Comparable {
 //		targetInfo.prefixes.put("dbp", PrefixHelper.getURI("dbp"));
 //		targetInfo.prefixes.put("rdfs", PrefixHelper.getURI("rdfs"));
 //		
-		
-		HybridCache sC = HybridCache.getData(new File(System.getProperty("user.home")), sourceInfo);
-		HybridCache tC = HybridCache.getData(new File(System.getProperty("user.home")), targetInfo);
-		SetConstraintsMapper sCM= SetConstraintsMapperFactory.getMapper("simple", sourceInfo, sourceInfo, sC, tC, new LinearFilter(), 2);
 		try {
+			HybridCache sC = HybridCache.getData(new File(System.getProperty("user.home")), sourceInfo);
+			HybridCache tC = HybridCache.getData(new File(System.getProperty("user.home")), targetInfo);
+			SetConstraintsMapper sCM= SetConstraintsMapperFactory.getMapper("simple", sourceInfo, sourceInfo, sC, tC, new LinearFilter(), 2);
+		
 			result = sCM.getLinks(metric, accThreshold);
-			change.firePropertyChange(MAPPING_READY, null, id);
+			if(result != null && result.size() > 0) {
+				change.firePropertyChange(MAPPING_READY, null, id);
+			}
+			else {
+				if(result == null) {
+					change.firePropertyChange(ERROR_COMPUTING_MAPPING, null, id);
+					System.out.println("Calculated Mapping was null");
+				} else if (result.size() == 0) {
+					System.out.println("Calculated Mapping was empty");
+					change.firePropertyChange(MAPPING_EMPTY, null, id);
+				}
+			}
 		} catch(Exception e) {
 			change.firePropertyChange(ERROR_COMPUTING_MAPPING, null, id);
 		}
