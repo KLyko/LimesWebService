@@ -141,22 +141,22 @@ public class JsonParser {
 
 	@Test
 	public void testParseMappingFromJSONSerialization() {
-		Map<String, Object> map = new HashMap<String, Object>();
-		Map<String, Object> a1 = new HashMap<String, Object>();
-		Map<String, Object> a2 = new HashMap<String, Object>();
-		//HashMap<String, Double> a1 = new HashMap<String, Double>();
-		a1.put("a", 1d);
-		a2.put("b", 0.9d);
-		a2.put("c", 0d);
-		map.put("A", a1);
-		map.put("B", a2);
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		Map<String, Object> a1 = new HashMap<String, Object>();
+//		Map<String, Object> a2 = new HashMap<String, Object>();
+//		//HashMap<String, Double> a1 = new HashMap<String, Double>();
+//		a1.put("a", 1d);
+//		a2.put("b", 0.9d);
+//		a2.put("c", 0d);
+//		map.put("A", a1);
+//		map.put("B", a2);
 		
 		Mapping testMap = new Mapping();
 		testMap.add("A", "a", 1d);
 		testMap.add("B", "b", 0.9d);
 		testMap.add("B", "c", 0d);
 		
-		String mapJSON = parseJavaToJSON(map);
+		String mapJSON = parseMappingToJSON(testMap);
 		Mapping parsedMap = parseMappingFromJSONSerialization(mapJSON);
 		boolean test = true;
 		if(parsedMap.size() != 3) {
@@ -180,4 +180,17 @@ public class JsonParser {
 			}
 		assertTrue(test);
 	}
+	
+	public static String parseMappingToJSON(Mapping m) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		for(Entry<String, HashMap<String, Double>> e : m.map.entrySet()) {
+			Map<String, Object> sub = new HashMap<String, Object>();
+			for(Entry<String, Double> subE : m.map.get(e.getKey()).entrySet()) {
+				sub.put(subE.getKey(), subE.getValue());
+			}
+			map.put(e.getKey(), sub);
+		}
+		return parseJavaToJSON(map);
+	}
+	
 }
