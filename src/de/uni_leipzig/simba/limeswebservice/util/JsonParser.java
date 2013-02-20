@@ -141,16 +141,6 @@ public class JsonParser {
 
 	@Test
 	public void testParseMappingFromJSONSerialization() {
-//		Map<String, Object> map = new HashMap<String, Object>();
-//		Map<String, Object> a1 = new HashMap<String, Object>();
-//		Map<String, Object> a2 = new HashMap<String, Object>();
-//		//HashMap<String, Double> a1 = new HashMap<String, Double>();
-//		a1.put("a", 1d);
-//		a2.put("b", 0.9d);
-//		a2.put("c", 0d);
-//		map.put("A", a1);
-//		map.put("B", a2);
-		
 		Mapping testMap = new Mapping();
 		testMap.add("A", "a", 1d);
 		testMap.add("B", "b", 0.9d);
@@ -181,6 +171,14 @@ public class JsonParser {
 		assertTrue(test);
 	}
 	
+	/**
+	 * Parses a LIMES Mapping instance to our JSON representation. Essentially a Mapping is
+	 * just a HashMap<String, HashMap<String, Double> (see the map clas variable).
+	 * So all we do, we <i>parse</i> it to the generic type used by the parseJavaToJSON method:
+	 * Map<String, Object>, which will be here a Map<String, Map<String,Object>> more precisally.
+	 * @param m The Mapping to parse.
+	 * @return JSON String serialization of the mapping.
+	 */
 	public static String parseMappingToJSON(Mapping m) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		for(Entry<String, HashMap<String, Double>> e : m.map.entrySet()) {
