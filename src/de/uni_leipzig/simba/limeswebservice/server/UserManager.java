@@ -240,14 +240,16 @@ public class UserManager implements PropertyChangeListener{
 				    messageBodyPart.setFileName(fileAttachment);
 				    multipart.addBodyPart(messageBodyPart);
 			    }
-			 // delete this files after they were send.
-				for(File file : serializedFiles) {
-					file.delete();
-				}
 		    }		  
 		    // Put parts in message	and send it	   
 			msg.setContent(multipart);
 			Transport.send( msg );
+			
+			//delete this files after they were send.
+			if(serializedFiles != null)
+				for(File file : serializedFiles) {
+					file.delete();
+				}
 	}
 
 

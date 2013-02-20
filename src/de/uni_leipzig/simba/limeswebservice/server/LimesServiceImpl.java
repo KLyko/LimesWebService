@@ -124,7 +124,14 @@ public class LimesServiceImpl {
 		le.setNoUsageTime(0);		
 	}
 	
-	public boolean learnMetric(int sessionID, Mapping trainingData) {
+	/**
+	 * As we have to work around serializing Hashmaps, we expect to receive JSON parsed String
+	 * of the training data Mappings
+	 * @param sessionID
+	 * @param trainingData
+	 * @return
+	 */
+	public boolean learnMetric(int sessionID, String trainingData) {
 		LimesUser le =UserManager.getInstance().getUser(sessionID);
 		return le.learn(trainingData);		
 	}

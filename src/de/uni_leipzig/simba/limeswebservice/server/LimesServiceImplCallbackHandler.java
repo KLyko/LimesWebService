@@ -127,6 +127,22 @@
             }
                 
            /**
+            * auto generated Axis2 call back method for learnMetric method
+            * override this method for handling normal response from learnMetric operation
+            */
+           public void receiveResultlearnMetric(
+                    de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.LearnMetricResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from learnMetric operation
+           */
+            public void receiveErrorlearnMetric(java.lang.Exception e) {
+            }
+                
+           /**
             * auto generated Axis2 call back method for polling method
             * override this method for handling normal response from polling operation
             */

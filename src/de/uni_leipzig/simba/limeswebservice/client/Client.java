@@ -4,6 +4,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.rmi.RemoteException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,6 +14,7 @@ import org.json.simple.parser.ParseException;
 import org.slf4j.LoggerFactory;
 
 import de.konrad.commons.sparql.PrefixHelper;
+import de.uni_leipzig.simba.data.Mapping;
 import de.uni_leipzig.simba.limeswebservice.client.view.LimesJFrame;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplCallbackHandler;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub;
@@ -26,6 +28,8 @@ import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchTar
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchTargetDataResponse;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetMapping;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetMetricAdvice;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.LearnMetric;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.LearnMetricResponse;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.Polling;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.SetMetricSpec;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.SetSpecification;
@@ -138,7 +142,7 @@ public class Client {
 			LimesServiceImplStub stub = new LimesServiceImplStub ();
 			GetMapping mapping = new GetMapping();
 			
-			mapping.setMailAddress(sessionId);
+			mapping.setSessionID(sessionId);
 			stub.getMapping(mapping);
 			
 		} catch (AxisFault e) {
@@ -373,6 +377,27 @@ public class Client {
 	
 	public void removePropertyChangeListener(PropertyChangeListener listener){
 		change.removePropertyChangeListener(listener);
+	}
+	
+	public void learnMetric(Mapping m) {
+		try {
+			LimesServiceImplStub stub = new LimesServiceImplStub ();
+			LearnMetric learnMetric = new LearnMetric();
+			learnMetric.setSessionID(sessionId);
+			Map<String, Object> sub = new HashMap<String, Object>();
+			Map<String, Object> mapp = new HashMap<String, Object>();
+			
+			learnMetric.setTrainingData(JsonParser.parseJavaToJSON(mapp));
+			LearnMetricResponse lp = stub.learnMetric(learnMetric);
+			System.out.println("Got Response from learning method..."+lp.get_return());
+
+		} catch (AxisFault e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }

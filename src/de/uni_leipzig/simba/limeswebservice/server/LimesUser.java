@@ -17,6 +17,7 @@ import de.uni_leipzig.simba.genetics.learner.GeneticActiveLearner;
 import de.uni_leipzig.simba.genetics.util.PropertyMapping;
 import de.uni_leipzig.simba.io.ConfigReader;
 import de.uni_leipzig.simba.io.KBInfo;
+import de.uni_leipzig.simba.limeswebservice.util.JsonParser;
 import de.uni_leipzig.simba.mapper.SetConstraintsMapper;
 import de.uni_leipzig.simba.mapper.SetConstraintsMapperFactory;
 
@@ -199,7 +200,14 @@ public class LimesUser implements Comparable {
 		this.toEvaluate = toEvaluate;
 	}
 	
-	public boolean learn(Mapping trainingData) {
+	/**
+	 * Active Learning approach.
+	 * As we have to serialize Hashmaps into JSON Strings please see the JSONParser class for
+	 * details how to reconstruct it.
+	 * @param trainingData
+	 * @return
+	 */
+	public boolean learn(String trainingData) {
 		boolean setMetric = true;
 		if(learner == null) {
 			setMetric = false;
@@ -218,7 +226,8 @@ public class LimesUser implements Comparable {
 			}
 		}
 		System.out.println("Learning begins...");
-		toEvaluate = learner.learn(trainingData);
+		Mapping learnMap = JsonParser.parseMappingFromJSONSerialization(trainingData);
+		toEvaluate = learner.learn(learnMap);
 		System.out.println("Learning has finished...");
 		if(setMetric) {
 			System.out.println("Determining learned metric...");
