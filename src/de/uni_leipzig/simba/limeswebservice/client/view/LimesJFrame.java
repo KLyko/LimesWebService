@@ -65,14 +65,14 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 	private JButton newSessionBt;
 	private JButton getFitMetBt;
 	private JButton subMetricBt;
-	private JButton getFitPropBt;
+//	private JButton getFitPropBt;
 	private JButton learnMetric;
 	private JLabel jLabel5;
 	private JTextField emailField;
 	private JPanel jPanel1;
 	private JInputPane jSourcePane;
 	private JInputPane jTargetPane;
-	private JButton jButton1;
+	private JButton calcMappingBt;
 	private JSpinner jRevSpinner;
 	private JSpinner jAccSpinner;
 	private JLabel jLabel4;
@@ -81,7 +81,7 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 	private JLabel jLabel2;
 	private JLabel jLabel1;
 	
-	private JButton getHelp;
+//	private JButton getHelp;
 	
 	private Client client;
 	private String defaultMetricExpression;
@@ -171,11 +171,11 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 						
 					}
 					{
-						jButton1 = new JButton();
-						jMetricPane.add(jButton1, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-						jButton1.setText("calculate mapping");
-						jButton1.setEnabled(false);
-						jButton1.addActionListener(new ActionListener(){
+						calcMappingBt = new JButton();
+						jMetricPane.add(calcMappingBt, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+						calcMappingBt.setText("calculate mapping");
+						calcMappingBt.setEnabled(false);
+						calcMappingBt.addActionListener(new ActionListener(){
 
 							@Override
 							public void actionPerformed(ActionEvent e) {
@@ -194,14 +194,15 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 						subMetricBt = new JButton();
 						jMetricPane.add(subMetricBt, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 						subMetricBt.setText("submit metric");
+						subMetricBt.setEnabled(false);
 						subMetricBt.addActionListener(new ActionListener(){
-
+								
 							@Override
 							public void actionPerformed(ActionEvent e) {
 								client.setMetric(metricField.getText());
 								client.setThreshholds((Double)jAccSpinner.getValue(),(Double) jRevSpinner.getValue());
 								client.sendMetricSpec();
-								jButton1.setEnabled(true);
+								calcMappingBt.setEnabled(true);
 								getFitMetBt.setEnabled(true);
 								learnMetric.setEnabled(true);
 							}
@@ -327,20 +328,21 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 									jTargetPane.initInput(client, true);
 									client.sendSpecification();
 									subMetricBt.setEnabled(true);
-									jButton1.setEnabled(true);
+									calcMappingBt.setEnabled(true);
 									getFitMetBt.setEnabled(true);
-									learnMetric.setEnabled(true);
+//									learnMetric.setEnabled(true);
 								}
 								
 							});
 							controlPane.add(specbt, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+							specbt.setEnabled(false);
 							specbt.setText("submit specification");
 						}
 						{
-							getFitPropBt = new JButton();
-						
-//							controlPane.add(getFitPropBt, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-							getFitPropBt.setText("suggest properties");
+//							getFitPropBt = new JButton();
+//						
+////							controlPane.add(getFitPropBt, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+//							getFitPropBt.setText("suggest properties");
 						}
 						{	//@TODO
 							learnMetric = new JButton();
@@ -370,6 +372,7 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 	private void setMetricFunction (HashMap<String,Object> metricMap){
 		if (metricMap.containsKey(ConfigConstants.METRIC)){
 			metricField.setText(metricMap.get(ConfigConstants.METRIC).toString());
+			calcMappingBt.setEnabled(true);
 			learnMetric.setEnabled(true);
 		}
 		if (metricMap.containsKey(ConfigConstants.ACC_THRES)){
@@ -382,18 +385,29 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		
 		if (evt.getPropertyName().equals(Client.GET_SPEC_SOURCE)){
 			HashMap<String, Object> fetchedMap =(HashMap<String, Object>) evt.getNewValue();
 			this.jSourcePane.setSpecification(fetchedMap);
+			specbt.setEnabled(true);
+			subMetricBt.setEnabled(true);
+			getFitMetBt.setEnabled(true);
+			
 		}else if (evt.getPropertyName().equals(Client.GET_SPEC_TARGET)){
 			HashMap<String, Object> fetchedMap =(HashMap<String, Object>) evt.getNewValue();
 			this.jTargetPane.setSpecification(fetchedMap);
+			specbt.setEnabled(true);
+			subMetricBt.setEnabled(true);
+			getFitMetBt.setEnabled(true);
 		}else if (evt.getPropertyName().equals(Client.GET_METRIC)){
 			HashMap<String, Object> fetchedMap =(HashMap<String, Object>) evt.getNewValue();
 			this.setMetricFunction(fetchedMap);
+			specbt.setEnabled(true);
+			subMetricBt.setEnabled(true);
+			getFitMetBt.setEnabled(true);
 		}else if (evt.getPropertyName().equals(Client.GET_METRIC_ADVICE)){
 			metricField.setText(evt.getNewValue().toString());
+			calcMappingBt.setEnabled(true);
+			learnMetric.setEnabled(true);
 		}
 		
 	}
@@ -404,6 +418,7 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 	 */
 	public void setSessionId(int sessionId) {
 		sessionField.setText(""+sessionId);
+		specbt.setEnabled(true);
 	}
 
 	
