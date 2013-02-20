@@ -61,6 +61,8 @@ public class LimesUser implements Comparable {
 		try {
 			HybridCache sC = HybridCache.getData(new File(System.getProperty("user.home")), sourceInfo);
 			HybridCache tC = HybridCache.getData(new File(System.getProperty("user.home")), targetInfo);
+//			HybridCache sC = HybridCache.getData( sourceInfo);
+//			HybridCache tC = HybridCache.getData( targetInfo);
 			SetConstraintsMapper sCM= SetConstraintsMapperFactory.getMapper("simple", sourceInfo, sourceInfo, sC, tC, new LinearFilter(), 2);
 			
 			// remember settings to init learner
