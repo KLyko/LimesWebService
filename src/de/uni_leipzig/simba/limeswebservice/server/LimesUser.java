@@ -304,4 +304,12 @@ public class LimesUser implements Comparable {
 			info.id = (String) param.get("endpoint");
 		return info;
 	}
+
+	/**
+	 * Method to unset learner.
+	 */
+	public void cancelLearning() {
+		if(learner != null)
+			learner = null;
+	}
 }

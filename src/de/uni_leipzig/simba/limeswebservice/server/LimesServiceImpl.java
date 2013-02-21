@@ -303,6 +303,9 @@ public class LimesServiceImpl {
 		 return JsonParser.parseMappingToJSON(m);	
 	 }
 	 
-	 
+	 public void stopLearning(int sessionID) {
+		 LimesUser le = UserManager.getInstance().getUser(sessionID);
+		 le.cancelLearning();
+	 }
 }
 
