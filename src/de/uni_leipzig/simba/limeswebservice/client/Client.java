@@ -386,10 +386,8 @@ public class Client {
 			LimesServiceImplStub stub = new LimesServiceImplStub ();
 			LearnMetric learnMetric = new LearnMetric();
 			learnMetric.setSessionID(sessionId);
-			Map<String, Object> sub = new HashMap<String, Object>();
-			Map<String, Object> mapp = new HashMap<String, Object>();
-			
-			learnMetric.setTrainingData(JsonParser.parseJavaToJSON(mapp));
+	
+			learnMetric.setTrainingData(JsonParser.parseMappingToJSON(m));
 			LearnMetricResponse lp = stub.learnMetric(learnMetric);
 			System.out.println("Got Response from learning method..."+lp.get_return());
 			return lp.get_return();

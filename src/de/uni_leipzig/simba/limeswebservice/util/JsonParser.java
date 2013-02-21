@@ -181,13 +181,14 @@ public class JsonParser {
 	 */
 	public static String parseMappingToJSON(Mapping m) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		for(Entry<String, HashMap<String, Double>> e : m.map.entrySet()) {
-			Map<String, Object> sub = new HashMap<String, Object>();
-			for(Entry<String, Double> subE : m.map.get(e.getKey()).entrySet()) {
-				sub.put(subE.getKey(), subE.getValue());
+		if(m != null)
+			for(Entry<String, HashMap<String, Double>> e : m.map.entrySet()) {
+				Map<String, Object> sub = new HashMap<String, Object>();
+				for(Entry<String, Double> subE : m.map.get(e.getKey()).entrySet()) {
+					sub.put(subE.getKey(), subE.getValue());
+				}
+				map.put(e.getKey(), sub);
 			}
-			map.put(e.getKey(), sub);
-		}
 		return parseJavaToJSON(map);
 	}
 	

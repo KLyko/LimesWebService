@@ -248,7 +248,7 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 								if(success) {
 									Mapping m = client.getTrainingData();
 									if(m != null && m.size()>0) {
-										LearningDialog dialog = new LearningDialog(m);
+										LearningDialog dialog = new LearningDialog(m, client);
 										dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 										dialog.setVisible(true);
 									} else {

@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.border.BevelBorder;
 
 import de.uni_leipzig.simba.data.Mapping;
+import de.uni_leipzig.simba.limeswebservice.client.Client;
 
 public class LearningDialog extends JDialog  implements ActionListener {
 
@@ -25,6 +26,7 @@ public class LearningDialog extends JDialog  implements ActionListener {
 	private JButton okButton;
 	private JButton cancelButton;
 	private JButton getMetricButton;
+	private Client client = null;
 	/**
 	 * Launch the application.
 	 */
@@ -42,6 +44,11 @@ public class LearningDialog extends JDialog  implements ActionListener {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public LearningDialog(Mapping m, Client client) {
+		this(m);
+		this.client = client;
 	}
 	
 	/**
@@ -95,7 +102,12 @@ public class LearningDialog extends JDialog  implements ActionListener {
 	 // Button actionsListener
     public void actionPerformed(ActionEvent e) {
       if ("learn".equals(e.getActionCommand())) {
-    	  System.out.println("learn again...");
+    	  Mapping m = model.getMapping();
+    	 if(client.learnMetric(m)){
+    		 System.out.println("Setting new model");
+    		 this.model = new ALTableModel(client.getTrainingData());
+    		 this.table.setModel(model);
+    	 }
       }
       if ("cancel".equals(e.getActionCommand())) {
     	  System.out.println("cancel");

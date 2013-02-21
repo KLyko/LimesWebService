@@ -227,11 +227,12 @@ public class LimesUser implements Comparable {
 				return false;
 			}
 		}
-		System.out.println("Learning begins...");
 		Mapping learnMap = JsonParser.parseMappingFromJSONSerialization(trainingData);
+
+		System.out.println("Learning begins. With training data: "+learnMap.toString());
 		toEvaluate = learner.learn(learnMap);
 		System.out.println("Learning has finished...");
-		if(setMetric) {
+		if(setMetric && learnMap.size()>0) {
 			System.out.println("Determining learned metric...");
 			this.learnedMetric = learner.terminate();
 		}
