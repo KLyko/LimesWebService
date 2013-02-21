@@ -1,7 +1,6 @@
 package de.uni_leipzig.simba.limeswebservice.server;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +17,6 @@ import org.apache.log4j.Logger;
 import org.json.simple.parser.ParseException;
 import org.slf4j.LoggerFactory;
 
-import de.konrad.commons.sparql.SPARQLHelper;
 import de.uni_leipzig.simba.cache.HybridCache;
 import de.uni_leipzig.simba.data.Mapping;
 import de.uni_leipzig.simba.io.KBInfo;
@@ -27,11 +25,17 @@ import de.uni_leipzig.simba.selfconfig.ComplexClassifier;
 import de.uni_leipzig.simba.selfconfig.MeshBasedSelfConfigurator;
 import de.uni_leipzig.simba.selfconfig.SimpleClassifier;
 
+/**
+ * Implementation of the Limes WebService (LWS)
+ * @author Victor Christen
+ * @author Klaus Lyko
+ *
+ */
 public class LimesServiceImpl {
 
 	org.slf4j.Logger logger = LoggerFactory.getLogger(LimesServiceImpl.class);
 	
-	private static final Logger log = Logger.getLogger(LimesServiceImpl.class);
+//	private static final Logger log = Logger.getLogger(LimesServiceImpl.class);
 	 
 	public int polling (){
 		return 1;
@@ -42,13 +46,12 @@ public class LimesServiceImpl {
 		int id = con.hashCode();
 		LimesUser lu = new LimesUser(id,emailAddress);
 		 UserManager.getInstance().addUser(id, lu);
-		log.info("new Client with id"+id);
+		 logger.info("New Client with id"+id);
 		String msg = "Your session id is "+ id +".\n"+
 		"The session will delete after 2 days";
 		try {
 			postMail (emailAddress,"session id",msg);
 		} catch (MessagingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return id;
@@ -68,12 +71,21 @@ public class LimesServiceImpl {
 		return JsonParser.parseJavaToJSON(lu.getTargetMap());
 	}
 	
+	/**
+	 * Used to retrieve already specified metric.
+	 * @param sessionId
+	 * @return JSON String representing a Hashmap with entries <i>"metric", "accthreshold", "verthreshold" </i>
+	 */
 	public String fetchMetricMap (int sessionId){
 		LimesUser lu = UserManager.getInstance().getUser(sessionId);
 //		String result = ""; 
 		return JsonParser.parseJavaToJSON(lu.getMetricMap());
 	}
-	
+	/**
+	 * Method to set the basic parameters which specify the endpoints and properties.
+	 * @param sessionId
+	 * @param metricMap JSON String.
+	 */	
 	public void setSpecification (int sessionId,String source, String target){
 		try {
 			HashMap<String,Object> sourceMap = JsonParser.parseJSONToJava(source);
@@ -87,12 +99,16 @@ public class LimesServiceImpl {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Method to set the metric expression. 
+	 * @param sessionId
+	 * @param metricMap JSON String representing a Hashmap with entries <i>"metric", "accthreshold", "verthreshold" </i>
+	 */
 	public void setMetricSpec (int sessionId, String metricMap){
 		try {
 			HashMap<String,Object> metricJMap = JsonParser.parseJSONToJava(metricMap);
 			LimesUser lu = UserManager.getInstance().getUser(sessionId);
-			log.info(metricMap);
+			logger.info("Setting metric: "+metricMap);
 			lu.setMetricMap(metricJMap);
 			lu.setNoUsageTime(0);
 		} catch (ParseException e) {
@@ -101,22 +117,23 @@ public class LimesServiceImpl {
 		}
 	}
 	
+	/**
+	 * Tries to calculate mapping according ro specified parameters.
+	 * @param sessionID
+	 */
 	public void getMapping(int sessionID){
 		LimesUser le =UserManager.getInstance().getUser(sessionID);
-		le.addPropertyChangeListener(UserManager.getInstance());
-		
+		le.addPropertyChangeListener(UserManager.getInstance());		
 		
 		HashMap<String, Object> source;
-		
-			source = le.getSourceMap();
+		source = le.getSourceMap();
 		
 		HashMap<String,Object> target= le.getTargetMap();
 		HashMap<String,Object> metric= le.getMetricMap();
 		
 		KBInfo sourceInfo = le.createKBInfo(source);
 		KBInfo targetInfo = le.createKBInfo(target);
-		// get metric
-		
+		// get metric		
 		String metricExpr = (String) metric.get("metric");
 		Double accThreshold = (Double) metric.get("accthreshold");
 		Double verThreshold = (Double) metric.get("verthreshold");
@@ -136,11 +153,16 @@ public class LimesServiceImpl {
 		return le.learn(trainingData);		
 	}
 	
+	/**
+	 * Starts self conigurations.
+	 * @param sessionId
+	 * @return
+	 */
 	public String getMetricAdvice (int sessionId){
 		String metric ="";
-		logger.info( ""+sessionId);
+//		logger.info( ""+sessionId);
 		LimesUser lu = UserManager.getInstance().getUser(sessionId);
-		System.out.println(lu);
+//		System.out.println(lu);
 		KBInfo sourceInfo = lu.createKBInfo (lu.getSourceMap());
 		KBInfo targetInfo = lu.createKBInfo (lu.getTargetMap());
 		if(sourceInfo.prefixes == null)
@@ -175,16 +197,28 @@ public class LimesServiceImpl {
 		return metric;
 	}
 	
-	
+	/**
+	 * Method to calculate a metric out of simple classifier
+	 * @param sl
+	 * @param source
+	 * @param target
+	 * @return
+	 */
 	private String generateMetric(SimpleClassifier sl,KBInfo source,KBInfo target) {
-		
-		String metric = ""; //$NON-NLS-1$
-		
-		metric += sl.measure+"("+source.var.replaceAll("\\?", "")+"."+sl.sourceProperty; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-		metric +=","+target.var.replaceAll("\\?", "")+"."+sl.targetProperty+")|"+sl.threshold; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+		String metric = "";
+		metric += sl.measure+"("+source.var.replaceAll("\\?", "")+"."+sl.sourceProperty; 
+		metric +=","+target.var.replaceAll("\\?", "")+"."+sl.targetProperty+")|"+sl.threshold;
 		return metric;
 	}
-
+	/**
+	 * Recursive method to contruct a metric out of a complex classifier, which basically is a set
+	 * of SimpleClassifiers.
+	 * @param originalCCList List of SimpleClassifiers to be processed.
+	 * @param expr The constructed metric expression so far, on first call supposed to be an empty String.
+	 * @param source
+	 * @param target
+	 * @return Complex metric expression, which combines atomic ones with AND.
+	 */
 	private String generateMetric(List<SimpleClassifier> originalCCList, String expr,KBInfo source,KBInfo target) {
 		// need to copy them
 		List<SimpleClassifier> sCList = new LinkedList<SimpleClassifier>();
@@ -209,7 +243,7 @@ public class LimesServiceImpl {
 	}
 	
 	/**
-	 * method sends mail.
+	 * Method to send mails.
 	 * @param recipient
 	 * @param subject
 	 * @param message

@@ -17,7 +17,11 @@ import javax.swing.border.BevelBorder;
 
 import de.uni_leipzig.simba.data.Mapping;
 import de.uni_leipzig.simba.limeswebservice.client.Client;
-
+/**
+ * Dialog for the Active Learning functionality of LWS.
+ * @author Klaus Lyko
+ *
+ */
 public class LearningDialog extends JDialog  implements ActionListener {
 
 	private final JPanel contentPanel = new JPanel();
@@ -27,34 +31,21 @@ public class LearningDialog extends JDialog  implements ActionListener {
 	private JButton cancelButton;
 	private JButton getMetricButton;
 	private Client client = null;
+
 	/**
-	 * Launch the application.
+	 * Constructor to interact with client.
+	 * @param m
+	 * @param client
 	 */
-	public static void main(String[] args) {
-		try {
-			Mapping m = new Mapping();
-			m.add("a","a",1d);
-			m.add("aa","aA",0.8d);
-			m.add("b","cb",0.4d);
-			m.add("c","d",0d);
-			
-			LearningDialog dialog = new LearningDialog(m);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public LearningDialog(Mapping m, Client client) {
 		this(m);
 		this.client = client;
 	}
 	
 	/**
-	 * Create the dialog.
+	 * Creates the dialog.
 	 */
-	public LearningDialog(Mapping m) {
+	private LearningDialog(Mapping m) {
 		setTitle("Actice Learning Dialog");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -99,7 +90,7 @@ public class LearningDialog extends JDialog  implements ActionListener {
 		}
 	}
 	
-	 // Button actionsListener
+	
     public void actionPerformed(ActionEvent e) {
       if ("learn".equals(e.getActionCommand())) {
     	  Mapping m = model.getMapping();
@@ -115,8 +106,28 @@ public class LearningDialog extends JDialog  implements ActionListener {
       }
       if ("getmetric".equals(e.getActionCommand())) {
     	  System.out.println("getMetric");
-    	  client.getLearnedMetric();
-    	 
+    	  client.getLearnedMetric();    	 
       }
     }
+    
+	/**
+	 * Launch the application just for testing.
+	 */
+	public static void main(String[] args) {
+		try {
+			Mapping m = new Mapping();
+			m.add("a","a",1d);
+			m.add("aa","aA",0.8d);
+			m.add("b","cb",0.4d);
+			m.add("c","d",0d);
+			
+			LearningDialog dialog = new LearningDialog(m);
+			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			dialog.setAlwaysOnTop(true);
+			dialog.setVisible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
