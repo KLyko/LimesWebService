@@ -125,27 +125,27 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 					jMetricPane.setLayout(jMetricPaneLayout);
 					{
 						jLabel1 = new JLabel();
-						jMetricPane.add(jLabel1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+						jMetricPane.add(jLabel1, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 5, 5), 0, 0));
 						jLabel1.setText("metric");
 					}
 					{
 						jLabel2 = new JLabel();
-						jMetricPane.add(jLabel2, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+						jMetricPane.add(jLabel2, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 5, 5), 0, 0));
 						jLabel2.setText("metric function");
 					}
 					{
 						metricField = new JTextField();
 						metricField.setText(defaultMetricExpression);
-						jMetricPane.add(metricField, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+						jMetricPane.add(metricField, new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 5, 0), 0, 0));
 					}
 					{
 						jLabel3 = new JLabel();
-						jMetricPane.add(jLabel3, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+						jMetricPane.add(jLabel3, new GridBagConstraints(0, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 5, 5), 0, 0));
 						jLabel3.setText("threshold acceptance");
 					}
 					{
 						jLabel4 = new JLabel();
-						jMetricPane.add(jLabel4, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+						jMetricPane.add(jLabel4, new GridBagConstraints(0, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 5, 5), 0, 0));
 						jLabel4.setText("threshold review");
 					}
 					{
@@ -155,7 +155,7 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 						jAccSliderModel.setStepSize(0.1d);
 						jAccSliderModel.setValue(0.9d);
 						jAccSpinner = new JSpinner(jAccSliderModel);
-						jMetricPane.add(jAccSpinner, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+						jMetricPane.add(jAccSpinner, new GridBagConstraints(1, 2, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 5, 0), 0, 0));
 						
 					}
 					{
@@ -167,12 +167,12 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 						jRevSpinner = new JSpinner(jRevSpinnerModel);
 						
 						
-						jMetricPane.add(jRevSpinner, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 0, 0), 0, 0));
+						jMetricPane.add(jRevSpinner, new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0, 0, 5, 0), 0, 0));
 						
 					}
 					{
 						calcMappingBt = new JButton();
-						jMetricPane.add(calcMappingBt, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+						jMetricPane.add(calcMappingBt, new GridBagConstraints(0, 5, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 5), 0, 0));
 						calcMappingBt.setText("calculate mapping");
 						calcMappingBt.setEnabled(false);
 						calcMappingBt.addActionListener(new ActionListener(){
@@ -192,7 +192,7 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 					}
 					{
 						subMetricBt = new JButton();
-						jMetricPane.add(subMetricBt, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+						jMetricPane.add(subMetricBt, new GridBagConstraints(0, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 5, 5), 0, 0));
 						subMetricBt.setText("submit metric");
 						subMetricBt.setEnabled(false);
 						subMetricBt.addActionListener(new ActionListener(){
@@ -227,8 +227,25 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 							
 						});
 						getFitMetBt.setEnabled(false);
-						jMetricPane.add(getFitMetBt, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+						jMetricPane.add(getFitMetBt, new GridBagConstraints(1, 4, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 5, 0), 0, 0));
 						getFitMetBt.setText("suggest metric");
+					}
+					{	//@TODO
+						learnMetric = new JButton();
+						GridBagConstraints gbc_learnMetric = new GridBagConstraints();
+						gbc_learnMetric.gridx = 1;
+						gbc_learnMetric.gridy = 5;
+						jMetricPane.add(learnMetric, gbc_learnMetric);
+						learnMetric.setText("Learning Mapping");
+						learnMetric.setEnabled(false);
+						learnMetric.addActionListener(new ActionListener() {
+
+							@Override
+							public void actionPerformed(ActionEvent arg0) {
+								client.learnMetric(null);
+							}
+							
+						});
 					}
 				}
 				{
@@ -334,7 +351,7 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 								}
 								
 							});
-							controlPane.add(specbt, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
+							controlPane.add(specbt, new GridBagConstraints(0, 0, 2, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 							specbt.setEnabled(false);
 							specbt.setText("submit specification");
 						}
@@ -343,20 +360,6 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 //						
 ////							controlPane.add(getFitPropBt, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
 //							getFitPropBt.setText("suggest properties");
-						}
-						{	//@TODO
-							learnMetric = new JButton();
-							controlPane.add(learnMetric, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(0, 0, 0, 0), 0, 0));
-							learnMetric.setText("Learning Mapping");
-							learnMetric.setEnabled(false);
-							learnMetric.addActionListener(new ActionListener() {
-
-								@Override
-								public void actionPerformed(ActionEvent arg0) {
-									client.learnMetric(null);
-								}
-								
-							});
 						}
 					}
 				}
