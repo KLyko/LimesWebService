@@ -111,6 +111,22 @@
             }
                 
            /**
+            * auto generated Axis2 call back method for getTrainingData method
+            * override this method for handling normal response from getTrainingData operation
+            */
+           public void receiveResultgetTrainingData(
+                    de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetTrainingDataResponse result
+                        ) {
+           }
+
+          /**
+           * auto generated Axis2 Error handler
+           * override this method for handling error response from getTrainingData operation
+           */
+            public void receiveErrorgetTrainingData(java.lang.Exception e) {
+            }
+                
+           /**
             * auto generated Axis2 call back method for getMetricAdvice method
             * override this method for handling normal response from getMetricAdvice operation
             */

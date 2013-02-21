@@ -30,13 +30,12 @@ public class ALTableModel implements TableModel{
 	
 	@Override
 	public void addTableModelListener(TableModelListener arg0) {
-		// TODO Auto-generated method stub
+		// Nothing to do here so far.
 		
 	}
 	@Override
 	public void removeTableModelListener(TableModelListener l) {
-		// TODO Auto-generated method stub
-		
+		// Nothing to do here so far.
 	}
 
 	@Override
@@ -90,6 +89,10 @@ public class ALTableModel implements TableModel{
 		dataList.get(rowIndex).setValue(aValue, columnIndex);
 	}
 	
+	/**
+	 * Method to transform the data in the mapping into a List<MappingData>, due to the index based
+	 * access method of the TableModel interface.
+	 */
 	private void fillData() {
 		for(Entry<String, HashMap<String, Double>> entry : m.map.entrySet()) {
 			for(Entry<String, Double> subEntry : entry.getValue().entrySet()) {
@@ -97,9 +100,15 @@ public class ALTableModel implements TableModel{
 				dataList.add(item);
 			}
 		}
-//		for(int i = 0; i<dataList.size();i++) {
-//			System.out.println(i+"= "+dataList.get(i).toString());
-//		}
+	}
+	
+	/**
+	 * Method to get the Mapping out of the Model for a new learning iteration.
+	 * @return
+	 */
+	public Mapping getMapping() {
+		// FIXME Tranform list into mapping
+		return m;
 	}
 	
 	/**

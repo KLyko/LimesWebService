@@ -28,6 +28,8 @@ import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchTar
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.FetchTargetDataResponse;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetMapping;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetMetricAdvice;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetTrainingData;
+import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.GetTrainingDataResponse;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.LearnMetric;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.LearnMetricResponse;
 import de.uni_leipzig.simba.limeswebservice.server.LimesServiceImplStub.Polling;
@@ -403,4 +405,18 @@ public class Client {
 		}
 	}
 	
+	public Mapping getTrainingData() {
+		try {
+			LimesServiceImplStub stub = new LimesServiceImplStub ();
+			GetTrainingData getTrainData = new GetTrainingData();
+			getTrainData.setSessionID(sessionId);		
+			GetTrainingDataResponse resp = stub.getTrainingData(getTrainData);
+			return JsonParser.parseMappingFromJSONSerialization(resp.get_return());
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		System.out.println("Something went wrong getting training data...");
+		return new Mapping();
+	}
 }

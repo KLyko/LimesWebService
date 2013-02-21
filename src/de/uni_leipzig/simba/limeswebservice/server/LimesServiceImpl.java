@@ -257,7 +257,19 @@ public class LimesServiceImpl {
 //			e.printStackTrace();
 //		}
 		return prop;
-		 
 	 }
+	 
+	 /**
+	  * Method to get Mapping to be evaluated by an oracle for a new learning iteration.
+	  * @param sessionID UserId.
+	  * @return String JSON representation of the Mapping.
+	  */
+	 public String getTrainingData(int sessionID) {
+		 LimesUser le =UserManager.getInstance().getUser(sessionID);
+		 Mapping m = le.getToEvaluate();
+		 return JsonParser.parseMappingToJSON(m);	
+	 }
+	 
+	 
 }
 

@@ -246,15 +246,16 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 							public void actionPerformed(ActionEvent arg0) {
 								boolean success = client.learnMetric(null);
 								if(success) {
-									// FIXME get Mapping
-									Mapping dummy = new Mapping();
-									dummy.add("a","a",1d);
-									dummy.add("aa","aA",0.8d);
-									dummy.add("b","cb",0.4d);
-									dummy.add("c","d",0d);
-									LearningDialog dialog = new LearningDialog(dummy);
-									dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-									dialog.setVisible(true);
+									Mapping m = client.getTrainingData();
+									if(m != null && m.size()>0) {
+										LearningDialog dialog = new LearningDialog(m);
+										dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+										dialog.setVisible(true);
+									} else {
+										//FIXME error handling
+										System.out.println("Got no training data to display, skipping...");
+									}
+									
 								} else { //FIXME error handling
 									System.out.println("Something went wrong, initialicing learning...");
 								}
