@@ -136,7 +136,6 @@ public class LimesServiceImpl {
 		return le.learn(trainingData);		
 	}
 	
-	
 	public String getMetricAdvice (int sessionId){
 		String metric ="";
 		logger.info( ""+sessionId);

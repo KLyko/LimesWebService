@@ -417,4 +417,28 @@ public class Client {
 		System.out.println("Something went wrong getting training data...");
 		return new Mapping();
 	}
+	
+	/**
+	 * Get learned metric from Webservice.
+	 */
+	public void getLearnedMetric() {
+		FetchMetricMap metricData = new FetchMetricMap();
+		metricData.setSessionId(this.sessionId);
+		LimesServiceImplStub session;
+		try {
+			session = new LimesServiceImplStub();	
+		FetchMetricMapResponse resMetric = session.fetchMetricMap(metricData);
+		change.firePropertyChange(GET_METRIC, null, 
+				JsonParser.parseJSONToJava(resMetric.get_return()));
+		} catch (AxisFault e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

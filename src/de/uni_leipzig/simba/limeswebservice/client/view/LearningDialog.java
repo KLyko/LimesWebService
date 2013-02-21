@@ -115,6 +115,8 @@ public class LearningDialog extends JDialog  implements ActionListener {
       }
       if ("getmetric".equals(e.getActionCommand())) {
     	  System.out.println("getMetric");
+    	  client.getLearnedMetric();
+    	 
       }
     }
 }

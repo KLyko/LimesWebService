@@ -190,7 +190,10 @@ public class LimesUser implements Comparable {
 		return learnedMetric;
 	}
 
-	public void setLearnedMetric(Metric learnedMetric) {
+	private void setLearnedMetric(Metric learnedMetric) {
+		metricMap.put("metric", learnedMetric.getExpression());
+		metricMap.put("accthreshold", learnedMetric.getThreshold());
+//		metricMap.put("verthreshold", double2);
 		this.learnedMetric = learnedMetric;
 	}
 
@@ -234,7 +237,11 @@ public class LimesUser implements Comparable {
 		System.out.println("Learning has finished...");
 		if(setMetric && learnMap.size()>0) {
 			System.out.println("Determining learned metric...");
-			this.learnedMetric = learner.terminate();
+			try {
+				setLearnedMetric(learner.terminate());				
+			}catch(Exception e){
+				//FIXME error handling
+			}
 		}
 		return true;
 	}
