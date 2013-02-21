@@ -10,6 +10,7 @@ import java.beans.PropertyChangeListener;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -20,6 +21,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
 
+import de.uni_leipzig.simba.data.Mapping;
 import de.uni_leipzig.simba.limeswebservice.client.Client;
 import de.uni_leipzig.simba.limeswebservice.client.util.DefaultEndpointLoader;
 import de.uni_leipzig.simba.limeswebservice.util.ConfigConstants;
@@ -239,10 +241,24 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 						learnMetric.setText("Learning Mapping");
 						learnMetric.setEnabled(false);
 						learnMetric.addActionListener(new ActionListener() {
-
+							//FIXME open Dialog!
 							@Override
 							public void actionPerformed(ActionEvent arg0) {
-								client.learnMetric(null);
+								boolean success = client.learnMetric(null);
+								if(success) {
+									// FIXME get Mapping
+									Mapping dummy = new Mapping();
+									dummy.add("a","a",1d);
+									dummy.add("aa","aA",0.8d);
+									dummy.add("b","cb",0.4d);
+									dummy.add("c","d",0d);
+									LearningDialog dialog = new LearningDialog(dummy);
+									dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+									dialog.setVisible(true);
+								} else { //FIXME error handling
+									System.out.println("Something went wrong, initialicing learning...");
+								}
+									
 							}
 							
 						});

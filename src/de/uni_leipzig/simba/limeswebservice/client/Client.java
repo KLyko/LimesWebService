@@ -379,7 +379,7 @@ public class Client {
 		change.removePropertyChangeListener(listener);
 	}
 	
-	public void learnMetric(Mapping m) {
+	public boolean learnMetric(Mapping m) {
 		try {
 			LimesServiceImplStub stub = new LimesServiceImplStub ();
 			LearnMetric learnMetric = new LearnMetric();
@@ -390,13 +390,16 @@ public class Client {
 			learnMetric.setTrainingData(JsonParser.parseJavaToJSON(mapp));
 			LearnMetricResponse lp = stub.learnMetric(learnMetric);
 			System.out.println("Got Response from learning method..."+lp.get_return());
+			return lp.get_return();
 
 		} catch (AxisFault e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return false;
 		}
 	}
 	

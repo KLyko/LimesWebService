@@ -43,7 +43,7 @@ public class LearningDialog extends JDialog  implements ActionListener {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Create the dialog.
 	 */

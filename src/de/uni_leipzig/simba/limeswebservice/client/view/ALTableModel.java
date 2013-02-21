@@ -9,7 +9,14 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 import de.uni_leipzig.simba.data.Mapping;
-
+/**
+ * TableModel for a JTable showing mappings of the active learning method. Takes a mapping to display.
+ * The entries in this mapping are transformed into MappingData instances and are stored in a List. 
+ * This is done due to the fact that the TableModel interface defines access methods based on row and 
+ * column indeces.
+ * @author Klaus Lyko
+ *
+ */
 public class ALTableModel implements TableModel{
 
 	Mapping m;
@@ -95,6 +102,12 @@ public class ALTableModel implements TableModel{
 //		}
 	}
 	
+	/**
+	 * Nested Class which basically wraps arround the Data of a row in the TableModel.
+	 * Fields have a implizit index which corresponds with the columnIndex in the table.
+	 * @author Klaus Lyko
+	 *
+	 */
 	class MappingData {
 		String sourceURI;//Index 0
 		String targetURI;//Index 1
