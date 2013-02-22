@@ -241,9 +241,11 @@ public class LimesJFrame extends javax.swing.JFrame implements PropertyChangeLis
 						learnMetric.setText("Learning Mapping");
 						learnMetric.setEnabled(false);
 						learnMetric.addActionListener(new ActionListener() {
-							//FIXME open Dialog!
 							@Override
 							public void actionPerformed(ActionEvent arg0) {
+								client.setMetric(metricField.getText());
+								client.setThreshholds((Double)jAccSpinner.getValue(),(Double) jRevSpinner.getValue());
+								client.sendMetricSpec();
 								boolean success = client.learnMetric(null);
 								if(success) {
 									Mapping m = client.getTrainingData();

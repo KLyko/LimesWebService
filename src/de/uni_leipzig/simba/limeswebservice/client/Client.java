@@ -163,7 +163,8 @@ public class Client {
 			spec.setMetricMap(JsonParser.parseJavaToJSON(metric));
 			spec.setSessionId(sessionId);
 			session.setMetricSpec(spec);
-			System.out.println("start session SessionID="+sessionId);
+//			System.out.println("start session SessionID="+sessionId);
+			logger.info("sending metric spec for session "+sessionId);
 		} catch (AxisFault e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -181,7 +182,7 @@ public class Client {
 			spec.setSource(JsonParser.parseJavaToJSON(source));
 			spec.setTarget(JsonParser.parseJavaToJSON(target));
 			session.setSpecification(spec);
-			System.out.println("send specification SessionID="+sessionId);
+			logger.info("Sending source&target specification SessionID="+sessionId);
 		} catch (AxisFault e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -238,14 +239,14 @@ public class Client {
 //				t.cancel();
 //				task.cancel();
 				logger.info("receiveResultgetMetricAdvice");
-				try{
-					limesService._getServiceClient().getOptions().setUseSeparateListener(false);
-					limesService._getServiceClient().getServiceContext().flush();
-					limesService._getServiceClient().cleanup();
-					
-				}catch (AxisFault af){
-					af.printStackTrace();
-				}
+//				try{
+//					limesService._getServiceClient().getOptions().setUseSeparateListener(false);
+//					limesService._getServiceClient().getServiceContext().flush();
+//					limesService._getServiceClient().cleanup();
+//					
+//				}catch (AxisFault af){
+//					af.printStackTrace();
+//				}
 				change.firePropertyChange(GET_METRIC_ADVICE, null, result.get_return());
 				
            }
@@ -383,6 +384,8 @@ public class Client {
 	
 	public boolean learnMetric(Mapping m) {
 		try {
+			this.sendSpecification();
+			this.sendMetricSpec();
 			LimesServiceImplStub stub = new LimesServiceImplStub ();
 			LearnMetric learnMetric = new LearnMetric();
 			learnMetric.setSessionID(sessionId);
@@ -405,6 +408,8 @@ public class Client {
 	
 	public Mapping getTrainingData() {
 		try {
+//			this.sendSpecification();
+//			this.sendMetricSpec();
 			LimesServiceImplStub stub = new LimesServiceImplStub ();
 			GetTrainingData getTrainData = new GetTrainingData();
 			getTrainData.setSessionID(sessionId);		

@@ -7,6 +7,8 @@
  */
         package de.uni_leipzig.simba.limeswebservice.server;
 
+import org.apache.axis2.transport.http.HTTPConstants;
+
         
 
         /*
@@ -28,8 +30,14 @@
 	    public static final String scmsHost = "http://139.18.2.164:8080/axis2/services/";
 	    // set url of the web service location
 	    public static String host = localhost;
+	    int timeOutInMilliSeconds = 10 * 60 * 1000; // 10 minutes timeouts
         private static int counter = 0;
 
+        public void setProperties() {
+        	_getServiceClient().getOptions().setProperty(HTTPConstants.SO_TIMEOUT, new Integer(timeOutInMilliSeconds));
+        	_getServiceClient().getOptions().setProperty(HTTPConstants.CONNECTION_TIMEOUT, new Integer(timeOutInMilliSeconds));
+        }
+        
         private static synchronized java.lang.String getUniqueSuffix(){
             // reset the counter if it is greater than 99999
             if (counter > 99999){
@@ -234,8 +242,7 @@
         
             //Set the soap version
             _serviceClient.getOptions().setSoapVersionURI(org.apache.axiom.soap.SOAP12Constants.SOAP_ENVELOPE_NAMESPACE_URI);
-        
-    
+        setProperties();
     }
 
     /**
@@ -251,10 +258,8 @@
      * Default Constructor
      */
     public LimesServiceImplStub() throws org.apache.axis2.AxisFault {
-        
-        this(host+"LimesServiceImpl.LimesServiceImplHttpSoap12Endpoint/" );
-    
-}
+    	this(host+"LimesServiceImpl.LimesServiceImplHttpSoap12Endpoint/" );
+    }
 
     /**
      * Constructor taking the target endpoint
